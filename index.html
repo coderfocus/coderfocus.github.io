@@ -141,6 +141,27 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/11/12/MySQL——优化嵌套查询和分页查询/">MySQL——优化嵌套查询和分页查询</a>
+      </h2>
+      <p class="article-date">November 12, 2018</p>
+      
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          优化嵌套查询嵌套查询（子查询）可以使用SELECT语句来创建一个单列的查询结果，然后把这个结果作为过滤条件用在另一个查询中。嵌套查询写起来简单，也容易理解。但是，有时候可以被更有效率的连接（JOIN)替代。
+现在假如要找出从来没有在网站中消费的客户，也就是查询在客户customer表中但是不 ...
+        
+      </div>
+      <a class="more" href="/2018/11/12/MySQL——优化嵌套查询和分页查询/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/08/20/MySQL——优化ORDER-BY语句/">MySQL——优化ORDER BY语句</a>
       </h2>
       <p class="article-date">August 20, 2018</p>
@@ -343,30 +364,6 @@ EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39;  ...
         
       </div>
       <a class="more" href="/2018/07/29/MySQL中能够使用索引的场景/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">MySQL主从复制——主库已有数据的解决方案</a>
-      </h2>
-      <p class="article-date">July 29, 2018</p>
-      
-        
-  <a href="/tags#Docker">
-    <span class="tag-code">Docker</span>
-  </a>
-
-  <a href="/tags#MySQL">
-    <span class="tag-code">MySQL</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          MySQL主从复制——主库已有数据的解决方案在上篇文章中我们介绍了基于Docker的Mysql主从搭建，一主多从的搭建过程就是重复了一主一从的从库配置过程，需要注意的是，要保证主从库my.cnf中server-id的唯一性。搭建完成后，可以在主库show slave hosts查看有哪些从库 ...
-        
-      </div>
-      <a class="more" href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">Read more</a>
     </article>
   
 
