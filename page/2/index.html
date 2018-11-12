@@ -141,6 +141,29 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2018/07/29/MySQL中能够使用索引的场景/">MySQL中能够使用索引的场景</a>
+      </h2>
+      <p class="article-date">July 29, 2018</p>
+      
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          匹配全值对索引中所有列都有指定具体值，即是对索引中的所有列都有等值匹配的条件。
+rental表的索引情况，其中idx_rental_date是复合索引：
+
+EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39;  ...
+        
+      </div>
+      <a class="more" href="/2018/07/29/MySQL中能够使用索引的场景/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">MySQL主从复制——主库已有数据的解决方案</a>
       </h2>
       <p class="article-date">July 29, 2018</p>
@@ -366,26 +389,6 @@ Docker使用步骤简便，启动容器在秒级别
         
       </div>
       <a class="more" href="/2018/07/23/HTTP首部扫盲/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/23/CSharp集合类型大揭秘/">C#集合类型大揭秘</a>
-      </h2>
-      <p class="article-date">July 23, 2018</p>
-      
-        
-  <a href="/tags#C#">
-    <span class="tag-code">C#</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          C#集合类型大揭秘集合是.NET FCL(Framework Class Library)的重要组成部分，我们平常撸C#代码时免不了和集合打交道，FCL提供了丰富易用的集合类型，给我们撸码提供了极大的便利。正是因为这种与生俱来的便利性，使得我们对集合既熟悉又陌生。很多同学可能一直还是停留在使 ...
-        
-      </div>
-      <a class="more" href="/2018/07/23/CSharp集合类型大揭秘/">Read more</a>
     </article>
   
 

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      编码最佳实践——单一职责原则 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>编码最佳实践——单一职责原则</h2>
+  <p class="post-date">2018-11-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><strong>SOLID</strong>是一组<strong>最佳编码实践</strong>的首字母缩写</p>
+<ul>
+<li><strong>S 单一职责原则</strong></li>
+<li><strong>O 开放与封闭原则</strong></li>
+<li><strong>L Liskov（里式）替换原则</strong></li>
+<li><strong>I 接口分离原则</strong></li>
+<li><strong>D 依赖注入原则</strong></li>
+</ul>
+<p>同时应用这些最佳实践，可以提升代码适应变更的能力。但是凡事要有度，过度使用虽然可以让代码有很高的自适应能力，但是会导致层次粒度过小而难以理解或使用，还会影响代码的可读性。</p>
+<p><img src="http://songwenjie.vip/blog/180904/3CgjA90iEm.jpg?imageslim" alt="mark"></p>
+<h1 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h1><p>单一职责原则（Single Responsibility principle）要求开发人员编写的代码<strong>有且只有一个</strong>变更理由。如果一个类有多个变更理由，那么它就具有多个职责。这个时候就要进行重构，将<strong>多职责类拆解为多个单职责类</strong>。通过委托和抽象，包含多个变更理由的类应该<strong>把一个或多个职责委托给其他的单职责类</strong>。</p>
+<p>之前看过一篇文章，讲为什么面向对象比面向过程更能适应业务变化？从其中也可以看出单一职责原则带来的好处，职责明确，只需要修改局部，不会对外部造成影响，影响可以控制在足以掌控的范围内。</p>
+<blockquote>
+<p>对象将需求用类一个个隔开，就像用储物箱把东西一个个封装起来一样，需求变了，分几种情况，最严重的是大变，那么每个储物箱都要打开改，这种方法就不见得有好处；但是这种情况发生概率比较小，大部分需求变化都是局限在一两个储物箱中，那么我们只要打开这两个储物箱修改就可以，不会影响其他储物柜了。</p>
+<p>而面向过程是把所有东西都放在一个大储物箱中，修改某个部分以后，会引起其他部分不稳定，一个BUG修复，引发新的无数BUG，最后程序员陷入焦头烂额。</p>
+</blockquote>
+<p>我们一段代码为例，通过重构的过程，体会一下单一职责原则的好处。</p>
+<h3 id="面向过程编码"><a href="#面向过程编码" class="headerlink" title="面向过程编码"></a>面向过程编码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class TradeRecord</span><br><span class="line">&#123;</span><br><span class="line">    public int TradeAmount &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    public decimal TradePrice &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">public class TradeProcessor</span><br><span class="line">&#123;</span><br><span class="line">    public void ProcessTrades(Stream stream)</span><br><span class="line">    &#123;</span><br><span class="line">        var lines = new List&lt;string&gt;();</span><br><span class="line"></span><br><span class="line">        using (var reader = new StreamReader(stream))</span><br><span class="line">        &#123;</span><br><span class="line">            string line;</span><br><span class="line">            while((line =reader.ReadLine()) != null)</span><br><span class="line">            &#123;</span><br><span class="line">                lines.Add(line);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        var trades = new List&lt;TradeRecord&gt;();</span><br><span class="line">        var lineCount = 1;</span><br><span class="line">        foreach (var line in lines)</span><br><span class="line">            &#123;</span><br><span class="line">                var fields = line.Split(new char[] &#123; &apos;,&apos; &#125;);</span><br><span class="line"></span><br><span class="line">                if(fields.Length != 3 )</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(&quot;WARN: Line &#123;0&#125; malformed. Only &#123;1&#125; fields found&quot;,lineCount, fields.Length);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                int tradeAmount;</span><br><span class="line">                if (!int.TryParse(fields[0], out tradeAmount))</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(&quot;WARN: Trade amount on line &#123;0&#125; not a valid integer :&#123;1&#125;&quot;,lineCount, fields[0]);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                decimal tradePrice;</span><br><span class="line">                if (!decimal.TryParse(fields[1], out tradePrice))</span><br><span class="line">                &#123;</span><br><span class="line">                    Console.WriteLine(&quot;WARN: Trade Price on line &#123;0&#125; not a valid decimal :&#123;1&#125;&quot;, lineCount, fields[1]);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                var tradeRecord = new TradeRecord</span><br><span class="line">                &#123;</span><br><span class="line">                    TradeAmount = tradeAmount,</span><br><span class="line">                    TradePrice = tradePrice</span><br><span class="line">                &#125;;</span><br><span class="line">                trades.Add(tradeRecord);</span><br><span class="line">                lineCount++;</span><br><span class="line">            &#125;</span><br><span class="line">        </span><br><span class="line">        using (var connection = new SqlConnection(&quot;DataSource=(local);Initial Catalog=TradeDataBase;Integrated Security = True;&quot;))</span><br><span class="line">                &#123;</span><br><span class="line">                    connection.Open();</span><br><span class="line">                    using (var transaction = connection.BeginTransaction())</span><br><span class="line">                    &#123;</span><br><span class="line">                        foreach (var trade in trades)</span><br><span class="line">                        &#123;</span><br><span class="line">                            var command = connection.CreateCommand();</span><br><span class="line">                            command.Transaction = transaction;</span><br><span class="line">                            command.CommandType = System.Data.CommandType.StoredProcedure;</span><br><span class="line">                            command.CommandText = &quot;insert_trade&quot;;</span><br><span class="line"></span><br><span class="line">                            command.Parameters.AddWithValue(&quot;@tradeamount&quot;, trade.TradeAmount);</span><br><span class="line">                            command.Parameters.AddWithValue(&quot;@tradeprice&quot;, trade.TradePrice);</span><br><span class="line">                        &#125;</span><br><span class="line">                        transaction.Commit();</span><br><span class="line">                    &#125;</span><br><span class="line">                    connection.Close();</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">        Console.WriteLine(&quot;INFO: &#123;0&#125; trades processed&quot;,trades.Count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码不仅仅是一个类拥有太多的职责，也是一个单一方法拥有太多的职责。仔细分析一下代码，原始的ProcessTrades方法代码可以分为三个部分：从流中读取交易数据、将字符串数据转换为TradeRecord实例、将交易数据持久化到永久存储。</p>
+<p><strong>单一职责原则可以表现在类和方法层面上</strong>。从方法的层面上，一个方法只能做一件事情；从类的层面上，一个类只能有一个职责。否则，就要对类和方法进行拆分重构。对于方法的拆分重构，目标是清晰度，能提升代码的可读性，但是不能提升代码的自适应能力。要提升代码的自适应能力，就要做抽象，将每个职责划分到不同的类中。</p>
+<h3 id="重构清晰度"><a href="#重构清晰度" class="headerlink" title="重构清晰度"></a>重构清晰度</h3><p>上面我们分析过ProcessTrades方法代码可以分为三个部分，我们可以将每个部分提取为一个方法，将工作委托给这些方法，这样ProcessTrades方法就变成了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void ProcessTrade(Stream stream)</span><br><span class="line">&#123;</span><br><span class="line">    var lines = ReadTradeData(stream);</span><br><span class="line">    var trades = ParseTrades(lines);</span><br><span class="line">    StoreTrades(trades);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>提取的方法实现分别为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 从流中读取交易数据</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">/// &lt;param name=&quot;stream&quot;&gt;&lt;/param&gt;</span><br><span class="line">/// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">private IEnumerable&lt;string&gt; ReadTradeData(Stream stream)</span><br><span class="line">&#123;</span><br><span class="line">    var tradeData = new List&lt;string&gt;();</span><br><span class="line">    using (var reader = new StreamReader(stream))</span><br><span class="line">    &#123;</span><br><span class="line">        string line;</span><br><span class="line">        while ((line = reader.ReadLine()) != null)</span><br><span class="line">        &#123;</span><br><span class="line">            tradeData.Add(line);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return tradeData;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 将字符串数据装换位TradeRecord实例</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">/// &lt;param name=&quot;tradeData&quot;&gt;&lt;/param&gt;</span><br><span class="line">/// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">private IEnumerable&lt;TradeRecord&gt; ParseTrades(IEnumerable&lt;string&gt; tradeData)</span><br><span class="line">&#123;</span><br><span class="line">    var trades = new List&lt;TradeRecord&gt;();</span><br><span class="line">    var lineCount = 1;</span><br><span class="line">    foreach (var line in tradeData)</span><br><span class="line">    &#123;</span><br><span class="line">        var fields = line.Split(new char[] &#123; &apos;,&apos; &#125;);</span><br><span class="line"></span><br><span class="line">        if(!ValidateTradeData(fields,lineCount))</span><br><span class="line">        &#123;</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        var tradeRecord = MapTradeDataToTradeRecord(fields);</span><br><span class="line">        trades.Add(tradeRecord);</span><br><span class="line"></span><br><span class="line">        lineCount++;</span><br><span class="line">    &#125;</span><br><span class="line">    return trades;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 交易数据持久化</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">/// &lt;param name=&quot;trades&quot;&gt;&lt;/param&gt;</span><br><span class="line">private void StoreTrades(IEnumerable&lt;TradeRecord&gt; trades)</span><br><span class="line">&#123;</span><br><span class="line">    using (var connection = new SqlConnection(&quot;DataSource=(local);Initial Catalog=TradeDataBase;Integrated Security = True;&quot;))</span><br><span class="line">    &#123;</span><br><span class="line">        connection.Open();</span><br><span class="line">        using (var transaction = connection.BeginTransaction())</span><br><span class="line">        &#123;</span><br><span class="line">            foreach (var trade in trades)</span><br><span class="line">            &#123;</span><br><span class="line">                var command = connection.CreateCommand();</span><br><span class="line">                command.Transaction = transaction;</span><br><span class="line">                command.CommandType = System.Data.CommandType.StoredProcedure;</span><br><span class="line">                command.CommandText = &quot;insert_trade&quot;;</span><br><span class="line"></span><br><span class="line">                command.Parameters.AddWithValue(&quot;@tradeamount&quot;, trade.TradeAmount);</span><br><span class="line">                command.Parameters.AddWithValue(&quot;@tradeprice&quot;, trade.TradePrice);</span><br><span class="line">            &#125;</span><br><span class="line">            transaction.Commit();</span><br><span class="line">        &#125;</span><br><span class="line">        connection.Close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(&quot;INFO: &#123;0&#125; trades processed&quot;, trades.Count());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中ParseTrades方法的实现比较特殊，负责的是将字符串数据转换为TradeRecord实例，包含数据的验证和实例的创建。同理，将这些工作委托给了ValidateTradeData方法和MapTradeDataToTradeRecord方法。ValidateTradeData方法负责数据的验证，只有合法的数据格式才能继续组装为TradeRecord实例，不合法的数据将会被记录在日志中。ValidateTradeData方法将记录日志的工作也委托给了LogMessage方法，具体实现如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 验证交易数据</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">/// &lt;param name=&quot;fields&quot;&gt;&lt;/param&gt;</span><br><span class="line">/// &lt;param name=&quot;currentLine&quot;&gt;&lt;/param&gt;</span><br><span class="line">/// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">private bool ValidateTradeData(string[] fields,int currentLine)</span><br><span class="line">&#123;</span><br><span class="line">    if (fields.Length != 3)</span><br><span class="line">    &#123;</span><br><span class="line">        LogMessage(&quot;WARN: Line &#123;0&#125; malformed. Only &#123;1&#125; fields found&quot;, currentLine, fields.Length);</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    int tradeAmount;</span><br><span class="line">    if (!int.TryParse(fields[0], out tradeAmount))</span><br><span class="line">    &#123;</span><br><span class="line">        LogMessage(&quot;WARN: Trade amount on line &#123;0&#125; not a valid integer :&#123;1&#125;&quot;, currentLine, fields[0]);</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    decimal tradePrice;</span><br><span class="line">    if (!decimal.TryParse(fields[1], out tradePrice))</span><br><span class="line">    &#123;</span><br><span class="line">        LogMessage(&quot;WARN: Trade Price on line &#123;0&#125; not a valid decimal :&#123;1&#125;&quot;, currentLine, fields[1]);</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line">    return true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 组装TradeRecord实例</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">/// &lt;param name=&quot;fields&quot;&gt;&lt;/param&gt;</span><br><span class="line">/// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">private TradeRecord MapTradeDataToTradeRecord(string[] fields)</span><br><span class="line">&#123;</span><br><span class="line">    int tradeAmount = int.Parse(fields[0]);</span><br><span class="line">    decimal tradePrice = decimal.Parse(fields[1]);</span><br><span class="line">    var tradeRecord = new TradeRecord</span><br><span class="line">    &#123;</span><br><span class="line">        TradeAmount = tradeAmount,</span><br><span class="line">        TradePrice = tradePrice</span><br><span class="line">    &#125;;</span><br><span class="line">    return tradeRecord;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 记录日志</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">/// &lt;param name=&quot;message&quot;&gt;&lt;/param&gt;</span><br><span class="line">/// &lt;param name=&quot;args&quot;&gt;&lt;/param&gt;</span><br><span class="line">private void LogMessage(string message,params object[] args)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(message,args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重构清晰度之后，代码的可读性提高了，但是自适应能力并没有提升多少。方法做到了只做一件事情，但是类的职责并不单一。还所以，要继续重构抽象。</p>
+<h3 id="重构抽象"><a href="#重构抽象" class="headerlink" title="重构抽象"></a>重构抽象</h3><p>重构TradeProcessor抽象的第一步就是设计一个或一组接口来执行三个最高级别的任务：读取数据、处理数据和存储数据。</p>
+<p><img src="http://songwenjie.vip/blog/180829/e4fEFfACel.png?imageslim" alt="mark"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class TradeProcessor</span><br><span class="line">&#123;</span><br><span class="line">    private readonly ITradeDataProvider tradeDataProvider;</span><br><span class="line">    private readonly ITradeParser tradeParser;</span><br><span class="line">    private readonly ITradeStorage tradeStorage;</span><br><span class="line"></span><br><span class="line">    public TradeProcessor(ITradeDataProvider tradeDataProvider,</span><br><span class="line">        ITradeParser tradeParser,</span><br><span class="line">        ITradeStorage tradeStorage)</span><br><span class="line">    &#123;</span><br><span class="line">        this.tradeDataProvider = tradeDataProvider;</span><br><span class="line">        this.tradeParser = tradeParser;</span><br><span class="line">        this.tradeStorage = tradeStorage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void ProcessTrades()</span><br><span class="line">    &#123;</span><br><span class="line">        var tradeData = tradeDataProvider.GetTradeData();</span><br><span class="line">        var trades = tradeParser.Parse(tradeData);</span><br><span class="line">        tradeStorage.Persist(trades);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作为客户端的TradeProcessor类现在不清楚，当然也不应该清楚StreamTradeDataProvider类的实现细节，只能通过ITradeDataProvider接口的GetTradeData方法来获取数据。<strong>TradeProcesso将不再包含任何交易流程处理的细节实现，取而代之的是整个流程的蓝图</strong>。</p>
+<p>对于ITradeparser接口的实现Simpleradeparser类，还可以继续提取更多的抽象，重构之后的UML图如下。ITradeMapper负责数据格式的映射转换，ITradeValidator负责数据的验证。</p>
+<p><img src="http://songwenjie.vip/blog/180829/L8HG665aGF.png?imageslim" alt="mark"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public class TradeParser : ITradeParser</span><br><span class="line">&#123;</span><br><span class="line">    private readonly ITradeValidator tradeValidator;</span><br><span class="line">    private readonly ITradeMapper tradeMapper;</span><br><span class="line">    public TradeParser(ITradeValidator tradeValidator, ITradeMapper tradeMapper)</span><br><span class="line">    &#123;</span><br><span class="line">        this.tradeValidator = tradeValidator;</span><br><span class="line">        this.tradeMapper = tradeMapper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public IEnumerable&lt;TradeRecord&gt; Parse(IEnumerable&lt;string&gt; tradeData)</span><br><span class="line">    &#123;</span><br><span class="line">        var trades = new List&lt;TradeRecord&gt;();</span><br><span class="line">        var lineCount = 1;</span><br><span class="line">        foreach (var line in tradeData)</span><br><span class="line">        &#123;</span><br><span class="line">            var fields = line.Split(new char[] &#123; &apos;,&apos; &#125;);</span><br><span class="line"></span><br><span class="line">            if (!tradeValidator.Validate(fields, lineCount))</span><br><span class="line">            &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            var tradeRecord = tradeMapper.MapTradeDataToTradeRecord(fields);</span><br><span class="line">            trades.Add(tradeRecord);</span><br><span class="line"></span><br><span class="line">            lineCount++;</span><br><span class="line">        &#125;</span><br><span class="line">        return trades;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>类似于上面<strong>将职责抽象为接口（及其实现）的过程是递归的</strong>。在检视每个类时，你需要判断它是否具备多重职责。如果是，提取抽象直到该类只具备单个职责。</p>
+<p>重构抽象完成后的整个UML图如下：</p>
+<p><img src="http://songwenjie.vip/blog/180829/4lLHBDIa0c.png?imageslim" alt="mark"></p>
+<p>需要注意的是，记录日志等一般需要依赖第三方程序集。<strong>对于第三方引用，应该通过包装的方式转换为第一方引用。</strong>这样对于第三方的依赖可以被有效控制，在可预见的将来，替换第三方引用将会变得十分容易（只需要替换一处），否则项目中可能到处是对第三方引用的直接依赖。包装一般是通过适配器模式，此处使用的是对象适配器模式。</p>
+<p><img src="http://songwenjie.vip/blog/180829/3DEjmk5FiJ.png?imageslim" alt="mark"></p>
+<p>注意，示例中的代码实现对于依赖的抽象（接口），都是通过构造函数传入的，也就是说对象依赖的具体实现在对象创建时就已经确定了。有两种选择，一是客户端传入手动创建的依赖对象（穷人版的依赖注入），二是使用IOC容器（依赖注入）。</p>
+<h3 id="需求变更"><a href="#需求变更" class="headerlink" title="需求变更"></a>需求变更</h3><p>重构抽象后的新版本能在无需改变任何现有类的情况下实现以下的需求增强功能。我们可以模拟需求变更来体验以下代码的自适应能力。</p>
+<ul>
+<li><p>当输入数据的验证规则变化时</p>
+<p>修改ITradeValidator接口的实现以反映最新的规则。</p>
+</li>
+<li><p>当更改日志记录方式时，由窗口打印方式改为文件记录方式</p>
+<p>创建一个文件记录的FileLogger类实现文件记录日志的功能，替换ILogger的具体实现。</p>
+</li>
+<li><p>当数据库发生了变化，例如使用文档数据库替换关系型数据库</p>
+<p>创建MongoTradeStorage类使用MongoDB存储交易数据，替换ITradeStorage的具体实现。</p>
+</li>
+</ul>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>我们发现，符合单一职责原则的代码会由<strong>更多的小规模但目标更明确的类</strong>组成，然后通过接口抽象以及在运行时将无关功能的责任委托给相应的接口来达成目标的。更多的小规模但目标更明确的类通过<strong>自由组合</strong>的形式配合完成任务，每个类都可以看做是一个小零件，而接口就是生产这些零件的模具。当这个零件不再适合完成此任务时，就可以考虑替换掉这个零件，前提是替换前后的零件都是通过同一个模具生产出来的。</p>
+<p>聪明的人从来不会把鸡蛋放到同一个篮子里，但是更聪明的人会考虑把这些篮子放到不同的车上。我们应该做更聪明的人，而不是每次系统出现问题时，在意大利面条式的代码里一遍又一遍的DeBug。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《C#敏捷开发实践》</p>
+<blockquote>
+<p><strong></strong></p>
+<div class="content"><br>   <div>作者：<a style="color: red; font-family: 微软雅黑; text-decoration: 
+none" href="http://songwenjie.cnblogs.com/" target="_blank">CoderFocus</a></div><br><div>微信公众号：<br><br><img src="https://user-gold-cdn.xitu.io/2018/10/31/166c7955f5d0c145?>w=300&h=300&f=png&s=45508" title="关注公众号，获取最新更新"></div><br><br></div></blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#编码最佳实践">
+    <span class="tag-code">编码最佳实践</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/11/12/MySQL——优化嵌套查询和分页查询/">
+        <span class="nav-arrow">← </span>
+        
+          MySQL——优化嵌套查询和分页查询
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#单一职责原则"><span class="toc-nav-text">单一职责原则</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#面向过程编码"><span class="toc-nav-text">面向过程编码</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#重构清晰度"><span class="toc-nav-text">重构清晰度</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#重构抽象"><span class="toc-nav-text">重构抽象</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#需求变更"><span class="toc-nav-text">需求变更</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#最后"><span class="toc-nav-text">最后</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/11/12/编码最佳实践——单一职责原则/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "编码最佳实践——单一职责原则",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
