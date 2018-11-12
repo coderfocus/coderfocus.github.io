@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      是什么影响了数据库索引选型？ | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>是什么影响了数据库索引选型？</h2>
+  <p class="post-date">2018-08-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>上一篇文章我们介绍了<a href="https://www.cnblogs.com/songwenjie/p/9414960.html" target="_blank" rel="noopener">索引背后的数据结构</a>，这篇文章我们来介绍影响索引数据结构选型的因素——存储器存取。</p>
+<h2 id="主存存取原理"><a href="#主存存取原理" class="headerlink" title="主存存取原理"></a>主存存取原理</h2><h3 id="主存的构成"><a href="#主存的构成" class="headerlink" title="主存的构成"></a>主存的构成</h3><p>主存储器（简称主存或内存）包括存取体、各种逻辑部件及控制电路等。存储体由许多存储单元组成，每个存储单元又包含若干个存储元件，每个存储元件能寄存一位二进制代码“0”或“1”。这样，一个存储单元可以存储一串二进制代码，这串二进制代码称为<strong>存储字</strong>，这串二进制代码的位数称为<strong>存储字长</strong>，可以是8位、16位或者32位等。</p>
+<p><img src="http://songwenjie.vip/blog/180806/jjH2h37Dic.png?imageslim" alt="mark"></p>
+<h3 id="主存与CPU的联系"><a href="#主存与CPU的联系" class="headerlink" title="主存与CPU的联系"></a>主存与CPU的联系</h3><p><img src="http://songwenjie.vip/blog/180806/ek39jJaee5.png?imageslim" alt="mark"></p>
+<font color="FF7F00" face="楷体">画外音：<br><br><strong>MAR</strong>（Memory Address Register）是存储器地址寄存器，用来存放欲访问的存储单元的地址，其位数对应存储单元的个数（若MAR为10位，则有2<sup>10</sup>=1024个存储单元，记为1k）。<br><br><strong>MDR</strong>（Memory Data Register）是存储器数据寄存器，用于存放从存储体某单元取出的代码或准备往某存储单元存入的代码，其位数与存储字长相等。<br><br>现代计算机一般将MAR和MDR集成在CPU芯片中。<br><br></font>
+
+<h3 id="主存的存取过程"><a href="#主存的存取过程" class="headerlink" title="主存的存取过程"></a>主存的存取过程</h3><p>如果把存储体看做是一栋大楼，那么每个存储单元可以看成这栋大楼里的每个房间，每个存储元可以看做房间里的一张床位，床位有人相当于“1”，无人相当于“0”。每个房间都需要一个房间号，便于我们找到房间的位置。同样，可以赋予每个存储单元一个编号，称为<strong>存储单元的地址号</strong>。</p>
+<p><strong>主存的工作方式就是按照存储单元的地址号来实现对存储字各位的存（写入）、取（读出）。</strong></p>
+<p>现代主存的结构和存取原理比较复杂，这里抛却具体差别，抽象出一个十分简单的存取模型来说明主存的工作原理。</p>
+<p><img src="http://songwenjie.vip/blog/180803/g4bhae5kab.png?imageslim" alt="mark"></p>
+<p><strong>主存的存取过程如下：</strong></p>
+<p>当系统需要读取主存时，首先由CPU将该字的地址送到MAR,经地址总线送至主存，然后发出读命令。主存接到读命令后，根据地址定位到指定存储单元，然后将此存储单元数据放到数据总线上，供其它部件读取。</p>
+<p>写主存的过程类似，若要向主存存入一个信息字时，首先CPU将该字要存入的主存单元的地址经MAR送到地址总线，并将信息字送入MDR，然后向主存发出写命令，主存接到写命令后，便将数据总线上的信息写入到对应地址总线指出的主存单元中。</p>
+<font color="FF7F00" face="楷体">画外音：实际上主存存取的过程并没有这么简单，还需要经过经过地址译码（逻辑地址—&gt;物理地址）等过程。</font>
+
+<h2 id="磁盘存取原理"><a href="#磁盘存取原理" class="headerlink" title="磁盘存取原理"></a>磁盘存取原理</h2><p><img src="http://songwenjie.vip/blog/180803/6h08bJEHHk.png?imageslim" alt="mark"></p>
+<p>我们知道，索引本身也很大，不可能全部存储在内存中（根节点常驻内存），一般以文件形式存储在磁盘上。那么问题来了，索引检索需要磁盘I/O操作。与内存不同，磁盘I/O存在机械运动耗费，相对于内存存取，I/O存取的消耗要高几个数量级。</p>
+<h3 id="磁盘的构成"><a href="#磁盘的构成" class="headerlink" title="磁盘的构成"></a>磁盘的构成</h3><p>磁盘的整体结构示意图：</p>
+<p><img src="http://songwenjie.vip/blog/180803/FiKHjDclI7.png?imageslim" alt="mark"></p>
+<p>一个磁盘由大小相同且同轴的圆形盘片组成，磁盘可以转动（各个磁盘必须同步转动）。在磁盘的一侧有磁头支架，磁头支架固定了一组磁头，每个磁头负责存取一个磁盘的内容。磁头不能转动，但是可以沿磁盘半径方向运动（实际是斜切向运动），每个磁头同一时刻也必须是同轴的，即从正上方向下看，所有磁头任何时候都是重叠的。</p>
+<p>磁盘盘片示意图：</p>
+<p><img src="http://songwenjie.vip/blog/180803/Dd4jBLaGDD.png?imageslim" alt="mark"></p>
+<p>盘片被划分成一系列同心环，圆心是盘片中心，每个同心环叫做一个磁道，所有半径相同的磁道组成一个柱面。磁道被沿半径线划分成一个个小的段，每个段叫做一个扇区，每个扇区是磁盘的最小存储单元。</p>
+<h3 id="磁盘的存取过程："><a href="#磁盘的存取过程：" class="headerlink" title="磁盘的存取过程："></a>磁盘的存取过程：</h3><p>当需要从磁盘读取数据时，系统会将数据逻辑地址传给磁盘，磁盘的控制电路按照寻址逻辑将逻辑地址翻译成物理地址，即确定要读的数据在哪个磁道，哪个扇区。</p>
+<p>为了读取这个扇区的数据，需要将磁头放到这个扇区上方，为了实现这一点：</p>
+<ol>
+<li>首先必须找到柱面，即磁头需要移动对准相应磁道，这个过程叫做<strong>寻道</strong>，所耗费时间叫做<strong>寻道时间</strong></li>
+<li>然后目标扇区旋转到磁头下，即磁盘旋转将目标扇区旋转到磁头下。这个过程耗费的时间叫做<strong>旋转时间</strong></li>
+</ol>
+<p>所以一次访盘请求（读/写）完成过程由三个动作组成：</p>
+<ol>
+<li>寻道（时间）：磁头移动定位到指定磁道 </li>
+<li>旋转延迟（时间）：等待指定扇区从磁头下旋转经过 </li>
+<li>数据传输（时间）：数据在磁盘与内存之间的实际传输</li>
+</ol>
+<h3 id="局部性原理与磁盘预读"><a href="#局部性原理与磁盘预读" class="headerlink" title="局部性原理与磁盘预读"></a>局部性原理与磁盘预读</h3><p>由于存储介质的特性，磁盘本身存取就比主存慢很多，再加上机械运动耗费，磁盘的存取速度往往是主存的几百万分之一，因此为了提高效率，要尽量减少磁盘I/O。为了达到这个目的，磁盘往往不是严格按需读取，而是每次都会预读，即使只需要一个字节，磁盘也会从这个位置开始，顺序向后读取一定长度的数据放入内存。这样做的理论依据是计算机科学中著名的局部性原理：</p>
+<blockquote>
+<p>局部性原理: CPU访问存储器时，无论是存取指令还是存取数据，所访问的存储单元都趋于聚集在一个较小的连续区域中。</p>
+<p>时间局部性（Temporal Locality）：如果一个信息项正在被访问，那么在近期它很可能还会被再次访问。</p>
+<p>空间局部性（Spatial Locality）：在最近的将来将用到的信息很可能与现在正在使用的信息在空间地址上是临近的。</p>
+</blockquote>
+<p>由于磁盘顺序读取的效率很高（不需要寻道时间，只需很少的旋转时间），因此对于具有局部性的程序来说，<strong>预读可以提高I/O效率</strong>。</p>
+<p>预读的长度一般为页（page）的整倍数。页是计算机管理存储器的逻辑块，硬件及操作系统往往将主存和磁盘存储区分割为连续的大小相等的块，每个存储块称为一页（在许多操作系统中，页的大小通常为4k），主存和磁盘以页为单位交换数据。当程序要读取的数据不在主存中时，会触发一个缺页异常，此时系统会向磁盘发出读盘信号，磁盘会找到数据的起始位置并向后连续读取一页或几页载入内存中，然后异常返回，程序继续运行。</p>
+<h2 id="数据库为什么选用B-Tree索引"><a href="#数据库为什么选用B-Tree索引" class="headerlink" title="数据库为什么选用B-/+Tree索引"></a>数据库为什么选用B-/+Tree索引</h2><p>之前提到过，SQL优化的一个重要原则是减少磁盘I/O次数，磁盘I/O次数也是评价索引结构的优劣的指标之一。</p>
+<p><strong>B-Tree分析：</strong></p>
+<p>根据B-Tree的定义，可知检索一次最多需要访问h（B-Tree的高度）个节点。数据库系统的设计者巧妙<strong>利用了磁盘预读原理，将一个节点的大小设为等于一个页，这样每个节点只需要一次I/O就可以完全载入。</strong>但是逻辑上存储在一个页里并不代表物理上也存储在一个页里，为了达到这个目的，每次新建节点时，直接申请一个页的空间，这样就保证一个节点物理上也存储在一个页里，加之计算机存储分配都是按页对齐的，就实现了一个节点只需一次I/O。</p>
+<p>B-Tree中一次检索最多需要<strong>h-1</strong>次I/O，因为根节点会常驻内存。复杂度为O(logdN)。一般实际应用中，出度d是非常大的数字，通常超过100，因此h非常小（通常不超过3）。所以B-Tree作为索引结构效率是非常高的。这也是为什么数据库不选用红黑树作为索引（数据结构）的原因，一是因为红黑树的高度h要大的多；二是红黑树节点在物理上可能是单独存储的，无法利用局部性原理。复杂度为O(h)，效率明显比B-Tree差的多。</p>
+<p><strong>B+Tree分析：</strong></p>
+<p>上篇文章说过，B+Tree更适合索引。究其原因，一是因为B+Tree内节点去掉了data域，因此可以拥有更大的出度，拥有<strong>更好的性能</strong>；二是因为所有叶子节点形成有序链表，<strong>便于范围查询</strong>；所有的查找最终都会到叶子节点，从而<strong>保证了查询性能的稳定</strong>。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《计算机组成原理（第2版）》</li>
+</ul>
+<ul>
+<li><a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="noopener">MySQL索引背后的数据结构及算法原理</a></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/08/17/数据库索引背后的数据结构/">
+        <span class="nav-arrow">← </span>
+        
+          数据库索引背后的数据结构
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/08/19/MySQL——索引实现原理/">
+        
+          MySQL——索引实现原理
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#主存存取原理"><span class="toc-nav-text">主存存取原理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#主存的构成"><span class="toc-nav-text">主存的构成</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#主存与CPU的联系"><span class="toc-nav-text">主存与CPU的联系</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#主存的存取过程"><span class="toc-nav-text">主存的存取过程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#磁盘存取原理"><span class="toc-nav-text">磁盘存取原理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#磁盘的构成"><span class="toc-nav-text">磁盘的构成</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#磁盘的存取过程："><span class="toc-nav-text">磁盘的存取过程：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#局部性原理与磁盘预读"><span class="toc-nav-text">局部性原理与磁盘预读</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#数据库为什么选用B-Tree索引"><span class="toc-nav-text">数据库为什么选用B-/+Tree索引</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/08/18/是什么影响了数据库索引选型？/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "是什么影响了数据库索引选型？",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

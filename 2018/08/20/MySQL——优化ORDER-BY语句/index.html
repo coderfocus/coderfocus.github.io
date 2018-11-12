@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      MySQL——优化ORDER BY语句 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>MySQL——优化ORDER BY语句</h2>
+  <p class="post-date">2018-08-20</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>本篇文章我们将了解ORDER BY语句的优化，在此之前，你需要对索引有基本的了解，不了解的老少爷们可以先看一下我之前写过的索引相关文章。现在让我们开始吧。</p>
+<h2 id="MySQL中的两种排序方式"><a href="#MySQL中的两种排序方式" class="headerlink" title="MySQL中的两种排序方式"></a>MySQL中的两种排序方式</h2><p>1.<strong>通过有序索引顺序扫描直接返回有序数据</strong></p>
+<p>因为索引的结构是B+树，索引中的数据是按照一定顺序进行排列的，所以在排序查询中如果能利用索引，就能避免额外的排序操作。EXPLAIN分析查询时，Extra显示为Using index。</p>
+<p>2.<strong>Filesort排序，对返回的数据进行排序</strong></p>
+<p>所有不是通过索引直接返回排序结果的操作都是Filesort排序，也就是说进行了额外的排序操作。EXPLAIN分析查询时，Extra显示为Using filesort。</p>
+<h2 id="ORDER-BY优化的核心原则"><a href="#ORDER-BY优化的核心原则" class="headerlink" title="ORDER BY优化的核心原则"></a>ORDER BY优化的核心原则</h2><p><strong>尽量减少额外的排序，通过索引直接返回有序数据。</strong></p>
+<h2 id="ORDER-BY优化实战"><a href="#ORDER-BY优化实战" class="headerlink" title="ORDER BY优化实战"></a>ORDER BY优化实战</h2><p>用于实验的customer表的索引情况：</p>
+<p><img src="http://songwenjie.vip/blog/180804/0k0D7hlE1E.png?imageslim" alt="mark"></p>
+<p>首先要注意：</p>
+<p><strong>MySQL一次查询只能使用一个索引，如果要对多个字段使用索引，建立复合索引。</strong></p>
+<h3 id="ORDER-BY优化"><a href="#ORDER-BY优化" class="headerlink" title="ORDER BY优化"></a>ORDER BY优化</h3><p><strong>1.查询的字段，应该只包含此次查询使用的索引字段和主键，其余的非索引字段和索引字段作为查询字段则不会使用索引。</strong></p>
+<p>只查询用于排序的索引字段，可以利用索引排序：</p>
+<p><code>explain select store_id,email from customer order by store_id,email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/LAgKe8fgF1.png?imageslim" alt="mark"></p>
+<p>但是要注意，排序字段在多个索引中,无法使用索引排序,查询一次只能使用一个索引：</p>
+<p><code>explain select store_id,email,last_name from customer order by store_id,email,last_name;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/JI10H8hJhh.png?imageslim" alt="mark"></p>
+<p>只查询用于排序的索引字段和<strong>主键</strong>，可以利用索引排序：</p>
+<font color="FF7F00" face="楷体">画外音：MySQL默认的InnoDB引擎在物理上采用聚集索引这种方式，按主键进行搜索，所以InnoDB引擎要求表必须有主键，即使没有显式指定主键，InnoDB引擎也会生成唯一的隐式主键，也就是说索引中必定有主键。</font>
+
+<p><code>explain select customer_id,store_id,email from customer order by store_id,email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/dA530dclB2.png?imageslim" alt="mark"></p>
+<p>查询用于排序的索引字段和主键之外的字段，不会利用索引排序：</p>
+<p><code>explain select store_id,email,last_name from customer order by store_id,email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/dh2ILLFhbH.png?imageslim" alt="mark"></p>
+<p><code>explain select * from customer order by store_id,email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/IH78HmFcdJ.png?imageslim" alt="mark"></p>
+<h3 id="WHERE-ORDER-BY-优化"><a href="#WHERE-ORDER-BY-优化" class="headerlink" title="WHERE + ORDER BY 优化"></a>WHERE + ORDER BY 优化</h3><p>1.<strong>排序字段在多个索引中,无法利用索引排序</strong></p>
+<p>排序字段在多个索引（不在同一个索引）中,无法利用索引排序：</p>
+<p><code>explain select * from customer where last_name=&#39;swj&#39; order by last_name,store_id;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/m7gJIFgC0c.png?imageslim" alt="mark"></p>
+<font color="FF7F00" face="楷体">画外音：当排序字段不在同一个索引时，无法满足在一颗B+树中完成排序，必须再进行一次额外的排序</font>
+
+<p><strong>排序字段在一个索引中,并且WHERE条件和ORDER BY使用相同的索引</strong>,可以利用索引排序：</p>
+<p><code>explain select * from customer where last_name=&#39;swj&#39; order by last_name;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/b6FhDdhmD6.png?imageslim" alt="mark"></p>
+<p>当然组合索引也可以利用索引排序：</p>
+<p>注意字段store_id,email在一个组合索引中</p>
+<p><code>explain select * from customer where store_id = 5 order by store_id,email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/6d0Bf6JJ9D.png?imageslim" alt="mark"></p>
+<p>2.<strong>排序字段顺序与索引列顺序不一致,无法利用索引排序</strong></p>
+<font color="FF7F00" face="楷体">画外音：这条是针对组合索引而言的，我们都知道使用组合索引必要要遵循<strong>最左原则</strong>，WHERE子句必须有索引中第一列，虽然ORDER BY子句没有这个要求，但是也要求排序字段顺序和组合索引列顺序匹配。我们平常在使用组合索引的时候，一定要养成按照组合索引列顺序书写的好习惯。</font>
+
+<p>排序字段顺序与索引列顺序不一致,无法利用索引排序：</p>
+<p><code>explain select * from customer where store_id &gt; 5 order by email,store_id;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/ahlfcKhc8f.png?imageslim" alt="mark"></p>
+<p>应该确保排序字段顺序与索引列顺序一致,这样可以利用索引排序：</p>
+<p><code>explain select * from customer where store_id &gt; 5 order by store_id,email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/4408g3j3ch.png?imageslim" alt="mark"></p>
+<p>ORDER BY子句不要求必须索引中第一列,没有仍然可以利用索引排序。但是有个前提条件，<strong>只有在等值过滤时才可以，范围查询时不可以</strong>：</p>
+<p><code>explain select * from customer where store_id =  5 order by email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/JeAiCi0HD4.png?imageslim" alt="mark"></p>
+<p><code>explain select * from customer where store_id &gt;  5 order by email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/fD64hbLID0.png?imageslim" alt="mark"></p>
+<font color="FF7F00" face="楷体">画外音：<img src="http://songwenjie.vip/blog/180804/llBl1m5fhL.png?imageslim" alt="mark"><br><br>其原因其实也很简单，范围查询时，第一列a肯定是排序好的（默认是升序），而第二个字段b其实就不是排序的了。但是如果a字段有相同的值时，那么b字段就是排序的了。所以如果是范围查询，就只能对b做一次额外的排序。</font>
+
+
+
+<p>3.<strong>升降序不一致,无法利用索引排序</strong></p>
+<p>ORDER BY排序字段要么全部正序排序，要么全部倒序排序，否则无法利用索引排序。</p>
+<p><code>explain select * from customer where store_id &gt; 5 order by store_id,email;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/CCdIafEmKE.png?imageslim" alt="mark"></p>
+<p><code>explain select * from customer where store_id &gt; 5 order by store_id desc,email desc;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/8gekHiFb8h.png?imageslim" alt="mark"></p>
+<p><code>explain select * from customer where store_id &gt; 5 order by store_id desc,email asc;</code></p>
+<p><img src="http://songwenjie.vip/blog/180804/6gHB3E08g1.png?imageslim" alt="mark"></p>
+<p><strong>总结：</strong></p>
+<p>上面的优化其实可以汇总为：<strong>WHERE条件和ORDER BY使用相同的索引，并且ORDER BY的顺序和索引顺序相同，并且ORDER BY的字段都是升序或者降序</strong>。否则肯定需要额外的排序操作，就会出现Filesort。</p>
+<h3 id="Filesort优化"><a href="#Filesort优化" class="headerlink" title="Filesort优化"></a>Filesort优化</h3><p>通过创建合适的索引能够减少Filesort的出现，但是在某些情况下，无法完全让Filesort消失，此时只能想办法加快Filesort的操作。</p>
+<p><strong>Filesort的两种排序算法：</strong></p>
+<p>1.两次扫描算法</p>
+<p>首先根据条件取出排序字段和行指针信息，之后在排序区sort buffer中排序。这种排序算法需要访问两次数据，第一次获取排序字段和行指针信息，第二次根据行指针获取记录，第二次读取操作可能会导致大量随即I/O操作。优点是排序的时候内存开销较小。</p>
+<p>2.一次扫描算法</p>
+<p>一次性取出满足条件的行的所有字段，然后在排序区sort buffer中排序后直接输出结果集。排序的时候内存开销比较大，但是排序效率比两次扫描算法要高。</p>
+<p>根据两种排序算法的特性，<strong>适当加大系统变量max_length_for_sort_data的值</strong>，能够让MySQL选择更优化的Filesort排序算法。并且在书写SQL语句时，<strong>只使用需要的字段，而不是SELECT * 所有的字段</strong>，这样可以减少排序区的使用，提高SQL性能。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>《深入浅出MySQL》</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/08/19/MySQL——索引实现原理/">
+        <span class="nav-arrow">← </span>
+        
+          MySQL——索引实现原理
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/11/09/hello-world/">
+        
+          Hello World
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MySQL中的两种排序方式"><span class="toc-nav-text">MySQL中的两种排序方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ORDER-BY优化的核心原则"><span class="toc-nav-text">ORDER BY优化的核心原则</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ORDER-BY优化实战"><span class="toc-nav-text">ORDER BY优化实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ORDER-BY优化"><span class="toc-nav-text">ORDER BY优化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#WHERE-ORDER-BY-优化"><span class="toc-nav-text">WHERE + ORDER BY 优化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Filesort优化"><span class="toc-nav-text">Filesort优化</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/08/20/MySQL——优化ORDER-BY语句/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "MySQL——优化ORDER BY语句",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      未利用封装 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>未利用封装</h2>
+  <p class="post-date">2018-07-23</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
+<h1 id="未利用封装"><a href="#未利用封装" class="headerlink" title="未利用封装"></a>未利用封装</h1><p>客户代码使用显式类型检查（使用一系列if-else或switch语句检查对象的类型），而不利用出层次结构内已封装的类型变化时，将导致这种坏味。</p>
+<h2 id="为什么要利用封装？"><a href="#为什么要利用封装？" class="headerlink" title="为什么要利用封装？"></a>为什么要利用封装？</h2><p>一种臭名昭著的坏味是，在客户代码中使用条件语句（if-else或switch语句）来显式地检查类型，并根据类型执行相应的操作。我们这里讨论的是：<strong>要检查的类型都封装在了层次结构中，但没有利用这一点，即使用显式类型检查，而不依赖于动态多态性</strong>。这将导致如下问题：</p>
+<ul>
+<li>显式类型检查让客户程序和具体类型紧密耦合，降低了设计的可维护性。例如，引入新类型后，必须修改客户程序，在其中检查新类型以及执行相应操作的代码。</li>
+<li>客户程序必须显式地检查层次结构中所有相关的类型。如果未检查一个或多个这样的类型，客户程序在运行阶段可能出现意外的行为。相反，如果利用了<strong>运行时多态</strong>，完全可以避免这种问题。</li>
+</ul>
+<h2 id="未利用封装潜在的原因"><a href="#未利用封装潜在的原因" class="headerlink" title="未利用封装潜在的原因"></a>未利用封装潜在的原因</h2><p>###以过程型思维使用面向对象语言</p>
+<p>开发时的思维是以代码执行过程为导向，自然而然就会使用if-else语句和switch语句。</p>
+<h3 id="未应用面向对象原则"><a href="#未应用面向对象原则" class="headerlink" title="未应用面向对象原则"></a>未应用面向对象原则</h3><p>无力将面向对象的概念付诸实践。</p>
+<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>根为抽象类DataBuffer的层次结构封装了各种基本数据结构型数组，DataBuffer的子类DataBufferByte、DataBufferDouble、DataBufferFloat、DataBufferInt支持相应的基本数据类型数组。DataBuffer定义了常亮TYPE_BYTE、TYPE_DOUBLE、TYPE_FLOAT、TYPE_INT。客户程序使用TYPE_BYTE、TYPE_DOUBLE、TYPE_FLOAT、TYPE_INT的DataBuffer来存储数据。</p>
+<p>下面是客户程序的示例，演示如何使用switch语句执行针对具体类型的显式类型检查。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">switch (transferType)</span><br><span class="line">&#123;</span><br><span class="line">    case DataBuffer.TYPE_BYTE:</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        pixel = bdata[0] &amp; 0xff;</span><br><span class="line">        length = bdata.Length;</span><br><span class="line">        break;</span><br><span class="line">    case DataBuffer.TYPE_USHORT:</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        pixel = sdata[0] &amp; 0xffff;</span><br><span class="line">        length = sdata.Length;</span><br><span class="line">        break;</span><br><span class="line">    case DataBuffer.TYPE_INT:</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        pixel = idata[0];</span><br><span class="line">        length = idata.Length;</span><br><span class="line">        break;</span><br><span class="line">    default:</span><br><span class="line">        throw new Exception(&quot;不支持的transferType&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码使用的数据成员transferType定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protected int transferType;</span><br></pre></td></tr></table></figure>
+<p><strong>重构建议：将决定行为的条件语句删除，并在层次结构中引入多态方法。</strong></p>
+<p>在客户程序中，提供合适的DataBuffer子类对象。在DataBuffer层次结构类型中，定义方法GetPixel()和GetLengthl()。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public abstract class DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public const int TYPE_BYTE = 1;</span><br><span class="line">    public const int TYPE_DOUBLE = 2;</span><br><span class="line">    public const int TYPE_FLOAT = 3;</span><br><span class="line">    public const int TYPE_INT = 4;</span><br><span class="line">    public const int TYPE_USHORT = 5;</span><br><span class="line"></span><br><span class="line">    public abstract int GetPixel(object inData);</span><br><span class="line">    public abstract int GetLength(object inData);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferInt: DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        return  idata[0];</span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        return idata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferByte : DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        return bdata[0] &amp; 0xff;</span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        return bdata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferUShort : DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        return sdata[0] &amp; 0xffff;  </span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        return sdata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并将客户程序switch语句及其case语句简化为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int pixel = GetPixel(inData);</span><br><span class="line">int length = GetLength(inData);</span><br></pre></td></tr></table></figure>
+<p>由于引用dataBuffer指向的是传入的DataBuffer子类对象，因此上述语句将调用相应子类的GetPixel()和GetLength()方法。这里需要注意的是客户程序代码提供特定DataBuffer子类对象，检查输入数据类型和创建DataBuffer子类对象的工作由客户程序负责。可能需要在客户代码或一个工厂类中使用switch-case语句，而<strong>只需要使用一次这个switch-case语句</strong>。由于客户程序不知道具体是哪个DataBuffer子类，所以它与DataBuffer层次结构耦合更低。这样在DataBuffer层次结构修改既有类型和添加新类型时，不会对客户程序造成影响。即使有影响也是只需要使用一次的这个switch-case语句，修改代码代价极小。</p>
+<p>这让我想起，我在看完《重构》后天真幼稚的想消除项目中的switch-case语句，只要项目中存在switch-case语句我就觉得存在坏味道，此后的一段时间我很痛苦，因为项目中总是存在消灭不了的switch-case语句。其实如果项目中需要与外部世界的实体交互，要避免使用条件逻辑很难。例如用户在页面的操作在代码中肯定对应不同的对象来处理，这中间必须使用条件逻辑判断使用哪个对象处理。但是这样的判断应该只有一处，负责日后的代码维护是个灾难。</p>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>还是那句话switch-case语句和if-else语句不可怕，可怕的是多个witch-case语句和if-else语句。</p>
+<p>对于这样的代码我们要给予充分的关注：</p>
+<p>代码1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码3：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样的代码是难以扩展的，新增一个类NNN，就需要找到代码1、2、3甚至n进行修改，很容易遗漏。而且遗漏造成的错误只用在代码运行阶段才能发现。</p>
+<p>这种情况反映出来的问题就是没有利用封装，已经有了层次结构，却没有予以利用。没有面向接口编程，每个地方面向的都是具体的实现类，每个地方都需要判断实例的类型才可以进行下一步的动作。</p>
+<p>进行重构：</p>
+<p>代码1：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng1</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
+<p>代码2：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng2</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
+<p>代码3：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng3</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
+<p>obj可以是XXX、YYY、ZZZ。对于现在的代码，新增一个类NNN，代码1、2、3甚至n处根本不需要任何改动。因为它们实现了统一的接口，并且符合开闭原则。</p>
+<p>参考：《软件设计重构》</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#设计原则">
+    <span class="tag-code">设计原则</span>
+  </a>
+
+  <a href="/tags#面向对象">
+    <span class="tag-code">面向对象</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/23/缺失封装/">
+        <span class="nav-arrow">← </span>
+        
+          缺失封装
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/07/23/CSharp集合类型大揭秘/">
+        
+          C#集合类型大揭秘
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#未利用封装"><span class="toc-nav-text">未利用封装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么要利用封装？"><span class="toc-nav-text">为什么要利用封装？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#未利用封装潜在的原因"><span class="toc-nav-text">未利用封装潜在的原因</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#未应用面向对象原则"><span class="toc-nav-text">未应用面向对象原则</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例分析"><span class="toc-nav-text">示例分析</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例分析二"><span class="toc-nav-text">示例分析二</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/07/23/未利用封装/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "未利用封装",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

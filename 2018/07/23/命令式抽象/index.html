@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      命令式抽象 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>命令式抽象</h2>
+  <p class="post-date">2018-07-23</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><img src="http://songwenjie.vip/blog/180501/J93f1aEF2g.png?imageslim" alt="mark"></p>
+<h1 id="命令式抽象"><a href="#命令式抽象" class="headerlink" title="命令式抽象"></a>命令式抽象</h1><p>这种坏味是由操作转换为类引起的，表现为类中只定义了一个方法，有时候类名和方法名相同。这种坏味还常常表现为方法操作的数据位于另一个类中。</p>
+<h2 id="为什么不能命令式抽象？"><a href="#为什么不能命令式抽象？" class="headerlink" title="为什么不能命令式抽象？"></a>为什么不能命令式抽象？</h2><p>面向对象的基本原则是，识别真实世界中的事物，并使用抽象来表示它们。在解决方案域中，必须将问题域的对象表示出来，为此可采用<strong>映射域实体</strong>这一实现手法，抽象的每个类都必须封装数据和相关的方法。只包含一个操作的类根本不是抽象，其操作的数据位于其它地方时尤其如此。这样很多操作相同数据的方法位于不同的类中，减低了类的内聚性，违反了封装和模块化原则。</p>
+<h2 id="命令式抽象潜在的原因"><a href="#命令式抽象潜在的原因" class="headerlink" title="命令式抽象潜在的原因"></a>命令式抽象潜在的原因</h2><h3 id="过程式思维"><a href="#过程式思维" class="headerlink" title="过程式思维"></a>过程式思维</h3><p>数据和操作这些数据的方法被封装在不同类中，典型的过程式思维。</p>
+<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>来看报表生成功能，它使用了CreateReport、CopyReport、DisplayReport等类。其中每个类只包含一个方法。与报表相关的数据项，如报表名称等都放在了Report类。很显然程序中存在“命令式抽象”，这种坏味不仅增加了类的数量（至少4个类，理想情况下只需要1个类），而且内聚的方法进行了分离，增加了开发和维护的复杂性。该设计采取的是“<strong>功能分解</strong>”，而非“<strong>面向对象分解</strong>”。</p>
+<p><img src="http://songwenjie.vip/blog/180501/mBGH81Eicb.png?imageslim" alt="mark"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public class Report</span><br><span class="line">&#123;</span><br><span class="line">    public string ReportName &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class CreateReport</span><br><span class="line">&#123;</span><br><span class="line">    public void Create()</span><br><span class="line">    &#123;</span><br><span class="line">        //Create</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DisplayReport</span><br><span class="line">&#123;</span><br><span class="line">    public void Display()</span><br><span class="line">    &#123;</span><br><span class="line">        //Display</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class CopyReport</span><br><span class="line">&#123;</span><br><span class="line">    public void Copy()</span><br><span class="line">    &#123;</span><br><span class="line">        //Copy</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重构：我们将所有存在“命令式抽象”坏味的类中的方法都移到Report类中，那么Report类就变成了一个恰当的抽象，同时消除了“命令式抽象”坏味。</p>
+<p>重构后的实现：</p>
+<p><img src="http://songwenjie.vip/blog/180501/DJHJ2C3Hie.png?imageslim" alt="mark"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class Report</span><br><span class="line">&#123;</span><br><span class="line">    public string ReportName &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    public void Create()</span><br><span class="line">    &#123;</span><br><span class="line">        //Create</span><br><span class="line">    &#125;</span><br><span class="line">    public void Display()</span><br><span class="line">    &#123;</span><br><span class="line">        //Display</span><br><span class="line">    &#125;</span><br><span class="line">    public void Copy()</span><br><span class="line">    &#123;</span><br><span class="line">        //Copy</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><h3 id="具体化"><a href="#具体化" class="headerlink" title="具体化"></a>具体化</h3><p>具体化指的是将不是对象的东西提升为对象。将行为具体化后，便可对其进行存储、传递和转换。具体化可提高系统的灵活性，但是代价是增加了系统的复杂度。</p>
+<p>很多设计模式都使用了具体化：状态模式、命令模式、策略模式。</p>
+<p>为了提高可重用性、灵活性和可扩展性而有意识地将原本不是对象的东西提升为对象，这不能算是坏味。</p>
+<p>参考：《软件设计重构》</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#设计原则">
+    <span class="tag-code">设计原则</span>
+  </a>
+
+  <a href="/tags#面向对象">
+    <span class="tag-code">面向对象</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/23/缺失抽象/">
+        <span class="nav-arrow">← </span>
+        
+          缺失抽象
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/07/23/不完整的抽象/">
+        
+          不完整的抽象
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#命令式抽象"><span class="toc-nav-text">命令式抽象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么不能命令式抽象？"><span class="toc-nav-text">为什么不能命令式抽象？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#命令式抽象潜在的原因"><span class="toc-nav-text">命令式抽象潜在的原因</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#过程式思维"><span class="toc-nav-text">过程式思维</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例分析"><span class="toc-nav-text">示例分析</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#现实考虑"><span class="toc-nav-text">现实考虑</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#具体化"><span class="toc-nav-text">具体化</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/07/23/命令式抽象/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "命令式抽象",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

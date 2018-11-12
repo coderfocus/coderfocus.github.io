@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      MySQL——索引基础 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>MySQL——索引基础</h2>
+  <p class="post-date">2018-08-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>本篇文章，我们将从索引基础开始，介绍什么是索引以及索引的几种类型，然后学习如何创建索引以及索引设计的基本原则。</p>
+<p>本篇文章中用于测试索引创建的user表的结构如下：</p>
+<p><img src="http://songwenjie.vip/blog/180802/H927ahbK4F.png?imageslim" alt="mark"></p>
+<h2 id="什么是索引"><a href="#什么是索引" class="headerlink" title="什么是索引"></a>什么是索引</h2><blockquote>
+<p> 索引（在 MySQL 中也叫“键key”）是存储引擎快速找到记录的一种数据结构</p>
+<p> ——《高性能MySQL》</p>
+</blockquote>
+<p>我们需要知道索引其实是一种数据结构，其功能是帮助我们快速匹配查找到需要的数据行，是数据库性能优化最常用的工具之一。其作用相当于超市里的导购员、书本里的目录。</p>
+<h2 id="索引类型"><a href="#索引类型" class="headerlink" title="索引类型"></a>索引类型</h2><p>可以使用<code>SHOW INDEX FROM table_name;</code>查看索引详情</p>
+<p><img src="http://songwenjie.vip/blog/180802/Eif26fJiEc.png?imageslim" alt="mark"></p>
+<ol>
+<li><p><strong>主键索引 PRIMARY KEY</strong></p>
+<p>它是一种特殊的唯一索引，不允许有空值。一般是在建表的时候同时创建主键索引。</p>
+<p>注意：一个表只能有一个主键</p>
+<p><img src="http://songwenjie.vip/blog/180802/1c7D2F0f76.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>唯一索引 UNIQUE</strong></p>
+<p>唯一索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。</p>
+<p>可以通过<code>ALTER TABLE  table_name ADD UNIQUE (column);</code>创建唯一索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/DBdFeKE8Fk.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/L2jl91b6J6.png?imageslim" alt="mark"></p>
+<p>可以通过<code>ALTER TABLE  table_name ADD UNIQUE (column1,column2);</code>创建唯一组合索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/mihd7Hm5i6.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/bJbdFA9AcL.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>普通索引 INDEX</strong></p>
+<p>最基本的索引，它没有任何限制。</p>
+<p>可以通过<code>ALTER TABLE  table_name ADD INDEX index_name (column);</code>创建普通索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/17CmJIIJhD.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/4fA7L6kBBm.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>组合索引 INDEX</strong></p>
+<p>组合索引，即一个索引包含多个列。多用于避免回表查询。</p>
+<p>可以通过<code>ALTER TABLE  table_name  ADD INDEX index_name(column1, column2, column3);</code>创建组合索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/CLGIKiAC6J.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/295B9bGi67.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>全文索引 FULLTEXT</strong></p>
+<p>全文索引（也称全文检索）是目前搜索引擎使用的一种关键技术。</p>
+<p>可以通过<code>ALTER TABLE table_name ADD FULLTEXT (column);</code>创建全文索引</p>
+<p><img src="http://songwenjie.vip/blog/180802/AjfLLkhdH1.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180802/bA1a1m49cL.png?imageslim" alt="mark"></p>
+</li>
+</ol>
+<p>索引一经创建不能修改，如果要修改索引，只能删除重建。可以使用<code>DROP INDEX index_name ON table_name;</code>删除索引。</p>
+<h2 id="索引设计的原则"><a href="#索引设计的原则" class="headerlink" title="索引设计的原则"></a>索引设计的原则</h2><ol>
+<li><p>适合索引的列是出现在where子句中的列，或者连接子句中指定的列</p>
+</li>
+<li><p>基数较小的类，索引效果较差，没有必要在此列建立索引</p>
+</li>
+<li><p>使用短索引，如果对长字符串列进行索引，应该指定一个前缀长度，这样能够节省大量索引空间</p>
+</li>
+<li><p>不要过度索引。索引需要额外的磁盘空间，并降低写操作的性能。在修改表内容的时候，索引会进行更新甚至重构，索引列越多，这个时间就会越长。所以只保持需要的索引有利于查询即可。</p>
+</li>
+</ol>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《深入浅出MySQL》</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/">
+        <span class="nav-arrow">← </span>
+        
+          MySQL——通过EXPLAIN分析SQL的执行计划
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/08/02/MySQL——索引优化实战/">
+        
+          MySQL——索引优化实战
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是索引"><span class="toc-nav-text">什么是索引</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引类型"><span class="toc-nav-text">索引类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引设计的原则"><span class="toc-nav-text">索引设计的原则</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/08/02/MySQL——索引基础/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "MySQL——索引基础",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

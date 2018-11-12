@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      缺失抽象 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>缺失抽象</h2>
+  <p class="post-date">2018-07-23</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><blockquote>
+<p>抽象原则倡导<strong>通过精简和概括来简化实体</strong>：精简是删除不必要的细节，而概括是找出并定义通用的的重要特征。</p>
+</blockquote>
+<p>这是什么?</p>
+<p><img src="http://songwenjie.vip/blog/180501/El1ll82hHE.png?imageslim" alt="mark"></p>
+<p>这是一个笑脸，那么我们是怎么知道这是一个笑脸的呢？通过抽象。人脸数以亿计，却各不相同。我们忽略了不重要的细节，如发型和发色。我们还概括了相同的东西，每个人都有两只眼睛，微笑时嘴角上扬。这就是抽象。对于软件工程师来说，抽象能力是最重要的能力之一，也恰恰是最难得的能力之一。</p>
+<h2 id="应用抽象原则的实现手法"><a href="#应用抽象原则的实现手法" class="headerlink" title="应用抽象原则的实现手法"></a>应用抽象原则的实现手法</h2><p><img src="http://songwenjie.vip/blog/180501/EL5mCge9Hc.png?imageslim" alt="mark"></p>
+<ul>
+<li><p>提供清晰的概念边界和唯一身份</p>
+<p>每个抽象都必须有清晰而明确的概念边界，还必须有身份。例如，不传递一组表示日期、矩形坐标或图片属性的数据值，而是在代码中分别为日期、矩形坐标或图片属性创建抽象。</p>
+</li>
+<li><p>映射域实体</p>
+<p>必须创建从问题域到解决方案域的词汇映射，即对于问题域中的对象，必须在解决方案域中使用相应的抽象来表示它们。</p>
+</li>
+<li><p>确保内聚性和完整性</p>
+<p>抽象必须对其承担的职责提供全面支持。例如表示组合框的类支持禁用或隐藏特定的元素，就必须同时支持启用或显示这些元素的选项。如果只提供方法的一部分，抽象既不内聚也不完整。</p>
+</li>
+<li><p>赋予单一而重要的职责</p>
+<p>确保每个抽象都分配<strong>单一而重要</strong>的职责。</p>
+<p>单一：每个抽象都应该只负责一件或一类事情。</p>
+<p>重要：抽象不能太鸡肋。</p>
+</li>
+<li><p>避免重复</p>
+<p>确保每个抽象（名称和实现）只在设计中出现一次。重复的名称将会给设计的使用者带来困惑，重复的实现将会增加维护负担，因为需要维护多块相同的代码。</p>
+</li>
+</ul>
+<h2 id="违反抽象原则导致的坏味"><a href="#违反抽象原则导致的坏味" class="headerlink" title="违反抽象原则导致的坏味"></a>违反抽象原则导致的坏味</h2><p><img src="http://songwenjie.vip/blog/180501/J93f1aEF2g.png?imageslim" alt="mark"></p>
+<p>我们这篇博客主要讲解分析<strong>缺失抽象</strong>坏味，对于其它抽象坏味将在后面的博客讲解分析。</p>
+<h1 id="缺失抽象"><a href="#缺失抽象" class="headerlink" title="缺失抽象"></a>缺失抽象</h1><p>使用一系列数据或编码字符串，而不创建类或接口时，将引发这种坏味。</p>
+<h2 id="为什么不能缺失抽象？"><a href="#为什么不能缺失抽象？" class="headerlink" title="为什么不能缺失抽象？"></a>为什么不能缺失抽象？</h2><p>通常，由于缺失抽象，相关的数据和行为将会分散在其它抽象中，这将会导致两个问题l:</p>
+<ul>
+<li>可能会向其它抽象暴露实现细节，违反封装原则</li>
+<li>数据和相关的行为分散在不同的抽象中，可能导致实体之间高度耦合，结果是代码脆弱且难以重用。因此，不创建必要的抽象也违反了模块化原则。</li>
+</ul>
+<h2 id="缺失抽象潜在的原因"><a href="#缺失抽象潜在的原因" class="headerlink" title="缺失抽象潜在的原因"></a>缺失抽象潜在的原因</h2><h3 id="未做充分的设计分析"><a href="#未做充分的设计分析" class="headerlink" title="未做充分的设计分析"></a>未做充分的设计分析</h3><p>没有经过充分的设计分析，很容易就会忽略创建抽象，而使用基本数据类型来完成任务。</p>
+<h3 id="未重构"><a href="#未重构" class="headerlink" title="未重构"></a>未重构</h3><p>随着需求的变化和软件的发展，原来使用的基本数据类型可能需要重构为使用类或接口。</p>
+<h3 id="错误地将重点放在细微的性能改善上"><a href="#错误地将重点放在细微的性能改善上" class="headerlink" title="错误地将重点放在细微的性能改善上"></a>错误地将重点放在细微的性能改善上</h3><p>例如直接使用数组，而不创建合适的抽象。这种“优化”带来的性能改善都很有限，不值得为此牺牲设计质量。</p>
+<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><p>在一个图书馆信息管理程序中，ISBN（国际标准书号）的存储和处理十分重要，可以使用字符串类型进行存储，但是这种选择很糟糕。ISBN（国际标准书号）有两种表示方式：10位和13位。图书馆信息管理程序逻辑包含ISBN的接受、验证、处理和转换。如果使用基本的字符串类型存储ISBN，处理的逻辑将会分散在很多地方，实体之间高度耦合，代码脆弱且难以重用。</p>
+<p>正确的方案是：创建一个抽象类或接口ISBN，其中包含通用的操作。并创建子类ISBN-10和ISBN-13，它们都扩展超类ISBN。</p>
+<p><img src="http://songwenjie.vip/blog/180501/546k1hL98L.png?imageslim" alt="mark"></p>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>应用程序中常常包含总是同时使用的基本数据类型，通常情况下这些“数据泥团”就意味着缺失抽象。例如在绘画程序中确定一个二维的点的位置，通常比较差的做法可能会用（double x,double y）。重构的建议是将必不可少的字段提取到一个新类（Rectangle）中，并且将操作这些字段的方法移到这个类中。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Rectangle</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 横坐标</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> x;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 纵坐标</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> y;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span>(<span class="params"><span class="keyword">int</span> x,<span class="keyword">int</span> y</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">this</span>.x = x;</span><br><span class="line">        <span class="keyword">this</span>.y = y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Draw</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//绘制(x,y)</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><p>有时候，实体只是数据元素，没有任何相关联的行为。在这种情况下，使用类或接口来表示它们可能导致过度设计，增加了设计的复杂性。因为在创建抽象前，一定要根据应用抽象具体情况分析，再决定是否要创建抽象。</p>
+<p>参考：《软件设计重构》</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#设计原则">
+    <span class="tag-code">设计原则</span>
+  </a>
+
+  <a href="/tags#面向对象">
+    <span class="tag-code">面向对象</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/23/缓存使用的正确姿势/">
+        <span class="nav-arrow">← </span>
+        
+          缓存使用的正确姿势
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/07/23/命令式抽象/">
+        
+          命令式抽象
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#应用抽象原则的实现手法"><span class="toc-nav-text">应用抽象原则的实现手法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#违反抽象原则导致的坏味"><span class="toc-nav-text">违反抽象原则导致的坏味</span></a></li></ol><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#缺失抽象"><span class="toc-nav-text">缺失抽象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么不能缺失抽象？"><span class="toc-nav-text">为什么不能缺失抽象？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#缺失抽象潜在的原因"><span class="toc-nav-text">缺失抽象潜在的原因</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#未做充分的设计分析"><span class="toc-nav-text">未做充分的设计分析</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#未重构"><span class="toc-nav-text">未重构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#错误地将重点放在细微的性能改善上"><span class="toc-nav-text">错误地将重点放在细微的性能改善上</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例分析一"><span class="toc-nav-text">示例分析一</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例分析二"><span class="toc-nav-text">示例分析二</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#现实考虑"><span class="toc-nav-text">现实考虑</span></a></li></ol>
+    
+  </li></div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/07/23/缺失抽象/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "缺失抽象",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

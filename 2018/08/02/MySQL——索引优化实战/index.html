@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      MySQL——索引优化实战 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>MySQL——索引优化实战</h2>
+  <p class="post-date">2018-08-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="MySQL——索引优化实战"><a href="#MySQL——索引优化实战" class="headerlink" title="MySQL——索引优化实战"></a>MySQL——索引优化实战</h1><p>上篇文章中介绍了索引的基本内容，这篇文章我们继续介绍索引优化实战。在介绍索引优化实战之前，首先要介绍两个与索引相关的重要概念，这两个概念对于索引优化至关重要。</p>
+<p>本篇文章用于测试的user表结构：</p>
+<p><img src="http://songwenjie.vip/blog/180801/aFGjcIDhDd.png?imageslim" alt="mark"></p>
+<h2 id="索引相关的重要概念"><a href="#索引相关的重要概念" class="headerlink" title="索引相关的重要概念"></a>索引相关的重要概念</h2><h3 id="基数"><a href="#基数" class="headerlink" title="基数"></a>基数</h3><p>单个列唯一键（distict_keys）的数量叫做基数。</p>
+<p><code>SELECT COUNT(DISTINCT name),COUNT(DISTINCT gender) FROM user;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/8j3H8cKCc8.png?imageslim" alt="mark"></p>
+<p>user表的总行数是5，gender 列的基数是 2，说明 gender 列里面有大量重复值，name 列的基数等于总行数，说明 name列没有重复值，相当于主键。</p>
+<p><strong>返回数据的比例：</strong></p>
+<p>user表中共有5条数据：</p>
+<p><code>SELECT * FROM user;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/f0bL3ag3de.png?imageslim" alt="mark"></p>
+<p>查询满足性别为0（男）的记录数：</p>
+<p><img src="http://songwenjie.vip/blog/180801/52biIe2jHC.png?imageslim" alt="mark"></p>
+<p>那么返回记录的比例数是：</p>
+<p><img src="http://songwenjie.vip/blog/180801/LBD77bKeh4.png?imageslim" alt="mark"></p>
+<p>同理，查询name为’swj’的记录数：</p>
+<p><img src="http://songwenjie.vip/blog/180801/830C5lceiK.png?imageslim" alt="mark"></p>
+<p>返回记录的比例数是：</p>
+<p><img src="http://songwenjie.vip/blog/180801/jDBHjlb1F1.png?imageslim" alt="mark"></p>
+<p>现在问题来了，假设name、gender列都有索引，那么<code>SELECT * FROM user WHERE gender = 0;</code> <code>SELECT * FROM user WHERE name = &#39;swj&#39;;</code>都能命中索引吗？</p>
+<p>user表的索引详情：</p>
+<p><img src="http://songwenjie.vip/blog/180801/04m46bdJ99.png?imageslim" alt="mark"></p>
+<p><code>SELECT * FROM user WHERE gender = 0;</code>没有命中索引，注意filtered的值就是上面我们计算的返回记录的比例数。</p>
+<p><img src="http://songwenjie.vip/blog/180801/6LE6KlcDaK.png?imageslim" alt="mark"></p>
+<p><code>SELECT * FROM user WHERE name = &#39;swj&#39;;</code>命中了索引index_name，因为走索引直接就能找到要查询的记录，所以filtered的值为100</p>
+<p><img src="http://songwenjie.vip/blog/180801/G86HGaIJEA.png?imageslim" alt="mark"></p>
+<p><strong>结论：</strong></p>
+<p>返回表中 30% 内的数据会走索引，返回超过 30% 数据就使用全表扫描。当然这个结论太绝对了，也并不是绝对的30%，只是一个大概的范围。</p>
+<h3 id="回表"><a href="#回表" class="headerlink" title="回表"></a>回表</h3><p>当对一个列创建索引之后，索引会包含该列的键值及键值对应行所在的 rowid。通过索引中记录的 rowid 访问表中的数据就叫回表。回表次数太多会严重影响 SQL 性能，如果回表次数太多，就不应该走索引扫描，应该直接走全表扫描。</p>
+<p>EXPLAIN命令结果中的<code>Using Index</code>意味着不会回表，通过索引就可以获得主要的数据。<code>Using Where</code>则意味着需要回表取数据。</p>
+<h2 id="索引优化实战"><a href="#索引优化实战" class="headerlink" title="索引优化实战"></a>索引优化实战</h2><p>有些时候虽然数据库有索引，但是并不被优化器选择使用。</p>
+<p>我们可以通过<code>SHOW STATUS LIKE &#39;Handler_read%&#39;;</code>查看索引的使用情况：</p>
+<p><img src="http://songwenjie.vip/blog/180731/iCb54E2mDJ.png?imageslim" alt="mark"></p>
+<p><strong>Handler_read_key</strong>：如果索引正在工作，Handler_read_key的值将很高。</p>
+<p><strong>Handler_read_rnd_next</strong>：数据文件中读取下一行的请求数，如果正在进行大量的表扫描，值将较高，则说明索引利用不理想。</p>
+<p><strong>索引优化规则</strong>：</p>
+<ol>
+<li><p><strong>如果MySQL估计使用索引比全表扫描还慢，则不会使用索引</strong></p>
+<p>返回数据的比例是重要的指标，比例越低越容易命中索引。记住这个范围值——30%，后面所讲的内容都是建立在返回数据的比例在30%以内的基础上。</p>
+</li>
+<li><p><strong>前导模糊查询查询不能命中索引</strong></p>
+<p>name列创建普通索引：</p>
+<p><img src="http://songwenjie.vip/blog/180801/CgdaaLjBdf.png?imageslim" alt="mark"></p>
+<p>前导模糊查询查询不能命中索引：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE name LIKE &#39;%s%&#39;;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/cK8Ga63ClG.png?imageslim" alt="mark"></p>
+<p>非前导模糊查询则可以使用索引，可优化为使用非前导模糊查询：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE name LIKE &#39;s%&#39;;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/DElLC4He5g.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>数据类型出现隐式转换的时候不会命中索引，特别是当列类型是字符串，一定要将字符常量值用引号引起来</strong></p>
+<p><code>EXPLAIN SELECT * FROM user WHERE name=1;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/G0cHbffDAe.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM user WHERE name=&#39;1&#39;;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/eajlBBFLGD.png?imageslim" alt="mark"></p>
+<p>​</p>
+</li>
+<li><p><strong>复合索引的情况下，查询条件不包含索引列最左边部分（不满足最左原则），不会命中符合索引</strong></p>
+<p>name,age,status列创建复合索引：</p>
+<p><code>ALTER TABLE user ADD INDEX index_name (name,age,status);</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/dA2IeE38ID.png?imageslim" alt="mark"></p>
+<p>user表索引详情：</p>
+<p><code>SHOW INDEX FROM user;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/H05Emk9mIF.png?imageslim" alt="mark"></p>
+<p>根据最左原则，可以命中复合索引index_name：</p>
+<p><code>EXPLAIN  SELECT * FROM user WHERE name=&#39;swj&#39; AND status=1;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/mlJBJke9cj.png?imageslim" alt="mark"></p>
+<p>注意，最左原则并不是说是查询条件的顺序：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE  status=1 AND name=&#39;swj&#39;;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/F84m8aB6ak.png?imageslim" alt="mark"></p>
+<p>而是查询条件中是否包含索引最左列字段：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE  status=2 ;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/CFFdGfh663.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>union、in、or 都能够命中索引，建议使用 in。</strong></p>
+<p><strong>union</strong>:</p>
+<p><code>EXPLAIN  SELECT * FROM user WHERE status = 1</code></p>
+<p><code>UNION ALL</code></p>
+<p><code>SELECT * FROM user WHERE status = 2;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/7H7Kj58gEa.png?imageslim" alt="mark"></p>
+<p><strong>in</strong>:</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE status IN (1,2);</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/3JLjfIdDAG.png?imageslim" alt="mark"></p>
+<p><strong>or</strong>:</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE status=1 OR status=2;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/JedELeDciA.png?imageslim" alt="mark"></p>
+<p><strong>查询的CPU消耗：or &gt; in &gt;union</strong></p>
+</li>
+<li><p><strong>用or分割开的条件，如果or前的条件中列有索引，而后面的列中没有索引，那么涉及到的索引都不会被用到</strong></p>
+<p><code>EXPLAIN SELECT * FROM payment WHERE customer_id = 203 OR amount = 3.96;</code></p>
+<p><img src="http://songwenjie.vip/blog/180731/d3e4AJJ66i.png?imageslim" alt="mark"></p>
+<p>因为or后面的条件列中没有索引，那么后面的查询肯定要走全表扫描，在存在全表扫描的情况下，就没有必要多一次索引扫描增加IO访问。</p>
+</li>
+<li><p><strong>负向条件查询不能使用索引，可以优化为 in 查询。</strong></p>
+<p>负向条件有：!=、&lt;&gt;、not in、not exists、not like 等。</p>
+<p>status列创建索引：</p>
+<p><code>ALTER TABLE user ADD INDEX index_status (status);</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/mKEc4jL2E5.png?imageslim" alt="mark"></p>
+<p>user表索引详情：</p>
+<p><code>SHOW INDEX FROM user;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/2Jm10HB37a.png?imageslim" alt="mark"></p>
+<p>负向条件不能命中缓存：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE status !=1 AND status != 2;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/bKc3jJd23j.png?imageslim" alt="mark"></p>
+<p>可以优化为 in 查询，但是前提是区分度要高，返回数据的比例在30%以内：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE status IN (0,3,4);</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/e0hDkBA2c0.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>范围条件查询可以命中索引</strong></p>
+<p>范围条件有：&lt;、&lt;=、&gt;、&gt;=、between等</p>
+<p>status,age列分别创建索引：</p>
+<p><code>ALTER TABLE user ADD INDEX index_status (status);</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/mKEc4jL2E5.png?imageslim" alt="mark"></p>
+<p><code>ALTER TABLE user ADD INDEX index_age (age);</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/18ffhKIhiG.png?imageslim" alt="mark"></p>
+<p>user表索引详情：</p>
+<p><code>SHOW INDEX FROM user;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/Di9EKJmBHL.png?imageslim" alt="mark"></p>
+<p>范围条件查询可以命中索引：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE status&gt;5;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/eLF1h3mh6e.png?imageslim" alt="mark"></p>
+<p>范围列可以用到索引（联合索引必须是最左前缀），但是范围列后面的列无法用到索引，索引最多用于一个范围列，如果查询条件中有两个范围列则无法全用到索引：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE status&gt;5 AND age&lt;24;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/4h5hdElfJe.png?imageslim" alt="mark"></p>
+<p>如果是范围查询和等值查询同时存在，优先匹配等值查询列的索引：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE status&gt;5 AND age=24;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/0eAf30hK4i.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>数据库执行计算不会命中索引</strong></p>
+<p><code>EXPLAIN SELECT * FROM user WHERE age &gt; 24;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/375FK1GeaI.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM user WHERE age+1 &gt; 24;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/fHGdle0jAG.png?imageslim" alt="mark"></p>
+<p><strong>计算逻辑应该尽量放到业务层处理，节省数据库的 CPU的同时最大限度的命中索引。</strong></p>
+</li>
+<li><p><strong>利用覆盖索引进行查询，避免回表</strong></p>
+<p>被查询的列，数据能从索引中取得，而不用通过行定位符 row-locator 再到 row 上获取，即“被查询列要被所建的索引覆盖”，这能够加速查询速度。</p>
+<p>user表的索引详情：</p>
+<p><img src="http://songwenjie.vip/blog/180801/hemkaiHgI7.png?imageslim" alt="mark"></p>
+<p>因为status字段是索引列，所以直接从索引中就可以获取值，不必回表查询：</p>
+<p><code>Using Index</code>代表从索引中查询</p>
+<p><code>EXPLAIN SELECT status FROM user where status=1;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/5AJKihifj3.png?imageslim" alt="mark"></p>
+<p>当查询其他列时，就需要回表查询，这也是为什么要避免<code>SELECT *</code>的原因之一：</p>
+<p><code>EXPLAIN SELECT * FROM user where status=1;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/Kmig57FBHE.png?imageslim" alt="mark"></p>
+</li>
+<li><p><strong>建立索引的列，不允许为 null</strong></p>
+<p>单列索引不存 null 值，复合索引不存全为 null 的值，如果列允许为 null，可能会得到“不符合预期”的结果集，所以，请使用 not null 约束以及默认值。</p>
+<p>remark列建立索引：</p>
+<p><code>ALTER TABLE user ADD INDEX index_remark (remark);</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/G77i9938id.png?imageslim" alt="mark"></p>
+<p>IS NULL可以命中索引：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE remark IS NULL;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/BDa7kH1E6c.png?imageslim" alt="mark"></p>
+<p>IS NOT NULL不能命中索引：</p>
+<p><code>EXPLAIN SELECT * FROM user WHERE remark IS NOT NULL;</code></p>
+<p><img src="http://songwenjie.vip/blog/180801/11LKdf4cEk.png?imageslim" alt="mark"></p>
+<p><strong>虽然IS NULL可以命中索引，但是NULL本身就不是一种好的数据库设计，应该使用NOT NULL 约束以及默认值</strong></p>
+</li>
+<li><p><strong>更新十分频繁的字段上不宜建立索引</strong></p>
+<p>因为更新操作会变更B+树，重建索引。这个过程是十分消耗数据库性能的。</p>
+</li>
+<li><p><strong>区分度不大的字段上不宜建立索引</strong></p>
+<p>类似于性别这种区分度不大的字段，建立索引的意义不大。因为不能有效过滤数据，性能和全表扫描相当。另外返回数据的比例在30%以外的情况下，优化器不会选择使用索引。</p>
+</li>
+<li><p><strong>业务上具有唯一特性的字段，即使是多个字段的组合，也必须建成唯一索引</strong></p>
+<p>虽然唯一索引会影响insert速度，但是对于查询的速度提升是非常明显的。另外，即使在应用层做了非常完善的校验控制，只要没有唯一索引，在并发的情况下，依然有脏数据产生。</p>
+</li>
+<li><p><strong>多表关联时，要保证关联字段上一定有索引</strong></p>
+</li>
+<li><p><strong>创建索引时避免以下错误观念</strong></p>
+<ul>
+<li><p>索引越多越好，认为一个查询就需要建一个索引。</p>
+</li>
+<li><p>宁缺勿滥，认为索引会消耗空间、严重拖慢更新和新增速度。</p>
+</li>
+<li><p>抵制唯一索引，认为业务的唯一性一律需要在应用层通过“先查后插”方式解决。</p>
+</li>
+<li><p>过早优化，在不了解系统的情况下就开始优化。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于自己编写的SQL查询语句，要尽量使用EXPLAIN命令分析一下，做一个对SQL性能有追求的程序员。衡量一个程序员是否靠谱，SQL能力是一个重要的指标。作为后端程序员，深以为然。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《深入浅出MySQL》</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/08/02/MySQL——索引基础/">
+        <span class="nav-arrow">← </span>
+        
+          MySQL——索引基础
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/08/17/数据库索引背后的数据结构/">
+        
+          数据库索引背后的数据结构
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#MySQL——索引优化实战"><span class="toc-nav-text">MySQL——索引优化实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引相关的重要概念"><span class="toc-nav-text">索引相关的重要概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基数"><span class="toc-nav-text">基数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#回表"><span class="toc-nav-text">回表</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#索引优化实战"><span class="toc-nav-text">索引优化实战</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#"><span class="toc-nav-text"> </span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考"><span class="toc-nav-text">参考</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/08/02/MySQL——索引优化实战/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "MySQL——索引优化实战",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      MySQL——索引实现原理 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>MySQL——索引实现原理</h2>
+  <p class="post-date">2018-08-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>在MySQL中，索引属于存储引擎级别的概念，不同存储引擎对索引的实现方式是不同的，本文主要讨论MyISAM和InnoDB两个存储引擎的索引实现方式。</p>
+<h2 id="MyISAM索引实现"><a href="#MyISAM索引实现" class="headerlink" title="MyISAM索引实现"></a>MyISAM索引实现</h2><p>MyISAM引擎使用B+Tree作为索引结构。</p>
+<p>MyISAM会按照数据插入的顺序分配行号，从0开始，然后按照数据插入的顺序存储在磁盘上。因为行是定长的，所以可以从表的开头跳过相应的字节找到需要的行。</p>
+<p><img src="http://songwenjie.vip/blog/180812/7BikF0D2H6.png?imageslim" alt="mark"></p>
+<p>MyISAM的一级索引（主键索引），一个节点包含多个内部节点，索引中的每个叶子节点包含“行号”。假设我们以col1为主键，则下图是一个MyISAM表的主索引（Primary key）示意。</p>
+<p><img src="http://songwenjie.vip/blog/180812/31JJAJEIk5.png?imageslim" alt="mark"></p>
+<p>可以看出MyISAM的索引文件仅仅保存数据记录的<strong>行号</strong>，然后通过此行号回表查询需要的数据。</p>
+<p>那col2列上的索引（辅助索引）又会怎么样呢？有什么特别之处吗?答案是否定的，和一级索引（主键索引）没有什么区别。在MyISAM中，主索引和辅助索引（Secondary key）在结构上没有任何区别，只是主索引要求key是唯一的，而辅助索引的key可以重复。如果我们在col2上建立一个辅助索引，则此索引的结构如下图所示：</p>
+<p><img src="http://songwenjie.vip/blog/180812/b9I0C4Jg0d.png?imageslim" alt="mark"></p>
+<p>因此，MyISAM中索引检索的算法为首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其data域的值，然后以data域的值为地址，读取相应数据记录。MyISAM的索引方式索引和数据存放是分开的，非聚集”的，所以也叫做非聚集索引。</p>
+<h2 id="InnoDB索引实现"><a href="#InnoDB索引实现" class="headerlink" title="InnoDB索引实现"></a>InnoDB索引实现</h2><p>虽然InnoDB也使用B+Tree作为索引结构，但具体实现方式却与MyISAM截然不同。因为InnoDB支持聚簇索引（主键索引），聚簇索引就是表，所以InnoDB不用像MyISAM那样需要独立的行存储。也就是说，InnoDB的数据文件本身就是索引文件。</p>
+<p>聚簇索引的每一个叶子节点都包含了主键值、事务ID、用于事务和MVCC的回滚指针以及<strong>所有的剩余列</strong>。假设我们以col1为主键，则下图是一个InnoDB表的聚簇索引（主键索引）（Primary key）示意。</p>
+<p><img src="http://songwenjie.vip/blog/180812/Jhi2c5AfEA.png?imageslim" alt="mark"></p>
+<p>与MyISAM不同的是，InnoDB的二级索引和聚簇索引很不相同。<strong>InnoDB的二级索引的叶子节点存储的不是行号（行指针），而是主键列</strong>。这种策略的缺点是二级索引需要两次索引查找，第一次在二级索引中查找主键，第二次在聚簇索引中通过主键查找需要的数据行。</p>
+<font color="FF7F00" face="楷体">画外音：可以通过我们前面提到过的<strong>索引覆盖</strong>来避免回表查询，这样就只需要一次回表查询，对于InnoDB而言，就是只需要一次索引查找就可以查询到需要的数据记录，因为需要的数据记录已经被索引到二级索引中，直接就可以找到。</font>
+
+<p>好处是InnoDB在移动行时无需更新一级索引中的这个”指针“，因为主键是不会改变的，但是行指针却会改变。</p>
+<p>InnoDB的二级索引示意如图：</p>
+<p><img src="http://songwenjie.vip/blog/180812/g3AjIfH058.png?imageslim" alt="mark"></p>
+<h3 id="使用InnoDB主键应该知道的事项"><a href="#使用InnoDB主键应该知道的事项" class="headerlink" title="使用InnoDB主键应该知道的事项"></a>使用InnoDB主键应该知道的事项</h3><p>因为InnoDB的索引的方式通过主键聚集数据，严重依赖主键。索引如果没有定义主键，那么InnoDB会选择一个唯一的非空索引代替。如果没有这样的索引，InnoDB会隐式定义一个主键来作为聚簇索引。</p>
+<p><strong>聚簇索引的优点有：</strong></p>
+<p>1.可以把相关数据存储在一起，减少数据查询时的磁盘I/O</p>
+<p>2.数据访问更快，因为聚簇索引就是表，索引和数据保存在一个B+Tree中</p>
+<p>3.使用索引覆盖的查询时可以直接使用页节点中的主键值</p>
+<p><strong>聚簇索引的缺点有：</strong></p>
+<p>1.插入速度严重依赖插入顺序</p>
+<p>2.更新聚簇索引列的代价很高，因为会强制InnoDB把更新的列移动到新的位置</p>
+<p>3.基于聚簇索引的表在插入新行，或者主键被更新导致需要移动行的时候，可能会导致“页分裂”。当行的主键值要求必须将这一行插入到已满的页中时，存储引擎会将该页分裂为两个页面来容纳该行，这就是一次页分裂操作，页分裂会导致表占用更多的存储空间。</p>
+<font color="FF7F00" face="楷体">画外音：关于<strong>页</strong>，我们在上一篇文章中也提到过。页是计算机管理存储器的逻辑块，硬件及操作系统往往将主存和磁盘存储区分割为连续的大小相等的块，每个存储块称为一页。存和磁盘以页为单位交换数据。<strong>数据库系统的设计者巧妙利用了磁盘预读原理，将一个节点的大小设为等于一个页，这样每个节点只需要一次磁盘I/O就可以完全载入</strong>。</font>
+
+<p>基于聚簇索引以上的这些特点，<strong>在InnoDB中，我们应该尽量使用和应用无关的主键，例如自增主键，这样可以保证数据行是按照顺序写入的</strong>。而不是使用GUID、UUID生成随机的主键。</p>
+<p><strong>向聚簇索引中插入顺序的索引值：</strong></p>
+<p>每条新纪录总是在前一条记录的后面插入：</p>
+<p><img src="http://songwenjie.vip/blog/180812/FEKCdaLBB1.png?imageslim" alt="mark"></p>
+<p>当页被插满后，继续插入到新的页：</p>
+<p><img src="http://songwenjie.vip/blog/180812/54FALd4lEf.png?imageslim" alt="mark"></p>
+<p><strong>向聚簇索引中插入随机的索引值：</strong></p>
+<p>新的记录可能被插入到之前记录的中间，导致需要强制移动之前的记录：</p>
+<p><img src="http://songwenjie.vip/blog/180812/JEBjiIl9DF.png?imageslim" alt="mark"></p>
+<p>被写满且已经刷到磁盘上的页可能会被重新读取用于再次插入，此时还需要进行页分裂：</p>
+<p><img src="http://songwenjie.vip/blog/180812/5FDHedLec5.png?imageslim" alt="mark"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>MyISAM和InnoDB两个存储引擎的索引虽然都是使用的B+Tree数据结构，但是在具体实现上还是存在不小差别的。InnoDB支持聚簇索引，聚簇索引就是表，所以InnoDB不用像MyISAM那样需要独立的行存储。也就是说，InnoDB的数据文件本身就是索引文件。而MyISAM的数据文件和索引文件是分开存储的。可以通过MyISAM和InnoDB如何存放表的抽象图帮助快速理解。</p>
+<p><strong>InnoDB（聚簇）表分布：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180812/CAgGhaeKJ0.png?imageslim" alt="mark"></p>
+<p><strong>MyISAM（非聚簇）表分布：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180812/k652Keea4A.png?imageslim" alt="mark"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li>《高性能MySQL》</li>
+</ul>
+<ul>
+<li><a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="noopener">MySQL索引背后的数据结构及算法原理</a></li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/08/18/是什么影响了数据库索引选型？/">
+        <span class="nav-arrow">← </span>
+        
+          是什么影响了数据库索引选型？
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/08/20/MySQL——优化ORDER-BY语句/">
+        
+          MySQL——优化ORDER BY语句
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#MyISAM索引实现"><span class="toc-nav-text">MyISAM索引实现</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#InnoDB索引实现"><span class="toc-nav-text">InnoDB索引实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用InnoDB主键应该知道的事项"><span class="toc-nav-text">使用InnoDB主键应该知道的事项</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/08/19/MySQL——索引实现原理/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "MySQL——索引实现原理",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

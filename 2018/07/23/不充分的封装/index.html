@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      不充分的封装 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>不充分的封装</h2>
+  <p class="post-date">2018-07-23</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><blockquote>
+<p>封装原则倡导通过<strong>隐藏抽象的实现细节</strong>和<strong>隐藏变化</strong>等来实现关注点分离和信息隐藏。</p>
+</blockquote>
+<p>以汽车为例，我们并不需要了解发动机的原理就可以开车。这准确描绘了封装原则的作用：用户无需知道抽象（汽车）的细节，此外，封装原则还让抽象能够隐藏实现细节的变化。发动机是汽油发动机还是柴油发动机并不会对我们开车造成影响。</p>
+<h2 id="封装原则的实现手法"><a href="#封装原则的实现手法" class="headerlink" title="封装原则的实现手法"></a>封装原则的实现手法</h2><p><img src="http://songwenjie.vip/blog/180430/iei06clLej.png?imageslim" alt="mark"></p>
+<ul>
+<li><p><strong>隐藏实现细节</strong></p>
+<p>抽象向客户端程序只暴露其提供的功能，而将实现方式隐藏起来。实现方式（即实现细节）包含抽象的内部表示（如抽象使用的数据成员和数据结构）以及有关方法是如何实现的细节（如方法使用的算法）。</p>
+</li>
+<li><p><strong>隐藏变化</strong></p>
+<p>隐藏类型或实现结构的实现变化。通过隐藏变化，更容易在不给客户端程序带来太大影响的情况下修改抽象的实现。</p>
+</li>
+</ul>
+<h2 id="违反封装原则导致的坏味"><a href="#违反封装原则导致的坏味" class="headerlink" title="违反封装原则导致的坏味"></a>违反封装原则导致的坏味</h2><p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
+<p>我们这篇博客主要讲解分析<strong>不充分的封装</strong>坏味，对于其它封装坏味将在后面的博客讲解分析。</p>
+<h1 id="不充分的封装"><a href="#不充分的封装" class="headerlink" title="不充分的封装"></a>不充分的封装</h1><p>对于抽象的一个或多个成员，声明的访问权限超过了实际需求时，将导致这种坏味。这种坏味的极端表现形式是，存在一些用全局变量、全局数据结构等表示的全局状态，整个软件系统的所有抽象都可以访问它们。</p>
+<h2 id="为什么要有充分的封装？"><a href="#为什么要有充分的封装？" class="headerlink" title="为什么要有充分的封装？"></a>为什么要有充分的封装？</h2><p>封装的主要意图是将接口和实现分离，以便能够几乎独立地修改它们。这种关注点分离让客户端程序只依赖于抽象的接口，从而能够对它们隐藏实现细节。如果暴露了实现细节，将导致抽象和客户端紧密耦合。这是不可取的，每当修改抽象的实现细节时，都将影响客户端程序。提供超过需要的访问权限可能向客户端程序暴露实现细节，这违反了“隐藏原则”。</p>
+<h2 id="不充分的封装的潜在原因"><a href="#不充分的封装的潜在原因" class="headerlink" title="不充分的封装的潜在原因"></a>不充分的封装的潜在原因</h2><h3 id="为方便测试"><a href="#为方便测试" class="headerlink" title="为方便测试"></a>为方便测试</h3><p>为了方便测试，开发人员常常将抽象的私有方法改成公有的。由于私有方法涉及抽象的实现细节，将其改为公有将破坏抽象的封装。</p>
+<p>我们都知道代码的可测试性是衡量代码质量的一个重要指标。如果编写的代码无法进行单元测试，代码的质量就无法得到保证。在有些情况下，代码无法编写测试是可以进行代码修改的，我们称之为重构。但是因为访问权限修改代码不在这些情况下，这样做反而会破坏代码的封装。可以借助反射实现低访问权限成员的测试。</p>
+<h3 id="在面向对象编程中采用过程型思维"><a href="#在面向对象编程中采用过程型思维" class="headerlink" title="在面向对象编程中采用过程型思维"></a>在面向对象编程中采用过程型思维</h3><p>以全局变量的方式暴露多个抽象需要使用的数据，从而导致这种坏味。</p>
+<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 消息发布类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Publisher</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 频道号 范围1-100</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public int channel;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 创建一个特定频道的发布者对象</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;channel&quot;&gt;频道号 范围1-100&lt;/param&gt;</span><br><span class="line">    public Publisher(int channel)</span><br><span class="line">    &#123;</span><br><span class="line">        this.channel =  channel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public vois Publish(string message)</span><br><span class="line">    &#123;</span><br><span class="line">        //向频道channel发布消息message</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码示例就是不充分的封装的典型，频道号变量channel被设置为public是不合适的，因为创建消息发布对象时就已经指定发布的频道号，channel被设置为public，频道号在客户端使用的时候就可以随意的被访问修改，这样客户端就会了解消息发布类的内部实现，造成了直接依赖，违反了“高内聚，低耦合”原则。这样每当修改内部实现时都会对客户端造成影响。更重要的一点是频道号变量channel是有范围限定的（1-100）,客户端使用的时候随意的修改channel,可能会造成channel越界的错误。所以正确的做法是将channel变量设置为私有的，并且为其提供合适的存取器方法。</p>
+<p><strong>重构后的代码实现：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 消息发布类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Publisher</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 频道号 范围1-100</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private int channel;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// channel赋值，支持范围限定</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;channel&quot;&gt;频道号 范围1-100&lt;/param&gt;</span><br><span class="line">    public void SetChannel(int channel)</span><br><span class="line">    &#123;</span><br><span class="line">        if(channel &lt; 1 || channel &gt; 100)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new ArgumentOutOfRangeException(&quot;超出频道号 范围1-100&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        this.channel = channel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 创建一个特定频道的发布者对象</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;channel&quot;&gt;频道号 范围1-100&lt;/param&gt;</span><br><span class="line">    public Publisher(int channel)</span><br><span class="line">    &#123;</span><br><span class="line">        SetChannel(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public vois Publish(string message)</span><br><span class="line">    &#123;</span><br><span class="line">        //向频道channel发布消息message</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一种极端表现形式：全局变量。对于全局变量，存在两种不同的情形。</p>
+<ul>
+<li>将一个或多个成员设置为全局可见的，但是只有少量类会访问它们。</li>
+<li>将一个或多个成员设置为全局可见的，有大量的类会访问它们。</li>
+</ul>
+<p>对于第一种情形，要进行重构，可以通过参数传递必要的变量。</p>
+<p>对于第二种情形，要进行重构，可以根据其承担的责任创建合适的抽象，并在这些抽象中封装原来的全局变量，这样客户端就会使用这些抽象，而不是直接使用全局变量。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><p>存在不充分的封装坏味时，会使代码的可重用性大打折扣，因为客户程序直接依赖大家都可以访问的状态，导致难以在其它地方重用客户程序。</p>
+</li>
+<li><p>抽象允许直接访问其数据成员时，确保数据和整个抽象完整性的职责由抽象转移到了各个客户程序。增加了代码运行阶段发生问题的可能性。</p>
+</li>
+<li><p>相对于使用存取器方法控制对变量访问修改带来的好处，使用存取器方法带来的性能开销可以忽略不计。</p>
+<p>​</p>
+</li>
+</ol>
+<p>参考：《软件设计重构》</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#设计原则">
+    <span class="tag-code">设计原则</span>
+  </a>
+
+  <a href="/tags#面向对象">
+    <span class="tag-code">面向对象</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/23/不必要的抽象/">
+        <span class="nav-arrow">← </span>
+        
+          不必要的抽象
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/07/23/泄露的封装/">
+        
+          泄露的封装
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#封装原则的实现手法"><span class="toc-nav-text">封装原则的实现手法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#违反封装原则导致的坏味"><span class="toc-nav-text">违反封装原则导致的坏味</span></a></li></ol><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#不充分的封装"><span class="toc-nav-text">不充分的封装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么要有充分的封装？"><span class="toc-nav-text">为什么要有充分的封装？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#不充分的封装的潜在原因"><span class="toc-nav-text">不充分的封装的潜在原因</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#为方便测试"><span class="toc-nav-text">为方便测试</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#在面向对象编程中采用过程型思维"><span class="toc-nav-text">在面向对象编程中采用过程型思维</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例分析"><span class="toc-nav-text">示例分析</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </li></div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/07/23/不充分的封装/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "不充分的封装",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

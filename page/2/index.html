@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link active">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link mobile-active">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <main class="app-body">
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">MySQL主从复制——主库已有数据的解决方案</a>
+      </h2>
+      <p class="article-date">July 29, 2018</p>
+      
+        
+  <a href="/tags#Docker">
+    <span class="tag-code">Docker</span>
+  </a>
+
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          MySQL主从复制——主库已有数据的解决方案在上篇文章中我们介绍了基于Docker的Mysql主从搭建，一主多从的搭建过程就是重复了一主一从的从库配置过程，需要注意的是，要保证主从库my.cnf中server-id的唯一性。搭建完成后，可以在主库show slave hosts查看有哪些从库 ...
+        
+      </div>
+      <a class="more" href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/26/Docker常用命令/">Docker常用命令</a>
+      </h2>
+      <p class="article-date">July 26, 2018</p>
+      
+        
+  <a href="/tags#Docker">
+    <span class="tag-code">Docker</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Docker常用命令：
+docker pull 镜像名称
+拉取某个镜像到本地
+
+docker images
+查看镜像列表
+
+docker inspect 镜像名称
+查看某个镜像详情
+
+docker rmi 镜像名称
+删除某个镜像。对于存在容器的镜像，首先需要删除其对应的容器才能删除该镜像。
+ ...
+        
+      </div>
+      <a class="more" href="/2018/07/26/Docker常用命令/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/">Docker问题(一)：bash: vi: command not found</a>
+      </h2>
+      <p class="article-date">July 26, 2018</p>
+      
+        
+  <a href="/tags#Docker">
+    <span class="tag-code">Docker</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          Docker问题(一)：bash: vi: command not found在使用docker时，有时候我们需要编辑配置文件，需要使用vim或者vi命令,但是会发现：
+bash: vi: command not found
+因为vim没有安装，这个时候需要我们使用apt-get insta ...
+        
+      </div>
+      <a class="more" href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/26/vim常用命令/">vim常用命令</a>
+      </h2>
+      <p class="article-date">July 26, 2018</p>
+      
+        
+  <a href="/tags#Linux">
+    <span class="tag-code">Linux</span>
+  </a>
+
+  <a href="/tags#vim">
+    <span class="tag-code">vim</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          vim常用命令：
+打开文件： vi /路径/文件名
+插入编辑：1次Insert
+替换编辑：2次Insert
+上翻页：Page Up
+下翻页：Page Down
+保存退出：：wq
+不保存退出：：q!
+
+        
+      </div>
+      <a class="more" href="/2018/07/26/vim常用命令/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/26/MySQL-警告信息-command-line-interface-can-be-insecure/">MySQL 警告信息 command line interface can be insecure</a>
+      </h2>
+      <p class="article-date">July 26, 2018</p>
+      
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          MySQL 警告信息 command line interface can be insecure在命令行输入密码，就会提示这些安全警告信息。
+Warning: Using a password on the command line interface can be insecure.
+注 ...
+        
+      </div>
+      <a class="more" href="/2018/07/26/MySQL-警告信息-command-line-interface-can-be-insecure/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/26/基于Docker的Mysql主从搭建/">基于Docker的Mysql主从搭建</a>
+      </h2>
+      <p class="article-date">July 26, 2018</p>
+      
+        
+  <a href="/tags#Docker">
+    <span class="tag-code">Docker</span>
+  </a>
+
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          基于Docker的Mysql主从复制搭建为什么基于Docker搭建？
+资源有限
+虚拟机搭建对机器配置有要求，并且安装mysql步骤繁琐
+一台机器上可以运行多个Docker容器
+Docker容器之间相互独立，有独立ip，互不冲突
+Docker使用步骤简便，启动容器在秒级别
+
+利用Docker搭 ...
+        
+      </div>
+      <a class="more" href="/2018/07/26/基于Docker的Mysql主从搭建/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/23/人为什么难做选择/">人为什么难做选择？</a>
+      </h2>
+      <p class="article-date">July 23, 2018</p>
+      
+        
+  <a href="/tags#思考 总结 感悟">
+    <span class="tag-code">思考 总结 感悟</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          人为什么难做选择？
+选择意味着放弃
+选择永远都不是完美的
+
+警惕逃避性选择——不知道自己要去哪儿，还要选择离开。
+
+        
+      </div>
+      <a class="more" href="/2018/07/23/人为什么难做选择/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/23/我们为什么要学习？写给我的组员们/">我们为什么要学习？</a>
+      </h2>
+      <p class="article-date">July 23, 2018</p>
+      
+        
+  <a href="/tags#思考 总结 感悟">
+    <span class="tag-code">思考 总结 感悟</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          半个月之前，和大学篮球队的兄弟们约定一起回一次母校。大家毕业之后各奔东西，天南海北，想要再聚一次真的很不容易。昨天终于实现了。看着曾经并肩作战了四年的兄弟们，心中思绪万千，努力回忆着大学里的那些人和事。晚上和大家伙吃了饭道别已经快0点了，打车回高新。雨后的空气格外清新，景色也别有一番风味。我 ...
+        
+      </div>
+      <a class="more" href="/2018/07/23/我们为什么要学习？写给我的组员们/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/23/HTTP首部扫盲/">HTTP首部扫盲</a>
+      </h2>
+      <p class="article-date">July 23, 2018</p>
+      
+        
+  <a href="/tags#HTTP">
+    <span class="tag-code">HTTP</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          HTTP首部扫盲 之前在做web开发时使用到HTTP首部的时候遇到不熟悉的都是现用现查，时间一长印象就不深刻了。最近在重读《图解HTTP》，其中有一章是专门讲解HTTP首部的，讲解的HTTP首部很多，在这里总结了一些平常使用比较多的首部。
+1. HTTP报文首部HTTP的请求和响应报文必定包 ...
+        
+      </div>
+      <a class="more" href="/2018/07/23/HTTP首部扫盲/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
+        <a href="/2018/07/23/CSharp集合类型大揭秘/">C#集合类型大揭秘</a>
+      </h2>
+      <p class="article-date">July 23, 2018</p>
+      
+        
+  <a href="/tags#C#">
+    <span class="tag-code">C#</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          C#集合类型大揭秘集合是.NET FCL(Framework Class Library)的重要组成部分，我们平常撸C#代码时免不了和集合打交道，FCL提供了丰富易用的集合类型，给我们撸码提供了极大的便利。正是因为这种与生俱来的便利性，使得我们对集合既熟悉又陌生。很多同学可能一直还是停留在使 ...
+        
+      </div>
+      <a class="more" href="/2018/07/23/CSharp集合类型大揭秘/">Read more</a>
+    </article>
+  
+
+  
+    <div class="guide-pager">
+  
+    <a href="/"><span class="page-arrow">← </span>Prev</a>
+  
+  
+    <a href="/page/3/">Next<span class="page-arrow"> →</span></a>
+  
+</div>
+  
+</main>
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

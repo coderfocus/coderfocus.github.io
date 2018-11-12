@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      缺失封装 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>缺失封装</h2>
+  <p class="post-date">2018-07-23</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
+<h1 id="缺失封装"><a href="#缺失封装" class="headerlink" title="缺失封装"></a>缺失封装</h1><p>没有将实现变化封装在抽象和层次结构中时，将导致这种坏味。</p>
+<p>表现形式通常如下:</p>
+<ul>
+<li>客户程序与其需要的服务变种紧密耦合，每当需要支持新变种或修改既有变种时，都将影响客户程序。</li>
+<li>每当需要在层次结构中支持新变种时，都添加了大量不必要的类，这增加了设计的复杂度。</li>
+</ul>
+<h2 id="为什么不能缺失封装？"><a href="#为什么不能缺失封装？" class="headerlink" title="为什么不能缺失封装？"></a>为什么不能缺失封装？</h2><p>开闭原则（OCP）指出，类型应对扩展开放，对修改关闭。也就是说应该通过扩展（而不是修改）来改变类型的行为。没有在类型或层次结构中封装实现变化时，便违反了OCP。</p>
+<h2 id="缺失封装潜在的原因"><a href="#缺失封装潜在的原因" class="headerlink" title="缺失封装潜在的原因"></a>缺失封装潜在的原因</h2><h3 id="未意识到关注点会不断变化"><a href="#未意识到关注点会不断变化" class="headerlink" title="未意识到关注点会不断变化"></a>未意识到关注点会不断变化</h3><p>没有预测到关注点可能发生变化，进而没有在设计中正确封装这些关注点。</p>
+<h3 id="混合关注点"><a href="#混合关注点" class="headerlink" title="混合关注点"></a>混合关注点</h3><p>将彼此独立的各个关注点聚合在一个层次结构中，而不是分开时，如果关注点发生变化，可能导致类的数量呈爆炸式增长。</p>
+<h3 id="幼稚的设计决策"><a href="#幼稚的设计决策" class="headerlink" title="幼稚的设计决策"></a>幼稚的设计决策</h3><p>采用过于简单的方法，如为每种变化组合创建一个类时，可能导致设计无谓的复杂。</p>
+<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><p>假设有一个Entryption类，它需要使用加密算法对数据进行加密。可供选择的加密算法有很多，包括DES(数据加密标准)、AES(高级加密标准)、TDES(三重数据加密标准)等。Entryption类使用DES算法对数据进行加密。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设出现了新需求，要求使用AES算法对数据进行加密。</p>
+<p><strong>最差的方案出现了：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingDES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     /// &lt;summary&gt;</span><br><span class="line">    /// 使用AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingAES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方案有很多不尽如人意的地方:</p>
+<ul>
+<li>Encryption类变得更大、更难以维护，因为它实现了多种加密算法，但是每次只使用一种。</li>
+<li>难以添加新算法以及修改既有算法，因为加密算法是Encryption类不可分割的部分。</li>
+<li>加密算法向Encryption类提供服务，但是与Encryption类紧紧耦合在一起，无法在其它地方重用。</li>
+</ul>
+<p>不满意就重构，首先使用继承进行重构，会有2种方案可以选择：</p>
+<p>选择1:</p>
+<p>让Encryption类根据需求继承AESEncryptionAlgorithm或DESEncryptionAlgorithm类，并提供方法Encrypt()。这种方案带来的问题是Encryption类在编译阶段就将关联到特定的加密算法,更严重的是类之间的关系并不是is-a关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingAES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingDES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Encryption: AESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        EncryptUsingAES();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>选择2：</p>
+<p>创建子类AESEncryption和DESEncryption,它们都扩展了Encryption类，并分别包含加密算法AES和DES的实现。客户程序可创建Encryption的引用，这些引用指向特定子类的对象。通过添加新的子类，很容易支持新的加密算法。但是这种方案的问题是AESEncryption和DESEncryption将继承Encryption类的其它方法，降低了加密算法的可重用性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public abstract class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public abstract void Encrypt();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryption : Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用 AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public override void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用 AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryption : Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用 DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public override void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用 DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>最佳的选择是使用策略模式:</strong></p>
+<ul>
+<li>可在运行阶段给Encryption对象配置特定的加密算法</li>
+<li>可在其它地方重用层次结构EncryptionAlgorithm中定义的算法</li>
+<li>很容易根据需要支持新的算法</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 算法加密接口</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public interface EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">   void Encrypt();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryptionAlgorithm : EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        //使用 DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryptionAlgorithm : EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        //使用 AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    EncryptionAlgorithm algo;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        algo.Encrypt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>支持使用不同算法（DES和AES）对各种内容（Image和Text）进行加密的设计。</p>
+<p>最简单最直观的的设计：</p>
+<p><img src="http://songwenjie.vip/blog/180430/7F26LAmlLC.png?imageslim" alt="mark"></p>
+<p>在这个设计中，有两个变化点：支持的内容类型和加密算法类型。对于这两个变化点的每种可能组合，都使用了一个类来表示。这样会有一个严重的问题：假设现在要求支持新加密算法TDES和新内容类型Data,类的数量呈爆炸性增长。因为变化点混在了一起，没有分别进行封装。</p>
+<p><img src="http://songwenjie.vip/blog/180430/LeL7eKmk79.png?imageslim" alt="mark"></p>
+<p><strong>使用桥接模式进行封装：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180430/iImmK945h6.png?imageslim" alt="mark"></p>
+<p>使用桥接模式，分别封装这两个关注点的变化。现在要引入新内容类型Data和新加密算法TDES，只需要添加两个新类。既解决了类数量呈爆炸增长的问题，又增加了根为接口EncryptionAlgorithm层次结构中的加密算法的可重用性。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>不相关的关注点混在一起，抽象将变得难以重用。</li>
+</ol>
+<ol start="2">
+<li>对业务中可能的变化点，要给予扩展点，保证开闭原则（OCP），对扩展开放，对修改关闭。</li>
+</ol>
+<p>参考：《软件设计重构》</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#设计原则">
+    <span class="tag-code">设计原则</span>
+  </a>
+
+  <a href="/tags#面向对象">
+    <span class="tag-code">面向对象</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/23/泄露的封装/">
+        <span class="nav-arrow">← </span>
+        
+          泄露的封装
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/07/23/未利用封装/">
+        
+          未利用封装
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#缺失封装"><span class="toc-nav-text">缺失封装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#为什么不能缺失封装？"><span class="toc-nav-text">为什么不能缺失封装？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#缺失封装潜在的原因"><span class="toc-nav-text">缺失封装潜在的原因</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#未意识到关注点会不断变化"><span class="toc-nav-text">未意识到关注点会不断变化</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#混合关注点"><span class="toc-nav-text">混合关注点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#幼稚的设计决策"><span class="toc-nav-text">幼稚的设计决策</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例分析一"><span class="toc-nav-text">示例分析一</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#示例分析二"><span class="toc-nav-text">示例分析二</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/07/23/缺失封装/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "缺失封装",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>

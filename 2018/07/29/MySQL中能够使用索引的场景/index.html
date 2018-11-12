@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      MySQL中能够使用索引的场景 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>MySQL中能够使用索引的场景</h2>
+  <p class="post-date">2018-07-29</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="匹配全值"><a href="#匹配全值" class="headerlink" title="匹配全值"></a>匹配全值</h3><p><strong>对索引中所有列都有指定具体值，即是对索引中的所有列都有等值匹配的条件</strong>。</p>
+<p>rental表的索引情况，其中idx_rental_date是复合索引：</p>
+<p><img src="http://songwenjie.vip/blog/180729/7a3GHJhAG8.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND inventory_id=373 AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/cfG1j75Hkc.png?imageslim" alt="mark"></p>
+<p>优化器选择了复合索引idx_rental_date</p>
+<h3 id="匹配值的范围查询"><a href="#匹配值的范围查询" class="headerlink" title="匹配值的范围查询"></a>匹配值的范围查询</h3><p><strong>对索引的值进行范围查找。</strong></p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE customer_id&gt;373 AND customer_id&lt;400;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/LI0HcJl9f2.png?imageslim" alt="mark"></p>
+<p>优化器选择索引范围查询，使用索引idx_fk_customer_id加速访问。注意Extra列为<code>Using index condition</code>，表明MySQL使用了<strong>ICP</strong>进一步优化查询。关于<strong>ICP</strong>后面会单独介绍。</p>
+<h3 id="匹配最左前缀"><a href="#匹配最左前缀" class="headerlink" title="匹配最左前缀"></a>匹配最左前缀</h3><p><strong>MySQL中B-Tree索引使用的首要原则——最左匹配原则</strong></p>
+<p>对于复合索引而言，MySQL仅仅使用索引的最左列进行查找。比如在col1+col2+col3字段上的联合索引能够被包含col1、（col1+col2)、（col1+col2+col3）的等值查询利用到，但是不能够被col2、col3、（col2+col3）的等值查询利用到。</p>
+<p>如果查询条件中包含了索引的第一列rental_date和第三列customer_id，从key中可以看出优化器使用了复合索引idx_rental_date进行条件过滤：</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/HbIlhCG9C1.png?imageslim" alt="mark"></p>
+<p>如果查询条件中包含了索引的第二列inventory_id和第三列customer_id，从key中可以看出优化器使用了其各自的索引进行条件过滤，但是进行了索引合并优化（type=index_merge）：</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE  inventory_id=373 AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/bAJch04gGK.png?imageslim" alt="mark"></p>
+<h3 id="仅仅对索引进行查询"><a href="#仅仅对索引进行查询" class="headerlink" title="仅仅对索引进行查询"></a>仅仅对索引进行查询</h3><p><strong>当查询的列都在索引的字段中时，查询的效率更高。</strong></p>
+<p><code>EXPLAIN SELECT customer_id FROM rental;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/iaifmeLbB1.png?imageslim" alt="mark"></p>
+<p>优化器选择了查询列的索引加速访问，并且Extra为<code>Using index</code>意味着直接访问索引就足够取到所需要的数据，不会再通过索引回表查询。</p>
+<h3 id="匹配列前缀"><a href="#匹配列前缀" class="headerlink" title="匹配列前缀"></a>匹配列前缀</h3><p><strong>使用只包含索引字段开头一部分进行数据查找</strong></p>
+<p>为customer表建立前缀索引：</p>
+<p><img src="http://songwenjie.vip/blog/180729/ile7h05eJG.png?imageslim" alt="mark"></p>
+<p>查看customer表的索引情况：</p>
+<p><img src="http://songwenjie.vip/blog/180729/igk78mI9dA.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT email  FROM customer WHERE email LIKE &#39;MARY%&#39;;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/m5dAfFIh21.png?imageslim" alt="mark"></p>
+<p>可以看到，前缀索引idx_email已经被利用上了，Extra为<code>Using where</code>表明优化器还需要通过索引回表查询数据，因为索引的只是email字段的前5个字符。</p>
+<h3 id="如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）"><a href="#如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）" class="headerlink" title="如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）"></a>如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）</h3><p><img src="http://songwenjie.vip/blog/180729/69A8elfdf0.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM payment WHERE rental_id IS NULL;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/dgAJBA6gH3.png?imageslim" alt="mark"></p>
+<h3 id="ICP优化"><a href="#ICP优化" class="headerlink" title="ICP优化"></a>ICP优化</h3><p>MySQL5.6引入了Index Condition Pushdown（ICP）的特性，进一步优化了查询。Pushdown表示操作下放，某些情况下的条件过滤操作下放到存储引擎。</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND customer_id&gt;=300 AND customer_id&lt;=400;</code></p>
+<p>在5.6版本之前：</p>
+<p>优化器首先使用复合索引idx_rental_date过滤出符合条件<code>rental_date=&#39;2005-05-25&#39;</code>的记录，然后根据复合索引idx_rental_date回表获取记录，最终根据条件<code>customer_id&gt;=300 AND customer_id&lt;=400</code>过滤出最后的查询结果（在服务层完成）。</p>
+<p>在5.6版本之后：</p>
+<p>MySQL使用了ICP来进一步优化查询，在检索的时候，把条件<code>customer_id&gt;=300 AND customer_id&lt;=400</code>也推到存储引擎层完成过滤，这样能够降低不必要的IO访问。Extra为<code>Using index condition</code>就表示使用了ICP优化。</p>
+<p><img src="http://songwenjie.vip/blog/180729/FDGC3F3EJ1.png?imageslim" alt="mark"></p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">
+        <span class="nav-arrow">← </span>
+        
+          MySQL主从复制——主库已有数据的解决方案
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2018/08/01/网络分层的真实含义是什么/">
+        
+          网络分层的真实含义是什么
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#匹配全值"><span class="toc-nav-text">匹配全值</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#匹配值的范围查询"><span class="toc-nav-text">匹配值的范围查询</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#匹配最左前缀"><span class="toc-nav-text">匹配最左前缀</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#仅仅对索引进行查询"><span class="toc-nav-text">仅仅对索引进行查询</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#匹配列前缀"><span class="toc-nav-text">匹配列前缀</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）"><span class="toc-nav-text">如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ICP优化"><span class="toc-nav-text">ICP优化</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/07/29/MySQL中能够使用索引的场景/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "MySQL中能够使用索引的场景",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
