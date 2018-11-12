@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="记录生活、技术">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      编码最佳实践——依赖注入原则 | CoderFocus
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>CoderFocus</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>编码最佳实践——依赖注入原则</h2>
+  <p class="post-date">2018-11-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>我们在这个系列的前四篇文章中分别介绍了SOLID原则中的前四个原则，今天来介绍最后一个原则——依赖注入原则。依赖注入（DI）是一个很简单的概念，实现起来也很简单。但是简单却掩盖不了它的重要性，如果没有依赖注入，前面的介绍的SOLID技术原则都不可能实际应用。</p>
+<h2 id="控制反转-IoC"><a href="#控制反转-IoC" class="headerlink" title="控制反转(IoC)"></a>控制反转(IoC)</h2><p>人们在谈论依赖注入的时候，经常也会谈到另一个概念——控制反转(IoC)。按照大内老A的解释：“IoC主要体现了这样一种设计思想：通过<strong>将一组通用流程的控制权从应用转移到框架中</strong>以实现对<strong>流程的复用</strong>，并按照“<strong>好莱坞法则</strong>”实现应用程序的代码与框架之间的交互“。概念比较抽象，我们拆开解读一下。</p>
+<p>我们要做的任何一件事情，无论大小，都可以分解为相应的步骤。所以任何一件事情都有其固定的流程。与现实问题域一样，解决方案域（程序实现）也是这样。所以IoC控制可以理解为“<strong>对流程的控制</strong>”。以HTTP请求处理的流程为例，在传统面向类库编程的时代，针对HTTP请求处理的流程牢牢控制在应用程序手中。在引入框架之后，请求处理的控制权转移到了框架手上。类库（Library）和框架（Framework）的不同之处在于，前者往往只是提供实现某种单一功能的API，而后者则针对一个目标任务对这些单一功能进行编排形成一个完整的流程，这个流程在一个引擎的驱动下自动执行。如此，所有使用此框架的程序都可以复用关于HTTP请求处理的流程。</p>
+<blockquote>
+<p> 在好莱坞，把简历递交给演艺公司后就只有回家等待。由演艺公司对整个娱乐项目的完全控制，演员只能被动式的接受电影公司的工作，在需要的环节中，完成自己的演出。“不要给我们打电话，我们会给你打电话(don‘t call us, we‘ll call you)”这是著名的好莱坞法则。</p>
+</blockquote>
+<p><img src="http://songwenjie.vip/blog/181029/9bI84ibka0.png?imageslim" alt="mark"></p>
+<p>IoC完美地体现了这一法则，对于ASP.NET MVC应用开发来说，我们只需要按照约定规则（比如目录结构和命名等）定义相应的Controller类型和View文件就可以了，这就是所谓的“<strong>约定大于配置</strong>”。当ASP.NET MVC框架在进行处理请求的过程中，它会根据解析生成的路由参数定义为对应的Controller类型，并按照预定义的规则找到我们定义的Controller，然后自动创建并执行它。如果定义在当前Action方法需要呈现一个View，框架自身会根据预定义的目录约定找到我们定义的View文件，并对它实施动态编译和执行。整个流程处处体现了“<strong>框架Call应用</strong>”的好莱坞法则。</p>
+<p>简单的说，<strong>控制反转（IoC）的过程就是一组通用流程的控制权从应用程序转移到框架中的过程，为的是实现流程的复用</strong>。但是有一个问题，被反转的仅仅是一个泛化的流程，在特定场景可能会有一些特殊的流程或者流程节点，此时就需要进行流程定制。定制一般是通过框架预留的扩展点进行的，比如ASP.NET中的HttpHandler和HttpModule，ASP.NET Core中的Middleware。</p>
+<p>前面提到<strong>控制反转（IoC）是一种设计思想</strong>。所以控制反转（IoC）并不能解决某一类具体的问题。但是基于控制反转（IoC）思想的设计模式却可以，最简单直观的就是<strong>模板方法</strong>模式。该模式主张将一个可复用的工作流程或者由多个步骤组成的算法定义成模板方法，组成这个流程或者算法的步骤实现在相应的虚方法之中，模板方法根据按照预先编排的流程去调用这些虚方法。所有这些方法均定义在同一个类中，我们可以通过派生该类并重写相应的虚方法达到对流程定制的目的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class TemplateMethod</span><br><span class="line">&#123;</span><br><span class="line">    //流程编排</span><br><span class="line">    public void ABCD()</span><br><span class="line">    &#123;</span><br><span class="line">        A();</span><br><span class="line">        B();</span><br><span class="line">        C();</span><br><span class="line">        D();</span><br><span class="line">    &#125;</span><br><span class="line">    //步骤A</span><br><span class="line">    protected virtual void A() &#123; &#125;</span><br><span class="line">    //步骤B</span><br><span class="line">    protected virtual void B() &#123; &#125;</span><br><span class="line">    //步骤C</span><br><span class="line">    protected virtual void C() &#123; &#125;</span><br><span class="line">    //步骤D</span><br><span class="line">    protected virtual void D() &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="依赖注入-DI"><a href="#依赖注入-DI" class="headerlink" title="依赖注入(DI)"></a>依赖注入(DI)</h2><p>依赖注入(DI)也是架构在控制反转思想上的一种模式。在这里我们将提供的对象统称为“<strong>服务</strong>”、“<strong>服务对象</strong>”或者“<strong>服务实例</strong>”。在一个采用DI的应用中，在定义某个服务类型的时候，我们直接将依赖的服务采用相应的方式注入进来。按照“面向接口编程”的原则，被<strong>注入的最好是依赖服务的接口而非实现</strong>。正确的依赖注入对于项目的绝大多数代码都是不可见的，它们（注册代码）被局限在一个很小的代码范围内，通常是一个独立的程序集。</p>
+<p>在应用启动的时候，会对所需的服务进行全局注册。服务一般都是针对接口进行注册的，服务注册信息的核心目的是为了在后续消费过程中能够根据接口创建或者提供对应的服务实例。按照“好莱坞法则”，应用只需要定义好所需的服务，<strong>服务实例的激活和调用则完全交给框架来完成</strong>，而框架则会采用一个独立的“容器（Container）”来提供所需的每一个服务实例。我们将这个被框架用来提供服务的容器称为“<strong>DI容器</strong>”，也由很多人将其称为“IoC容器”。<strong>所有的DI容器都符合注册、解析、释放模式</strong>。</p>
+<h2 id="依赖注入的三种注入方式"><a href="#依赖注入的三种注入方式" class="headerlink" title="依赖注入的三种注入方式"></a>依赖注入的三种注入方式</h2><p>1.构造函数注入</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaskService</span></span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> ITaskOneRepository taskOneRepository;</span><br><span class="line">    <span class="keyword">private</span> ITaskTwoRepository taskTwoRepository;</span><br><span class="line">    <span class="keyword">public</span> TaskService(</span><br><span class="line">        ITaskOneRepository taskOneRepository,</span><br><span class="line">        ITaskTwoRepository taskTwoRepository)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">this</span>.taskOneRepository = taskOneRepository;</span><br><span class="line">            <span class="keyword">this</span>.taskTwoRepository = taskTwoRepository;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>优点：</p>
+<ul>
+<li>在构造方法中体现出对其他类的依赖，一眼就能看出这个类需要其他那些类才能工作。</li>
+<li>脱离了IOC框架，这个类仍然可以工作（穷人的依赖注入）。</li>
+<li>一旦对象初始化成功了，这个对象的状态肯定是正确的。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>构造函数会有很多参数。</li>
+<li>有些类是需要默认构造函数的，比如MVC框架的Controller类，一旦使用构造函数注入，就无法使用默认构造函数。</li>
+</ul>
+<p>2.属性注入</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class TaskService</span><br><span class="line">&#123;</span><br><span class="line">    private ITaskRepository taskRepository;</span><br><span class="line">    private ISettings settings;</span><br><span class="line">    public TaskService(</span><br><span class="line">        ITaskRepository taskRepository,</span><br><span class="line">        ISettings settings)</span><br><span class="line">        &#123;</span><br><span class="line">            this.taskRepository = taskRepository;</span><br><span class="line">            this.settings = settings;</span><br><span class="line">        &#125;</span><br><span class="line">    public void OnLoad()</span><br><span class="line">    &#123;</span><br><span class="line">        taskRepository.settings = settings;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>优点：</p>
+<ul>
+<li>在对象的整个生命周期内，可以随时动态的改变依赖。</li>
+<li>非常灵活。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>对象在创建后，被设置依赖对象之前这段时间状态是不对的（从构造函数注入的依赖实例在类的整个生命周期内都可以使用，而从属性注入的依赖实例还能从类生命周期的某个中间点开始起作用）。</li>
+<li>不直观，无法清晰地表示哪些属性是必须的。</li>
+</ul>
+<p>3.方法注入</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class TaskRepository</span><br><span class="line">&#123;</span><br><span class="line">    private ISettings settings;</span><br><span class="line"></span><br><span class="line">    public void PrePare(ISettings settings)</span><br><span class="line">    &#123;</span><br><span class="line">        this.settings = settings;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>优点：</p>
+<ul>
+<li>比较灵活。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>新加入依赖时会破坏原有的方法签名，如果这个方法已经被其他很多模块用到就很麻烦。</li>
+<li>与构造方法注入一样，会有很多参数。</li>
+</ul>
+<p>在这三种注入方式中，推荐使用构造函数注入。最重要的原因是服务应该是独立自治的，即使脱离了DI框架，这个服务应该仍然可以工作。构造函数注入就符合这一要求，即使脱离了DI框架，仍然可以手动注入依赖的服务。</p>
+<h2 id="依赖注入反模式-——-Service-Locator"><a href="#依赖注入反模式-——-Service-Locator" class="headerlink" title="依赖注入反模式 —— Service Locator"></a>依赖注入反模式 —— Service Locator</h2><p>假设我们需要定义一个服务类型C，它依赖于另外两个服务A和B，后者对应的服务接口分别为IA和IB。如果当前应用中具有一个DI容器（Container），那么我们可以采用如下两种方式来定义这个服务类型C。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class C : IC</span><br><span class="line">&#123;</span><br><span class="line">    public IA A &#123; get; &#125;</span><br><span class="line">    public IB B &#123; get; &#125;</span><br><span class="line">    public C(IA a, IB b)</span><br><span class="line">    &#123;</span><br><span class="line">        A = a;</span><br><span class="line">        B = b;</span><br><span class="line">    &#125;</span><br><span class="line">    public void Invoke()</span><br><span class="line">    &#123;</span><br><span class="line">        a.Invoke();</span><br><span class="line">        b.Invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class C : IC</span><br><span class="line">&#123;</span><br><span class="line">    public Container Container &#123; get; &#125;</span><br><span class="line">    public C(Container container)</span><br><span class="line">    &#123;</span><br><span class="line">        Container = container;</span><br><span class="line">    &#125;</span><br><span class="line">    public void Invoke()</span><br><span class="line">    &#123;</span><br><span class="line">        Container.GetService&lt;IA&gt;().Invoke();</span><br><span class="line">        Container.GetService&lt;IB&gt;().Invoke();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从表面上看，这两种方式并没有什么太大的区别。都解决了针对依赖服务的耦合问题，将针对服务实现依赖变成针对接口的依赖。但是，其实后一种方式并不是依赖注入模式，而是<strong>服务定位器反模式</strong>。因为看起来和依赖注入模式很相似，人们经常会忽视它给代码带来的破坏。</p>
+<p>我们可以从<strong>“DI容器”和“Service Locator”被谁使用</strong>的角度来区分这两种设计模式的差别。DI容器的使用者是框架而不是应用程序，Service Locator的使用者是应用程序，应用程序利用它来提供服务实例。有时候，它是唯一能提供依赖注入钩子的方式。</p>
+<p>那么<strong>Service Locator(服务定位器反模式)</strong>对代码造成了哪些破坏呢？</p>
+<ol>
+<li>因为容器中的服务是全局注册的，所以DI容器是静态的，这会导致出现静态类或者服务中出现静态变量和字段。</li>
+<li>服务定位器暴露了容器存在的信息。原因是服务定位器允许类检索任何对象，无论是否合适。这样违背了依赖注入的“好莱坞准则”，不要调用我们，我们会调用你。</li>
+<li>服务定位器会直接委托Container实例来解析实例对象，这样会造成服务没有依赖的假象。但是服务肯定是有依赖的，不然为什么要从服务定位器获取它们呢。</li>
+</ol>
+<p>虽然我们对服务定位器反模式提出了这么多批判，但是它还是非常常见。因为有时候根本没有从构造函数注入的任何机会，唯一的选择就是服务定位器。毕竟它肯定比不注入依赖要好，也比手动构造注入依赖要好。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>依赖注入(DI)是架构在控制反转（IoC）思想上的一种模式，所有的DI容器都符合注册、解析、释放模式。注入代码通常在一个独立的程序集，注入的最好是依赖服务的接口而非实现，服务实例的激活和调用则完全交给框架来完成。在依赖注入的三种注入方式中，推荐使用构造函数注入。另外在没有从构造函数注入的机会时，可以考虑选择服务定位器反模式。选择模式的原则是：<strong>依赖注入模式优于服务定位器反模式，优于手动构造注入依赖，优于不注入依赖</strong>。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://mp.weixin.qq.com/s/sMRYosDiyi6Td9Meo2h4ug" target="_blank" rel="noopener">依赖注入1: 控制反转</a></p>
+<p><a href="https://mp.weixin.qq.com/s/zR06hg3JPELHQ7TKZvwJxA" target="_blank" rel="noopener">依赖注入2: 基于IoC的设计模式</a></p>
+<p><a href="https://mp.weixin.qq.com/s/vripqhVcxZZXsh3JreVwxA" target="_blank" rel="noopener">依赖注入3: 依赖注入模式</a></p>
+<p>《C#敏捷开发实践》</p>
+<blockquote>
+<p><strong></strong></p>
+<div class="content"><br>   <div>作者：<a style="color: red; font-family: 微软雅黑; text-decoration: 
+none" href="http://songwenjie.cnblogs.com/" target="_blank">CoderFocus</a></div><br><div>微信公众号：<br><br><img src="https://user-gold-cdn.xitu.io/2018/10/31/166c7955f5d0c145?>w=300&h=300&f=png&s=45508" title="关注公众号，获取最新更新"></div><br><br></div></blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#编码最佳实践">
+    <span class="tag-code">编码最佳实践</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/11/12/编码最佳实践——接口分离原则/">
+        <span class="nav-arrow">← </span>
+        
+          编码最佳实践——接口分离原则
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#控制反转-IoC"><span class="toc-nav-text">控制反转(IoC)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#依赖注入-DI"><span class="toc-nav-text">依赖注入(DI)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#依赖注入的三种注入方式"><span class="toc-nav-text">依赖注入的三种注入方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#依赖注入反模式-——-Service-Locator"><span class="toc-nav-text">依赖注入反模式 —— Service Locator</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#参考"><span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://songwenjie.coding.me/2018/11/12/编码最佳实践——依赖注入原则/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "编码最佳实践——依赖注入原则",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
