@@ -10,7 +10,7 @@
   
   <title>
     
-      世界是由懒人改变的 | CoderFocus
+      安装与卸载Windows服务 | CoderFocus
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,8 +126,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>世界是由懒人改变的</h2>
-  <p class="post-date">2018-11-12</p>
+  <h2>安装与卸载Windows服务</h2>
+  <p class="post-date">2018-11-14</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -135,99 +135,43 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>最近把放下了近大半年的Hexo博客重新拾起来了，写篇文章记录一下。至于当初为什么会放下，其中一个原因是用户体验太差，还需要手动创建移动md文件，仿佛回到了原始社会。其实最重要的原因是自己太懒。最近重新拾起来Hexo博客的原因也挺简单，大脑是用来思考事物的而不是记录事物的，得有一个地方记录平时一些琐碎的想法，公众号和技术博客显然不是太合适。但是一想起Hexo那原始的操作，就有点头大。在网上搜了搜发现还真有一款管理插件Hexo Admin，能以网页的方式管理Hexo博客。看来这个世界还真是由懒人改变的。</p>
-<p><img src="http://songwenjie.vip/blog/181112/Gi3idLmAij.png?imageslim" alt="mark"></p>
-<p>关于Hexo安装使用教程，网上一搜一大把，就不再赘述，我主要记录解决我需求的过程。我的使用场景是家里一台电脑，单位一台工作电脑，需求如下：</p>
+    <section class="markdown-content"><blockquote>
+<p>安装服务</p>
+</blockquote>
 <ol>
-<li>这两台电脑同时安装Hexo环境并且做到可以同步工作。比如在单位记录的内容可以回家接着记录。</li>
-<li>通过浏览器直接管理本地的md文件</li>
-<li>一键发布，不用手动执行hexo命令</li>
-</ol>
-<p>下面是解决过程：</p>
-<ol>
-<li><p><a href="https://nodejs.org/en/" target="_blank" rel="noopener">安装Node.js环境</a></p>
+<li><p>创建一个Windows Service项目</p>
 </li>
-<li><p><a href="https://git-scm.com/download/win" target="_blank" rel="noopener">安装Git</a></p>
+<li><p>切换到服务的Design视图（右键属性，可修改服务名称，不修改的话，默认服务名与项目名称一样）</p>
+<p><img src="http://songwenjie.vip/blog/181114/L9Agg5GF0i.png?imageslim" alt="mark"></p>
 </li>
-<li><p>安装Hexo</p>
-<p>在自己认为合适的地方创建一个文件夹，然后在文件夹空白处按住<code>Shift</code>+鼠标右键，然后点击在此处打开命令行窗口</p>
-<blockquote>
-<p>npm install hexo-cli -g</p>
-</blockquote>
-<blockquote>
-<p>npm install hexo –save</p>
-</blockquote>
+<li><p>右键“设计视图”，单击“添加安装程序”（这时项目中就添加了类 ProjectInstaller 和两个组件 ServiceProcessInstaller 和 ServiceInstaller， 并且服务的属性值被复制到组件）</p>
+<p><img src="http://songwenjie.vip/blog/181114/kAj60C6Gmh.png?imageslim" alt="mark"></p>
 </li>
-<li><p>初始化Hexo</p>
-<blockquote>
-<p>hexo init</p>
-</blockquote>
-<p>使用npm安装你需要的组件</p>
-<blockquote>
-<p>npm install</p>
-</blockquote>
+<li><p>单击serviceProcessInstaller组件，将他的Account属性改为 LocalSystem  这样，不论是以哪个用户登录的系统，服务总会启动。</p>
+<p><img src="http://songwenjie.vip/blog/181114/iag1ELelLc.png?imageslim" alt="mark"></p>
 </li>
-<li><p>启动Hexo</p>
-<blockquote>
-<p>hexo s</p>
-</blockquote>
-<p>在浏览器访问<code>localhost://4000</code>，正常情况下就可以访问你的博客了。你也可以根据自己的需要更换主题，这里不再赘述。</p>
-<p><img src="http://songwenjie.vip/blog/181112/FEC3H7D9H3.png?imageslim" alt="mark"></p>
-<p>如果此处<code>localhost://4000</code>无法访问，可能是你机器的4000端口被其他应用占用，可以使用</p>
-<blockquote>
-<p>hexo s -p &lt;其他端口&gt;</p>
-</blockquote>
-<p>指定端口启动Hexo服务进行尝试。</p>
+<li><p>生成解决方案（生成一个可执行文件）</p>
 </li>
-<li><p>托管博客到Coding Pages</p>
-<p>具体操作可以参考这篇文章 <a href="https://www.jianshu.com/p/e44b5161ba2c" target="_blank" rel="noopener">写给朋友的Hexo建站指南，含Coding Pages、域名解析、日常使用</a></p>
+<li><p>打开cmd（管理员身份运行） ,输入InstallUtil.exe的绝对路径 + windows服务程序编译后的.exe程序的绝对路径</p>
+<p>InstallUtil.exe绝对路径： C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe</p>
+<p><img src="http://songwenjie.vip/blog/181114/583lbL3iIf.png?imageslim" alt="mark"></p>
 </li>
 </ol>
-<h3 id="主角终于要登场了"><a href="#主角终于要登场了" class="headerlink" title="主角终于要登场了"></a>主角终于要登场了</h3><ol start="7">
-<li><p>安装Hexo Admin</p>
 <blockquote>
-<p>npm install –save hexo-admin</p>
+<p>卸载服务</p>
 </blockquote>
-<p>使用<code>hexo s</code>重新启动Hexo服务，然后访问<code>localhost:4000/admin</code>（这里使用默认端口），便可以使用浏览器管理我们的Hexo博客文件。</p>
-</li>
-<li><p>一键发布</p>
-<p>发布就是将本地文件生成静态网页推送到Coding Pages，然后就可以外网进行访问。</p>
-<p>发布一般使用命令<code>hexo g</code>生成静态文件，使用<code>hexo d</code>推送远端。</p>
-<p>借助Hexo Admin可以实现一键发布博客，不用再继续在命令窗口中敲命令了。</p>
-<p>在windows平台使用批处理文件实现，在Hexo主目录下创建一个hexo-deploy批处理文件（.bat）,内容是<code>hexo g &amp;&amp; hexo d</code>；然后在_config.yml文件增加节点：</p>
+<p>cmd运行如下命令从注册表中卸载服务</p>
 <blockquote>
-<p>admin:<br>  deployCommand: ‘hexo-deploy.bat’</p>
+<p> sc delete “服务名”</p>
 </blockquote>
-<p>重启服务，浏览器访问<code>localhost:4000/admin</code>,进入<strong>Deploy</strong>模块点击Deploy按钮进行发布。</p>
-<p><img src="http://songwenjie.vip/blog/181112/JhBLd28jHK.png?imageslim" alt="mark"></p>
-</li>
-<li><p>多端同步</p>
-<p>可以使用任意一款云产品，这里我使用的是坚果云。同步主目录下的source文件夹即可。当然也可以使用Git。</p>
-<p><img src="http://songwenjie.vip/blog/181112/kIc4l40JE2.png?imageslim" alt="mark"></p>
-</li>
-<li><p>Hexo后台运行</p>
-<p>Hexo有一个缺点，命令窗口关闭，进程也就结束了，无法在后台运行。可以借助pm2监控Hexo进程实现后台运行。</p>
-<p>安装pm2:</p>
-<blockquote>
-<p>npm install -g pm2</p>
-</blockquote>
-<p>在Hexo主目录下创建hexo-run.js文件：</p>
-<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const &#123; exec &#125; = <span class="built_in">require</span>(<span class="string">'child_process'</span>)</span><br><span class="line">exec(<span class="string">'hexo server'</span>,<span class="function"><span class="params">(<span class="built_in">error</span>, stdout, stderr)</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">error</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>pm2 start hexo-run.js    #开启后台运行</p>
-<p>pm2 stop hexo-run.js      #结束后台运行</p>
-</blockquote>
-</li>
-</ol>
-<p>自动化一切！自动化一切！自动化一切！</p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#Hexo">
-    <span class="tag-code">Hexo</span>
+  <a href="/tags#Windows服务">
+    <span class="tag-code">Windows服务</span>
   </a>
 
       </div>
@@ -238,20 +182,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2018/11/12/编码最佳实践——依赖注入原则/">
+      <a class="nav-left" href="/2018/11/12/世界是由懒人改变的/">
         <span class="nav-arrow">← </span>
         
-          编码最佳实践——依赖注入原则
+          世界是由懒人改变的
         
       </a>
     
-    
-      <a class="nav-right" href="/2018/11/14/安装与卸载Windows服务/">
-        
-          安装与卸载Windows服务
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -295,7 +232,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#主角终于要登场了"><span class="toc-nav-text">主角终于要登场了</span></a></li></ol>
+      <ol class="nav">none</ol>
     
   </div>
 </aside>
@@ -305,7 +242,7 @@
 
 <script>
   (function () {
-    var url = 'https://songwenjie.coding.me/2018/11/12/世界是由懒人改变的/';
+    var url = 'https://songwenjie.coding.me/2018/11/14/安装与卸载Windows服务/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -361,7 +298,7 @@
     var gitmentConfig = "songwenjie";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "世界是由懒人改变的",
+        id: "安装与卸载Windows服务",
         owner: "songwenjie",
         repo: "songwenjie.github.io",
         oauth: {
