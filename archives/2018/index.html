@@ -1,392 +1,567 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
   <head><meta name="generator" content="Hexo 3.8.0">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
   <meta name="description" content="记录生活、技术">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" href="/css/images/logo.png">
-  
-  <title>
-    
-      CoderFocus
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/archives/2018/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
   
 
 
-</head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png">
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title>
+  
+    归档 - CoderFocus
+  
+</title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>CoderFocus</span>
-    </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
           
-            <a href="/" class="item-link">Home</a>
+          
+            首页
           
         </li>
-      
-        <li class="list-item">
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
           
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">Archives</a>
+            归档
           
         </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
       
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">About</a>
-          
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
         </li>
       
     </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
-        
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Home</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">Tags</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">Archives</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">About</a>
-            
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</header>
+  
+</nav>
 
-    <div id="article-banner">
-  <h2>Archives</h2>
-  <p class="post-date">文章归档</p>
-</div>
-<main class="app-body" id="archives">
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
   
   
   
-    <section class="time-section">
-  <h1 class="section-year">
+
+  <section id="archive" class="archive">
+    
+      
+        <div class="archive-title">
+          <span class="archive-post-counter">
+            目前共计 37 篇日志
+          </span>
+        </div>
+      
+    
+
+    
+      
+        
+        
+
+        
+          
+          <div class="collection-title">
+            <h2 class="archive-year">2018</h2>
+          </div>
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            11-14
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/11/14/安装与卸载Windows服务/" class="archive-post-link">
+            安装与卸载Windows服务
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            11-12
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/11/12/世界是由懒人改变的/" class="archive-post-link">
+            世界是由懒人改变的
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            11-12
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/11/12/编码最佳实践——依赖注入原则/" class="archive-post-link">
+            编码最佳实践——依赖注入原则
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            11-12
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/11/12/编码最佳实践——接口分离原则/" class="archive-post-link">
+            编码最佳实践——接口分离原则
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            11-12
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/11/12/编码最佳实践——Liskov替换原则/" class="archive-post-link">
+            编码最佳实践——Liskov替换原则
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            11-12
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/11/12/编码最佳实践——开放封闭原则/" class="archive-post-link">
+            编码最佳实践——开放封闭原则
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            11-12
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/11/12/编码最佳实践——单一职责原则/" class="archive-post-link">
+            编码最佳实践——单一职责原则
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            11-12
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/11/12/MySQL——优化嵌套查询和分页查询/" class="archive-post-link">
+            MySQL——优化嵌套查询和分页查询
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            08-20
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/08/20/MySQL——优化ORDER-BY语句/" class="archive-post-link">
+            MySQL——优化ORDER BY语句
+          </a>
+        </span>
+      </div>
+    
+      
+        
+        
+
+        
+      
+
+      <div class="archive-post">
+        <span class="archive-post-time">
+          
+            08-19
+          
+        </span>
+        <span class="archive-post-title">
+          <a href="/2018/08/19/MySQL——索引实现原理/" class="archive-post-link">
+            MySQL——索引实现原理
+          </a>
+        </span>
+      </div>
+    
+  </section>
+
+  
+  <nav class="pagination">
+    
+    
+      <a class="next" href="/archives/2018/page/2/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+
+
+          </div>
+          
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
     2018
-  </h1>
-  <div class="section-list">
-    
-    
-      <div class="section-list-item">
-        <a href="/2018/11/14/安装与卸载Windows服务/" class="archive-title">安装与卸载Windows服务</a>
-        <p class="archive-date">11-14</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/11/12/世界是由懒人改变的/" class="archive-title">世界是由懒人改变的</a>
-        <p class="archive-date">11-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/11/12/编码最佳实践——依赖注入原则/" class="archive-title">编码最佳实践——依赖注入原则</a>
-        <p class="archive-date">11-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/11/12/编码最佳实践——接口分离原则/" class="archive-title">编码最佳实践——接口分离原则</a>
-        <p class="archive-date">11-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/11/12/编码最佳实践——Liskov替换原则/" class="archive-title">编码最佳实践——Liskov替换原则</a>
-        <p class="archive-date">11-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/11/12/编码最佳实践——开放封闭原则/" class="archive-title">编码最佳实践——开放封闭原则</a>
-        <p class="archive-date">11-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/11/12/编码最佳实践——单一职责原则/" class="archive-title">编码最佳实践——单一职责原则</a>
-        <p class="archive-date">11-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/11/12/MySQL——优化嵌套查询和分页查询/" class="archive-title">MySQL——优化嵌套查询和分页查询</a>
-        <p class="archive-date">11-12</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/20/MySQL——优化ORDER-BY语句/" class="archive-title">MySQL——优化ORDER BY语句</a>
-        <p class="archive-date">08-20</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/19/MySQL——索引实现原理/" class="archive-title">MySQL——索引实现原理</a>
-        <p class="archive-date">08-19</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/18/是什么影响了数据库索引选型？/" class="archive-title">是什么影响了数据库索引选型？</a>
-        <p class="archive-date">08-18</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/17/数据库索引背后的数据结构/" class="archive-title">数据库索引背后的数据结构</a>
-        <p class="archive-date">08-17</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/02/MySQL——索引优化实战/" class="archive-title">MySQL——索引优化实战</a>
-        <p class="archive-date">08-02</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/02/MySQL——索引基础/" class="archive-title">MySQL——索引基础</a>
-        <p class="archive-date">08-02</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/" class="archive-title">MySQL——通过EXPLAIN分析SQL的执行计划</a>
-        <p class="archive-date">08-02</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/08/01/网络分层的真实含义是什么/" class="archive-title">网络分层的真实含义是什么</a>
-        <p class="archive-date">08-01</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/29/MySQL中能够使用索引的场景/" class="archive-title">MySQL中能够使用索引的场景</a>
-        <p class="archive-date">07-29</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/" class="archive-title">MySQL主从复制——主库已有数据的解决方案</a>
-        <p class="archive-date">07-29</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/26/Docker常用命令/" class="archive-title">Docker常用命令</a>
-        <p class="archive-date">07-26</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/" class="archive-title">Docker问题(一)：bash: vi: command not found</a>
-        <p class="archive-date">07-26</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/26/vim常用命令/" class="archive-title">vim常用命令</a>
-        <p class="archive-date">07-26</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/26/MySQL-警告信息-command-line-interface-can-be-insecure/" class="archive-title">MySQL 警告信息 command line interface can be insecure</a>
-        <p class="archive-date">07-26</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/26/基于Docker的Mysql主从搭建/" class="archive-title">基于Docker的Mysql主从搭建</a>
-        <p class="archive-date">07-26</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/人为什么难做选择/" class="archive-title">人为什么难做选择？</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/我们为什么要学习？写给我的组员们/" class="archive-title">我们为什么要学习？</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/HTTP首部扫盲/" class="archive-title">HTTP首部扫盲</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/CSharp集合类型大揭秘/" class="archive-title">C#集合类型大揭秘</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/未利用封装/" class="archive-title">未利用封装</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/缺失封装/" class="archive-title">缺失封装</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/泄露的封装/" class="archive-title">泄露的封装</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/不充分的封装/" class="archive-title">不充分的封装</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/不必要的抽象/" class="archive-title">不必要的抽象</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/不完整的抽象/" class="archive-title">不完整的抽象</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/命令式抽象/" class="archive-title">命令式抽象</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/缺失抽象/" class="archive-title">缺失抽象</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/23/缓存使用的正确姿势/" class="archive-title">缓存使用的正确姿势</a>
-        <p class="archive-date">07-23</p>
-      </div>
-    
-      <div class="section-list-item">
-        <a href="/2018/07/20/拆散的模块化/" class="archive-title">拆散的模块化</a>
-        <p class="archive-date">07-20</p>
-      </div>
-    
-  </div>
-</section>
-  
-</main>
 
-<script>
-  (function () {
-    var url = 'https://songwenjie.coding.me/archives/2018/index.html';
-    $('#article-banner').geopattern(url);
-    $('.header').removeClass('fixed-header');
-  })();
-</script>
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
+      </footer>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
-      }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
 
-<script src="/js/script.js"></script>
+    
 
 
-			
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
 
   </body>
 </html>

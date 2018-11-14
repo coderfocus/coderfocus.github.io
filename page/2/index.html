@@ -1,436 +1,912 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
   <head><meta name="generator" content="Hexo 3.8.0">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
   <meta name="description" content="记录生活、技术">
-  <meta name="keyword" content="hexo-theme, vuejs">
-  
-    <link rel="shortcut icon" href="/css/images/logo.png">
-  
-  <title>
-    
-      CoderFocus
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/page/2/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
   
 
 
-</head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png">
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 </div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>CoderFocus</span>
-    </a>
-    <ul class="right-list">
-      
-        <li class="list-item">
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
           
-            <a href="/" class="item-link active">Home</a>
+          
+            首页
           
         </li>
-      
-        <li class="list-item">
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
           
-            <a href="/tags/" class="item-link">Tags</a>
           
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">Archives</a>
+            归档
           
         </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
       
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">About</a>
-          
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
         </li>
       
     </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <section id="posts" class="posts">
+    
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/08/18/是什么影响了数据库索引选型？/">是什么影响了数据库索引选型？</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-18
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p>上一篇文章我们介绍了<a href="https://www.cnblogs.com/songwenjie/p/9414960.html" target="_blank" rel="noopener">索引背后的数据结构</a>，这篇文章我们来介绍影响索引数据结构选型的因素——存储器存取。</p>
+          <div class="read-more">
+            <a href="/2018/08/18/是什么影响了数据库索引选型？/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
     </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+
+    
+
+    
+
+  </article>
+
+      
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link mobile-active">Home</a>
-            
-          </li>
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">Tags</a>
-            
-          </li>
+          <a class="post-link" href="/2018/08/17/数据库索引背后的数据结构/">数据库索引背后的数据结构</a>
         
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">Archives</a>
-            
-          </li>
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-17
+        </span>
         
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">About</a>
-            
-          </li>
         
-      </ul>
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p>在数据之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构，就是索引。</p>
+<p><img src="http://songwenjie.vip/blog/180803/8mdj0Cc1Ba.png?imageslim" alt="mark"></p>
+          <div class="read-more">
+            <a href="/2018/08/17/数据库索引背后的数据结构/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
     </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/08/02/MySQL——索引优化实战/">MySQL——索引优化实战</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-02
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p>上篇文章中介绍了索引的基本内容，这篇文章我们继续介绍索引优化实战。在介绍索引优化实战之前，首先要介绍两个与索引相关的重要概念，这两个概念对于索引优化至关重要。</p>
+          <div class="read-more">
+            <a href="/2018/08/02/MySQL——索引优化实战/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/08/02/MySQL——索引基础/">MySQL——索引基础</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-02
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p>本篇文章，我们将从索引基础开始，介绍什么是索引以及索引的几种类型，然后学习如何创建索引以及索引设计的基本原则。</p>
+          <div class="read-more">
+            <a href="/2018/08/02/MySQL——索引基础/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/">MySQL——通过EXPLAIN分析SQL的执行计划</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-02
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180802/30IeblBc39.png?imageslim" alt="mark">在MySQL中，我们可以通过<strong>EXPLAIN</strong>命令获取MySQL如何执行SELECT语句的信息，包括在SELECT语句执行过程中表如何连接和连接的顺序。</p>
+          <div class="read-more">
+            <a href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/08/01/网络分层的真实含义是什么/">网络分层的真实含义是什么</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-01
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h2 id="四个问题"><a href="#四个问题" class="headerlink" title="四个问题"></a>四个问题</h2><ol>
+<li><p><strong>TCP 在进行三次握手的时候，IP 层和 MAC 层对应都有什么操作呢？</strong></p>
+<p>TCP 发送每一个消息，都会带着 IP 层和 MAC 层了。因为，TCP 每发送一个消息，IP 层和 MAC 层的所有机制都要运行一遍。而你只看到 TCP 三次握手了，其实，IP 层和 MAC 层为此也忙活好久了。</p>
+</li>
+<li><p><strong>A 知道自己的下一个中转站是 B，那从 A 发出来的包，应该把 B 的 IP 地址放在哪里呢？B 知道自己的下一个中转站是 C，从 B 发出来的包，应该把 C 的 IP 地址放在哪里呢？如果放在 IP 协议中的目标地址，那包到了中转站，怎么知道最终的目的地址是 D 呢？</strong></p>
+</li>
+</ol>
+<ol start="3">
+<li><p><strong>二层设备处理的通常是 MAC 层的东西。那我发送一个 HTTP 的包，是在第七层工作的，那是不是不需要经过二层设备？或者即便经过了，二层设备也不处理呢？或者换一种问法，二层设备处理的包里，有没有 HTTP 层的内容呢？</strong></p>
+<p>二层设备收进去的是整个网络包。这里面 HTTP、TCP、 IP、 MAC 都有。什么叫二层设备，就是只把 MAC 头摘下来，看看到底是丢弃、转发，还是自己留着。</p>
+</li>
+<li><p>从你的电脑，通过 SSH 登录到公有云主机里面，都需要经历哪些过程？或者说你打开一个电商网站，都需要经历哪些过程？说得越详细越好。</p>
+</li>
+</ol>
+<h2 id="网络为什么要分层？"><a href="#网络为什么要分层？" class="headerlink" title="网络为什么要分层？"></a>网络为什么要分层？</h2><p>因为复杂的程序都要分层。所谓的二层设备、三层设备，都是这些设备上跑的程序不同而已。始终想象自己是一个处理网络包的程序，如何拿到网络包、如何根据规则进行处理、如何把包发出去。</p>
+<h2 id="程序是如何工作的？"><a href="#程序是如何工作的？" class="headerlink" title="程序是如何工作的？"></a>程序是如何工作的？</h2><p><img src="http://songwenjie.vip/blog/180731/EJdJIc9Kak.png?imageslim" alt="mark"></p>
+<p>想象自己是一个处理网络包的程序，接收到Buffer时，调用process_layer2(buffer)函数，摘掉二层的头（MAC头），如果MAC地址和自己的相符，则说明包是发送给自己的。继续调用process_layer3(buffer)函数，此时Buffer里已经没有二层的头（MAC头）了。如果IP地址不是自己的，那就应该转发出去；如果IP地址是自己的，就是发送给自己的。摘掉三层的头（IP头），继续交给上一层处理。假设上层是基于TCP，则调用process_tcp(buffer)函数。此时Buffer中已经没有三层的头（IP头），所以需要查看四层的头（TCP头）。看这是发起还是应答，或者是一个普通的数据包。如果是发起或者应答，则接下来可能要发送一个回复包。如果是一个普通数据包，则交由上层处理（process_http(buffer)函数）。或者交由应用程序程序自己去处理，交给哪个应用程序呢？在四层的头（TCP头）里有端口号，不同的程序的监听不同的端口号。我们假设交给浏览器去处理，浏览器解析HTML，展示出页面。</p>
+<p>此时用户点击页面上的按钮，浏览器发起一次新的HTTP请求。首先调用send_tcp(buffer)函数，buffer就是HTTP请求内容，这个函数会给buffer加一个TCP头，记录下源端口号和目标端口号（浏览器会提供）。然后调用send_layer3(buffer)函数，此时buffer中包含了HTTP的请求内容和请求头以及TCP头，在这个函数里加一个IP头，记录下源IP地址和目标IP地址。然后调用send_layer2(buffer)函数，buffer里面已经包含了HTTP的请求内容和请求头、TCP头以及IP头，在这个函数里面加一个MAC头，记录源MAC地址和目标MAC地址，此时目标MAC地址不一定能知道，如果不知道的话，需要通过ARP协议获取MAC地址。MAC地址是必须要有的。</p>
+<h2 id="层与层之间的关系"><a href="#层与层之间的关系" class="headerlink" title="层与层之间的关系"></a>层与层之间的关系</h2><p>层层封装的关系，可以想象为套娃。<strong>只要是在网络上跑的包，都是完整的。可以有下层没上层，但是绝对不可能有上层没下层。</strong></p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/29/MySQL中能够使用索引的场景/">MySQL中能够使用索引的场景</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-29
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h3 id="匹配全值"><a href="#匹配全值" class="headerlink" title="匹配全值"></a>匹配全值</h3><p><strong>对索引中所有列都有指定具体值，即是对索引中的所有列都有等值匹配的条件</strong>。</p>
+<p>rental表的索引情况，其中idx_rental_date是复合索引：</p>
+<p><img src="http://songwenjie.vip/blog/180729/7a3GHJhAG8.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND inventory_id=373 AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/cfG1j75Hkc.png?imageslim" alt="mark"></p>
+<p>优化器选择了复合索引idx_rental_date</p>
+<h3 id="匹配值的范围查询"><a href="#匹配值的范围查询" class="headerlink" title="匹配值的范围查询"></a>匹配值的范围查询</h3><p><strong>对索引的值进行范围查找。</strong></p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE customer_id&gt;373 AND customer_id&lt;400;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/LI0HcJl9f2.png?imageslim" alt="mark"></p>
+<p>优化器选择索引范围查询，使用索引idx_fk_customer_id加速访问。注意Extra列为<code>Using index condition</code>，表明MySQL使用了<strong>ICP</strong>进一步优化查询。关于<strong>ICP</strong>后面会单独介绍。</p>
+<h3 id="匹配最左前缀"><a href="#匹配最左前缀" class="headerlink" title="匹配最左前缀"></a>匹配最左前缀</h3><p><strong>MySQL中B-Tree索引使用的首要原则——最左匹配原则</strong></p>
+<p>对于复合索引而言，MySQL仅仅使用索引的最左列进行查找。比如在col1+col2+col3字段上的联合索引能够被包含col1、（col1+col2)、（col1+col2+col3）的等值查询利用到，但是不能够被col2、col3、（col2+col3）的等值查询利用到。</p>
+<p>如果查询条件中包含了索引的第一列rental_date和第三列customer_id，从key中可以看出优化器使用了复合索引idx_rental_date进行条件过滤：</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/HbIlhCG9C1.png?imageslim" alt="mark"></p>
+<p>如果查询条件中包含了索引的第二列inventory_id和第三列customer_id，从key中可以看出优化器使用了其各自的索引进行条件过滤，但是进行了索引合并优化（type=index_merge）：</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE  inventory_id=373 AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/bAJch04gGK.png?imageslim" alt="mark"></p>
+<h3 id="仅仅对索引进行查询"><a href="#仅仅对索引进行查询" class="headerlink" title="仅仅对索引进行查询"></a>仅仅对索引进行查询</h3><p><strong>当查询的列都在索引的字段中时，查询的效率更高。</strong></p>
+<p><code>EXPLAIN SELECT customer_id FROM rental;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/iaifmeLbB1.png?imageslim" alt="mark"></p>
+<p>优化器选择了查询列的索引加速访问，并且Extra为<code>Using index</code>意味着直接访问索引就足够取到所需要的数据，不会再通过索引回表查询。</p>
+<h3 id="匹配列前缀"><a href="#匹配列前缀" class="headerlink" title="匹配列前缀"></a>匹配列前缀</h3><p><strong>使用只包含索引字段开头一部分进行数据查找</strong></p>
+<p>为customer表建立前缀索引：</p>
+<p><img src="http://songwenjie.vip/blog/180729/ile7h05eJG.png?imageslim" alt="mark"></p>
+<p>查看customer表的索引情况：</p>
+<p><img src="http://songwenjie.vip/blog/180729/igk78mI9dA.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT email  FROM customer WHERE email LIKE &#39;MARY%&#39;;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/m5dAfFIh21.png?imageslim" alt="mark"></p>
+<p>可以看到，前缀索引idx_email已经被利用上了，Extra为<code>Using where</code>表明优化器还需要通过索引回表查询数据，因为索引的只是email字段的前5个字符。</p>
+<h3 id="如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）"><a href="#如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）" class="headerlink" title="如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）"></a>如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）</h3><p><img src="http://songwenjie.vip/blog/180729/69A8elfdf0.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM payment WHERE rental_id IS NULL;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/dgAJBA6gH3.png?imageslim" alt="mark"></p>
+<h3 id="ICP优化"><a href="#ICP优化" class="headerlink" title="ICP优化"></a>ICP优化</h3><p>MySQL5.6引入了Index Condition Pushdown（ICP）的特性，进一步优化了查询。Pushdown表示操作下放，某些情况下的条件过滤操作下放到存储引擎。</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND customer_id&gt;=300 AND customer_id&lt;=400;</code></p>
+<p>在5.6版本之前：</p>
+<p>优化器首先使用复合索引idx_rental_date过滤出符合条件<code>rental_date=&#39;2005-05-25&#39;</code>的记录，然后根据复合索引idx_rental_date回表获取记录，最终根据条件<code>customer_id&gt;=300 AND customer_id&lt;=400</code>过滤出最后的查询结果（在服务层完成）。</p>
+<p>在5.6版本之后：</p>
+<p>MySQL使用了ICP来进一步优化查询，在检索的时候，把条件<code>customer_id&gt;=300 AND customer_id&lt;=400</code>也推到存储引擎层完成过滤，这样能够降低不必要的IO访问。Extra为<code>Using index condition</code>就表示使用了ICP优化。</p>
+<p><img src="http://songwenjie.vip/blog/180729/FDGC3F3EJ1.png?imageslim" alt="mark"></p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">MySQL主从复制——主库已有数据的解决方案</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-29
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h1 id="MySQL主从复制——主库已有数据的解决方案"><a href="#MySQL主从复制——主库已有数据的解决方案" class="headerlink" title="MySQL主从复制——主库已有数据的解决方案"></a>MySQL主从复制——主库已有数据的解决方案</h1><p>在上篇文章中我们介绍了<a href="https://mp.weixin.qq.com/s?__biz=MzIxNjc2MzI2NQ==&amp;mid=2247483732&amp;idx=1&amp;sn=71f99f1de0a58d0808043678654f728d&amp;chksm=97855fbaa0f2d6ac63837373fed6ee2be9ecf57ab31085fcedafc8f78b1db249a0383a56329a#rd" target="_blank" rel="noopener">基于Docker的Mysql主从搭建</a>，一主多从的搭建过程就是重复了一主一从的从库配置过程，需要注意的是，要保证主从库my.cnf中<strong>server-id</strong>的唯一性。搭建完成后，可以在主库<code>show slave hosts</code>查看有哪些从库节点。</p>
+<p><img src="http://songwenjie.vip/blog/180727/D59bemF1kd.png?imageslim" alt="mark"></p>
+<p>我们来简单了解一下Mysql主从复制的过程：</p>
+<p>(1)  master将改变记录到二进制日志(binary log)中（这些记录叫做二进制日志事件，binary log events）；<br>(2)  slave将master的binary log events拷贝到它的中继日志(relay log)；<br>(3)  slave重放中继日志中的事件，将改变反映它自己的数据。</p>
+<p><img src="http://songwenjie.vip/blog/180727/4BBfe2EJLc.png?imageslim" alt="mark"></p>
+<h2 id="MySQL主从复制——主库已有数据的解决方案-1"><a href="#MySQL主从复制——主库已有数据的解决方案-1" class="headerlink" title="MySQL主从复制——主库已有数据的解决方案"></a>MySQL主从复制——主库已有数据的解决方案</h2><p>由单机架构切换到一主一从或一主多从，在增加从库节点前，主库可能已经运行过一段时间，这种情况在实际业务中很常见。那么如何应对开启主从复制前主库有数据的场景呢？</p>
+<p>第一种方案是选择忽略主库之前的数据，不做处理。这种方案只适用于不重要的可有可无的数据，并且业务上能够容忍主从库数据不一致的场景。</p>
+<p>第二种方案是对主库的数据进行备份，然后将主数据库中导出的数据导入到从数据库，然后再开启主从复制，以此来保证主从数据库数据一致。</p>
+<p>我们来详细看一下第二种方案的处理：</p>
+<h3 id="查看主数据库已有的数据库"><a href="#查看主数据库已有的数据库" class="headerlink" title="查看主数据库已有的数据库"></a>查看主数据库已有的数据库</h3><p>我们在主数据库准备了一个<strong>TEST1</strong>库，并且在其中准备一张数据表TEST和几条测试数据。</p>
+<p><img src="http://songwenjie.vip/blog/180727/hk6cFfb7ke.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180727/bFfDjAj41f.png?imageslim" alt="mark"></p>
+<h3 id="使用Docker创建从数据库"><a href="#使用Docker创建从数据库" class="headerlink" title="使用Docker创建从数据库"></a>使用Docker创建从数据库</h3><p><code>docker run -p 3346:3306 --name mysql-slave4 -e MYSQL_ROOT_PA SSWORD=123456 -d mysql:5.7</code></p>
+<p><img src="http://songwenjie.vip/blog/180727/JgGFecf6jl.png?imageslim" alt="mark"></p>
+<h3 id="锁定主数据库"><a href="#锁定主数据库" class="headerlink" title="锁定主数据库"></a>锁定主数据库</h3><p>锁定主数据库，只允许读取不允许写入，这样做的目的是防止备份过程中或备份完成之后有新数据插入，导致备份数据和主数据数据不一致。</p>
+<p> <code>mysql&gt; flush tables with read lock;</code></p>
+<p><img src="http://songwenjie.vip/blog/180727/EFbLALeK8a.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180727/4El4l5l62D.png?imageslim" alt="mark"></p>
+<h3 id="查询主数据库状态，并记下FILE及Position的值"><a href="#查询主数据库状态，并记下FILE及Position的值" class="headerlink" title="查询主数据库状态，并记下FILE及Position的值"></a>查询主数据库状态，并记下FILE及Position的值</h3><p><code>mysql&gt;show master status;</code></p>
+<p><img src="http://songwenjie.vip/blog/180727/L40Gh5hFdE.png?imageslim" alt="mark"></p>
+<h3 id="备份主数据库"><a href="#备份主数据库" class="headerlink" title="备份主数据库"></a>备份主数据库</h3><p>退出mysql终端，执行docker mysql备份命令</p>
+<p><code>docker exec [CONTAINER] /usr/bin/mysqldump -u username --password=xxx [DATABASE] &gt; backup.sql</code></p>
+<p>我们这里只需要备份<strong>TEST1</strong>数据库，若要备份全部数据库,[DATABASE]处使用<code>--all-databases</code>。</p>
+<p><img src="http://songwenjie.vip/blog/180727/8kfC42Ba9J.png?imageslim" alt="mark"></p>
+<p>此时报出<code>Warning: Using a password on the command line interface can be insecure.</code>，这是因为我们在命令行输入了密码，所以会有安全警告信息。解决方案是在/etc/mysql/my.cnf中加入如下配置：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqldump]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
+<p>修改完配置文件后,再次执行备份命令不需要涉及用户名密码相关信息。</p>
+<p><img src="http://songwenjie.vip/blog/180727/2Eeg3fHiH5.png?imageslim" alt="mark"></p>
+<h3 id="主数据库备份数据导入从数据库"><a href="#主数据库备份数据导入从数据库" class="headerlink" title="主数据库备份数据导入从数据库"></a>主数据库备份数据导入从数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat backup.sql | docker exec -i [<span class="keyword">CONTAINER</span>] /usr/<span class="keyword">bin</span>/mysql -u username <span class="comment">--password=xxx [DATABASE]</span></span><br></pre></td></tr></table></figure>
+<p>和上一步一样，我们也需要在从数据库配置用于备份的用户名和密码信息。</p>
+<p><img src="http://songwenjie.vip/blog/180727/jikB1DLIKh.png?imageslim" alt="mark"></p>
+<p>需要先在从数据库建立一个同名数据库，才能导入主数据库备份数据。切换到从数据库执行<code>CREATE DATABASE TEST1;</code>，然后再次导入主数据备份数据。</p>
+<p><img src="http://songwenjie.vip/blog/180727/LBH1LaJe87.png?imageslim" alt="mark"></p>
+<p>此时备份数据导入已完成，可以在从数据库进行数据验证。</p>
+<p><img src="http://songwenjie.vip/blog/180727/h6akj9F724.png?imageslim" alt="mark"></p>
+<h3 id="配置从数据库"><a href="#配置从数据库" class="headerlink" title="配置从数据库"></a>配置从数据库</h3><p><code>docker exec -it mysql-slave4 /bin/bash</code></p>
+<p><code>cd /etc/mysql</code></p>
+<p><img src="http://songwenjie.vip/blog/180727/JaCdkIaijJ.png?imageslim" alt="mark"></p>
+<p><code>vi my.cnf</code>，加入以下配置，注意<strong>server-id</strong>要保证唯一：</p>
+<p><img src="http://songwenjie.vip/blog/180727/093e935lEi.png?imageslim" alt="mark"></p>
+<p><code>service mysql restart</code>重启mysql服务，这会使得mysql服务所在的docker容器停止</p>
+<p><code>docker start mysql-slave4</code>启动docker容器</p>
+<h3 id="配置主从链接"><a href="#配置主从链接" class="headerlink" title="配置主从链接"></a>配置主从链接</h3><p>切换到从数据库，执行<code>change master to master_host=&#39;172.17.0.2&#39;, master_user=&#39;slave&#39;, master_password=&#39;123456&#39;, master_port=3306, master_log_file=&#39;mysql-bin.000001&#39;, master_log_pos= 4952, master_connect_retry=30;</code>，关于这个命令在上一篇博客中有详细介绍。</p>
+<p>启动主从复制<code>start slave;</code>，此时查看从库状态<code>show slave status \G;</code>，若是SlaveIORunning 和 SlaveSQLRunning 都是Yes，说明开启主从复制过程成功。</p>
+<p><img src="http://songwenjie.vip/blog/180727/aKhklabDkC.png?imageslim" alt="mark"></p>
+<h3 id="解锁主数据库"><a href="#解锁主数据库" class="headerlink" title="解锁主数据库"></a>解锁主数据库</h3><p>切换回主数据库的终端，进行表解锁操作。</p>
+<p><code>unlock tables;</code></p>
+<p><img src="http://songwenjie.vip/blog/180727/mLK3lkbCFl.png?imageslim" alt="mark"></p>
+<h3 id="测试主从复制"><a href="#测试主从复制" class="headerlink" title="测试主从复制"></a>测试主从复制</h3><p>在主数据库插入一条测试数据</p>
+<p><img src="http://songwenjie.vip/blog/180727/Kjki8Lh4fh.png?imageslim" alt="mark"></p>
+<p>切换到从数据库，查询测试数据，说明主从复制成功。</p>
+<p><img src="http://songwenjie.vip/blog/180727/LBic4eFm8h.png?imageslim" alt="mark"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>应该尽可能优化流程，减少锁表时间。</p>
+<p>尽可能减少锁表范围，只锁定相关的数据库。</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/26/Docker常用命令/">Docker常用命令</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-26
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h1 id="Docker常用命令："><a href="#Docker常用命令：" class="headerlink" title="Docker常用命令："></a>Docker常用命令：</h1><ol>
+<li><p><code>docker pull 镜像名称</code></p>
+<p>拉取某个镜像到本地</p>
+</li>
+<li><p><code>docker images</code></p>
+<p>查看镜像列表</p>
+</li>
+<li><p><code>docker inspect 镜像名称</code></p>
+<p>查看某个镜像详情</p>
+</li>
+<li><p><code>docker rmi 镜像名称</code></p>
+<p>删除某个镜像。对于存在容器的镜像，首先需要删除其对应的容器才能删除该镜像。</p>
+</li>
+<li><p><code>docker inspect --format=&#39;{ {.NetworkSettings.IPAddress} }&#39; 容器名称|容器id</code></p>
+<p>查看容器IP</p>
+</li>
+</ol>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/">Docker问题(一)：bash: vi: command not found</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-26
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h2 id="Docker问题-一-：bash-vi-command-not-found"><a href="#Docker问题-一-：bash-vi-command-not-found" class="headerlink" title="Docker问题(一)：bash: vi: command not found"></a>Docker问题(一)：bash: vi: command not found</h2><p>在使用docker时，有时候我们需要编辑配置文件，需要使用vim或者vi命令,但是会发现：</p>
+<p><code>bash: vi: command not found</code></p>
+<p>因为vim没有安装，这个时候需要我们使用<code>apt-get install vim</code>命令安装vim</p>
+<p>会出现如下问题：</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading <span class="keyword">state</span> information... Done</span><br><span class="line">E: Unable <span class="keyword">to</span> locate package vim</span><br></pre></td></tr></table></figure>
+<p>此时执行<code>apt-get update</code>，然后再次执行<code>apt-get install vim</code>即可成功安装vim。</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+      
+  <nav class="pagination">
+    
+      <a class="prev" href="/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    
+    
+      <a class="next" href="/page/3/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+    
+  </section>
+
+          </div>
+          
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
   </div>
-</header>
 
-    <main class="app-body">
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/18/是什么影响了数据库索引选型？/">是什么影响了数据库索引选型？</a>
-      </h2>
-      <p class="article-date">August 18, 2018</p>
-      
-        
-  <a href="/tags#MySQL">
-    <span class="tag-code">MySQL</span>
-  </a>
 
-      
-      <div class="article-summary">
-        
-          上一篇文章我们介绍了索引背后的数据结构，这篇文章我们来介绍影响索引数据结构选型的因素——存储器存取。
-主存存取原理主存的构成主存储器（简称主存或内存）包括存取体、各种逻辑部件及控制电路等。存储体由许多存储单元组成，每个存储单元又包含若干个存储元件，每个存储元件能寄存一位二进制代码“0”或“1 ...
-        
-      </div>
-      <a class="more" href="/2018/08/18/是什么影响了数据库索引选型？/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/17/数据库索引背后的数据结构/">数据库索引背后的数据结构</a>
-      </h2>
-      <p class="article-date">August 17, 2018</p>
-      
-        
-  <a href="/tags#MySQL">
-    <span class="tag-code">MySQL</span>
-  </a>
 
-      
-      <div class="article-summary">
-        
-          在数据之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构，就是索引。
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
 
-B-TreeB-Tree是一种平衡的多路查找(又称排序)树，在文件系统中和数据库系统中有所应用。主要用作文件的索引。其中的 ...
-        
-      </div>
-      <a class="more" href="/2018/08/17/数据库索引背后的数据结构/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/02/MySQL——索引优化实战/">MySQL——索引优化实战</a>
-      </h2>
-      <p class="article-date">August 2, 2018</p>
-      
-        
-  <a href="/tags#MySQL">
-    <span class="tag-code">MySQL</span>
-  </a>
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2018
 
-      
-      <div class="article-summary">
-        
-          MySQL——索引优化实战上篇文章中介绍了索引的基本内容，这篇文章我们继续介绍索引优化实战。在介绍索引优化实战之前，首先要介绍两个与索引相关的重要概念，这两个概念对于索引优化至关重要。
-本篇文章用于测试的user表结构：
-
-索引相关的重要概念基数单个列唯一键（distict_keys）的数量 ...
-        
-      </div>
-      <a class="more" href="/2018/08/02/MySQL——索引优化实战/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/02/MySQL——索引基础/">MySQL——索引基础</a>
-      </h2>
-      <p class="article-date">August 2, 2018</p>
-      
-        
-  <a href="/tags#MySQL">
-    <span class="tag-code">MySQL</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          本篇文章，我们将从索引基础开始，介绍什么是索引以及索引的几种类型，然后学习如何创建索引以及索引设计的基本原则。
-本篇文章中用于测试索引创建的user表的结构如下：
-
-什么是索引
- 索引（在 MySQL 中也叫“键key”）是存储引擎快速找到记录的一种数据结构
- ——《高性能MySQL》
-
-我 ...
-        
-      </div>
-      <a class="more" href="/2018/08/02/MySQL——索引基础/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/">MySQL——通过EXPLAIN分析SQL的执行计划</a>
-      </h2>
-      <p class="article-date">August 2, 2018</p>
-      
-        
-  <a href="/tags#MySQL">
-    <span class="tag-code">MySQL</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          MySQL——通过EXPLAIN分析SQL的执行计划在MySQL中，我们可以通过EXPLAIN命令获取MySQL如何执行SELECT语句的信息，包括在SELECT语句执行过程中表如何连接和连接的顺序。
-
-下面分别对EXPLAIN命令结果的每一列进行说明：
-
-select_type:表示SEL ...
-        
-      </div>
-      <a class="more" href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/08/01/网络分层的真实含义是什么/">网络分层的真实含义是什么</a>
-      </h2>
-      <p class="article-date">August 1, 2018</p>
-      
-        
-  <a href="/tags#网络">
-    <span class="tag-code">网络</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          四个问题
-TCP 在进行三次握手的时候，IP 层和 MAC 层对应都有什么操作呢？
-TCP 发送每一个消息，都会带着 IP 层和 MAC 层了。因为，TCP 每发送一个消息，IP 层和 MAC 层的所有机制都要运行一遍。而你只看到 TCP 三次握手了，其实，IP 层和 MAC 层为此也忙活好 ...
-        
-      </div>
-      <a class="more" href="/2018/08/01/网络分层的真实含义是什么/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/29/MySQL中能够使用索引的场景/">MySQL中能够使用索引的场景</a>
-      </h2>
-      <p class="article-date">July 29, 2018</p>
-      
-        
-  <a href="/tags#MySQL">
-    <span class="tag-code">MySQL</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          匹配全值对索引中所有列都有指定具体值，即是对索引中的所有列都有等值匹配的条件。
-rental表的索引情况，其中idx_rental_date是复合索引：
-
-EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39;  ...
-        
-      </div>
-      <a class="more" href="/2018/07/29/MySQL中能够使用索引的场景/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">MySQL主从复制——主库已有数据的解决方案</a>
-      </h2>
-      <p class="article-date">July 29, 2018</p>
-      
-        
-  <a href="/tags#Docker">
-    <span class="tag-code">Docker</span>
-  </a>
-
-  <a href="/tags#MySQL">
-    <span class="tag-code">MySQL</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          MySQL主从复制——主库已有数据的解决方案在上篇文章中我们介绍了基于Docker的Mysql主从搭建，一主多从的搭建过程就是重复了一主一从的从库配置过程，需要注意的是，要保证主从库my.cnf中server-id的唯一性。搭建完成后，可以在主库show slave hosts查看有哪些从库 ...
-        
-      </div>
-      <a class="more" href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/26/Docker常用命令/">Docker常用命令</a>
-      </h2>
-      <p class="article-date">July 26, 2018</p>
-      
-        
-  <a href="/tags#Docker">
-    <span class="tag-code">Docker</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          Docker常用命令：
-docker pull 镜像名称
-拉取某个镜像到本地
-
-docker images
-查看镜像列表
-
-docker inspect 镜像名称
-查看某个镜像详情
-
-docker rmi 镜像名称
-删除某个镜像。对于存在容器的镜像，首先需要删除其对应的容器才能删除该镜像。
- ...
-        
-      </div>
-      <a class="more" href="/2018/07/26/Docker常用命令/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/">Docker问题(一)：bash: vi: command not found</a>
-      </h2>
-      <p class="article-date">July 26, 2018</p>
-      
-        
-  <a href="/tags#Docker">
-    <span class="tag-code">Docker</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          Docker问题(一)：bash: vi: command not found在使用docker时，有时候我们需要编辑配置文件，需要使用vim或者vi命令,但是会发现：
-bash: vi: command not found
-因为vim没有安装，这个时候需要我们使用apt-get insta ...
-        
-      </div>
-      <a class="more" href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/">Read more</a>
-    </article>
-  
-
-  
-    <div class="guide-pager">
-  
-    <a href="/"><span class="page-arrow">← </span>Prev</a>
-  
-  
-    <a href="/page/3/">Next<span class="page-arrow"> →</span></a>
-  
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
 </div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+
+
+    
   
-</main>
 
 
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
-</div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2018 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>   
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-</script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
-
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
-      }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
-
-<script src="/js/script.js"></script>
+  
+  
 
 
-			
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
 
   </body>
 </html>
