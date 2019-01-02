@@ -208,6 +208,109 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/07/26/Docker常用命令/">Docker常用命令</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-26
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h1 id="Docker常用命令："><a href="#Docker常用命令：" class="headerlink" title="Docker常用命令："></a>Docker常用命令：</h1><ol>
+<li><p><code>docker pull 镜像名称</code></p>
+<p>拉取某个镜像到本地</p>
+</li>
+<li><p><code>docker images</code></p>
+<p>查看镜像列表</p>
+</li>
+<li><p><code>docker inspect 镜像名称</code></p>
+<p>查看某个镜像详情</p>
+</li>
+<li><p><code>docker rmi 镜像名称</code></p>
+<p>删除某个镜像。对于存在容器的镜像，首先需要删除其对应的容器才能删除该镜像。</p>
+</li>
+<li><p><code>docker inspect --format=&#39;{ {.NetworkSettings.IPAddress} }&#39; 容器名称|容器id</code></p>
+<p>查看容器IP</p>
+</li>
+</ol>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/">Docker问题(一)：bash: vi: command not found</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-26
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h2 id="Docker问题-一-：bash-vi-command-not-found"><a href="#Docker问题-一-：bash-vi-command-not-found" class="headerlink" title="Docker问题(一)：bash: vi: command not found"></a>Docker问题(一)：bash: vi: command not found</h2><p>在使用docker时，有时候我们需要编辑配置文件，需要使用vim或者vi命令,但是会发现：</p>
+<p><code>bash: vi: command not found</code></p>
+<p>因为vim没有安装，这个时候需要我们使用<code>apt-get install vim</code>命令安装vim</p>
+<p>会出现如下问题：</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading <span class="keyword">state</span> information... Done</span><br><span class="line">E: Unable <span class="keyword">to</span> locate package vim</span><br></pre></td></tr></table></figure>
+<p>此时执行<code>apt-get update</code>，然后再次执行<code>apt-get install vim</code>即可成功安装vim。</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/26/vim常用命令/">vim常用命令</a>
         
       </h1>
@@ -917,158 +1020,6 @@
   </article>
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/23/未利用封装/">未利用封装</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-23
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
-<h1 id="未利用封装"><a href="#未利用封装" class="headerlink" title="未利用封装"></a>未利用封装</h1><p>客户代码使用显式类型检查（使用一系列if-else或switch语句检查对象的类型），而不利用出层次结构内已封装的类型变化时，将导致这种坏味。</p>
-<h2 id="为什么要利用封装？"><a href="#为什么要利用封装？" class="headerlink" title="为什么要利用封装？"></a>为什么要利用封装？</h2><p>一种臭名昭著的坏味是，在客户代码中使用条件语句（if-else或switch语句）来显式地检查类型，并根据类型执行相应的操作。我们这里讨论的是：<strong>要检查的类型都封装在了层次结构中，但没有利用这一点，即使用显式类型检查，而不依赖于动态多态性</strong>。这将导致如下问题：</p>
-<ul>
-<li>显式类型检查让客户程序和具体类型紧密耦合，降低了设计的可维护性。例如，引入新类型后，必须修改客户程序，在其中检查新类型以及执行相应操作的代码。</li>
-<li>客户程序必须显式地检查层次结构中所有相关的类型。如果未检查一个或多个这样的类型，客户程序在运行阶段可能出现意外的行为。相反，如果利用了<strong>运行时多态</strong>，完全可以避免这种问题。</li>
-</ul>
-<h2 id="未利用封装潜在的原因"><a href="#未利用封装潜在的原因" class="headerlink" title="未利用封装潜在的原因"></a>未利用封装潜在的原因</h2><p>###以过程型思维使用面向对象语言</p>
-<p>开发时的思维是以代码执行过程为导向，自然而然就会使用if-else语句和switch语句。</p>
-<h3 id="未应用面向对象原则"><a href="#未应用面向对象原则" class="headerlink" title="未应用面向对象原则"></a>未应用面向对象原则</h3><p>无力将面向对象的概念付诸实践。</p>
-<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>根为抽象类DataBuffer的层次结构封装了各种基本数据结构型数组，DataBuffer的子类DataBufferByte、DataBufferDouble、DataBufferFloat、DataBufferInt支持相应的基本数据类型数组。DataBuffer定义了常亮TYPE_BYTE、TYPE_DOUBLE、TYPE_FLOAT、TYPE_INT。客户程序使用TYPE_BYTE、TYPE_DOUBLE、TYPE_FLOAT、TYPE_INT的DataBuffer来存储数据。</p>
-<p>下面是客户程序的示例，演示如何使用switch语句执行针对具体类型的显式类型检查。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">switch (transferType)</span><br><span class="line">&#123;</span><br><span class="line">    case DataBuffer.TYPE_BYTE:</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        pixel = bdata[0] &amp; 0xff;</span><br><span class="line">        length = bdata.Length;</span><br><span class="line">        break;</span><br><span class="line">    case DataBuffer.TYPE_USHORT:</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        pixel = sdata[0] &amp; 0xffff;</span><br><span class="line">        length = sdata.Length;</span><br><span class="line">        break;</span><br><span class="line">    case DataBuffer.TYPE_INT:</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        pixel = idata[0];</span><br><span class="line">        length = idata.Length;</span><br><span class="line">        break;</span><br><span class="line">    default:</span><br><span class="line">        throw new Exception(&quot;不支持的transferType&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面代码使用的数据成员transferType定义如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protected int transferType;</span><br></pre></td></tr></table></figure>
-<p><strong>重构建议：将决定行为的条件语句删除，并在层次结构中引入多态方法。</strong></p>
-<p>在客户程序中，提供合适的DataBuffer子类对象。在DataBuffer层次结构类型中，定义方法GetPixel()和GetLengthl()。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public abstract class DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public const int TYPE_BYTE = 1;</span><br><span class="line">    public const int TYPE_DOUBLE = 2;</span><br><span class="line">    public const int TYPE_FLOAT = 3;</span><br><span class="line">    public const int TYPE_INT = 4;</span><br><span class="line">    public const int TYPE_USHORT = 5;</span><br><span class="line"></span><br><span class="line">    public abstract int GetPixel(object inData);</span><br><span class="line">    public abstract int GetLength(object inData);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferInt: DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        return  idata[0];</span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        return idata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferByte : DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        return bdata[0] &amp; 0xff;</span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        return bdata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferUShort : DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        return sdata[0] &amp; 0xffff;  </span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        return sdata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>并将客户程序switch语句及其case语句简化为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int pixel = GetPixel(inData);</span><br><span class="line">int length = GetLength(inData);</span><br></pre></td></tr></table></figure>
-<p>由于引用dataBuffer指向的是传入的DataBuffer子类对象，因此上述语句将调用相应子类的GetPixel()和GetLength()方法。这里需要注意的是客户程序代码提供特定DataBuffer子类对象，检查输入数据类型和创建DataBuffer子类对象的工作由客户程序负责。可能需要在客户代码或一个工厂类中使用switch-case语句，而<strong>只需要使用一次这个switch-case语句</strong>。由于客户程序不知道具体是哪个DataBuffer子类，所以它与DataBuffer层次结构耦合更低。这样在DataBuffer层次结构修改既有类型和添加新类型时，不会对客户程序造成影响。即使有影响也是只需要使用一次的这个switch-case语句，修改代码代价极小。</p>
-<p>这让我想起，我在看完《重构》后天真幼稚的想消除项目中的switch-case语句，只要项目中存在switch-case语句我就觉得存在坏味道，此后的一段时间我很痛苦，因为项目中总是存在消灭不了的switch-case语句。其实如果项目中需要与外部世界的实体交互，要避免使用条件逻辑很难。例如用户在页面的操作在代码中肯定对应不同的对象来处理，这中间必须使用条件逻辑判断使用哪个对象处理。但是这样的判断应该只有一处，负责日后的代码维护是个灾难。</p>
-<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>还是那句话switch-case语句和if-else语句不可怕，可怕的是多个witch-case语句和if-else语句。</p>
-<p>对于这样的代码我们要给予充分的关注：</p>
-<p>代码1：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码2：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码3：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样的代码是难以扩展的，新增一个类NNN，就需要找到代码1、2、3甚至n进行修改，很容易遗漏。而且遗漏造成的错误只用在代码运行阶段才能发现。</p>
-<p>这种情况反映出来的问题就是没有利用封装，已经有了层次结构，却没有予以利用。没有面向接口编程，每个地方面向的都是具体的实现类，每个地方都需要判断实例的类型才可以进行下一步的动作。</p>
-<p>进行重构：</p>
-<p>代码1：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng1</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
-<p>代码2：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng2</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
-<p>代码3：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng3</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
-<p>obj可以是XXX、YYY、ZZZ。对于现在的代码，新增一个类NNN，代码1、2、3甚至n处根本不需要任何改动。因为它们实现了统一的接口，并且符合开闭原则。</p>
-<p>参考：《软件设计重构》</p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/23/泄露的封装/">泄露的封装</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-23
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
-<h1 id="泄露的封装"><a href="#泄露的封装" class="headerlink" title="泄露的封装"></a>泄露的封装</h1><p>抽象通过公有接口（方法）暴露或泄露实现细节时，将导致这种坏味。需要注意的是，即使抽象不存在“<a href="http://www.cnblogs.com/songwenjie/p/8974296.html" target="_blank" rel="noopener">不充分的封装</a>”坏味，其公有接口也有可能泄露实现细节。</p>
-<h2 id="为什么不能泄露封装？"><a href="#为什么不能泄露封装？" class="headerlink" title="为什么不能泄露封装？"></a>为什么不能泄露封装？</h2><p>为实现有效封装，必须将抽象的接口（即抽象的内容）和实现（即抽象的方式）分离。为遵循隐藏原则，必须对客户程序隐藏抽象的实现方面。</p>
-<p>如果通过公有接口暴露了实现细节（违反了隐藏原则）可能会造成:</p>
-<ul>
-<li>对实现进行修改时，可能会影响客户程序</li>
-<li>暴露的实现细节可能会让客户程序能够通过公有接口访问内部数据结构，进而有意或无意地损坏抽象的内部状态。</li>
-</ul>
-<h2 id="泄露的封装的潜在原因"><a href="#泄露的封装的潜在原因" class="headerlink" title="泄露的封装的潜在原因"></a>泄露的封装的潜在原因</h2><h3 id="不知道该隐藏哪些东西"><a href="#不知道该隐藏哪些东西" class="headerlink" title="不知道该隐藏哪些东西"></a>不知道该隐藏哪些东西</h3><p>开发人员通常会在无意之间泄露实现细节。</p>
-<h3 id="使用细粒度接口"><a href="#使用细粒度接口" class="headerlink" title="使用细粒度接口"></a>使用细粒度接口</h3><p>类的公有接口直接提供了细粒度的方法，这些细粒度的方法通常会向客户程序暴露不必要的实现细节。更好的做法是在类的公有接口提供粗粒度的方法，在粗粒度方法内部使用细粒度的私有方法。</p>
-<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><p>我们用程序来维护一个待办事项列表。在ToDoList类中，公有方法GetListEntries()返回对象存储的待办事项列表。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ToDoList</span><br><span class="line">&#123;</span><br><span class="line">    private List&lt;string&gt; listEntries = new List&lt;string&gt;();</span><br><span class="line"></span><br><span class="line">    public List&lt;string&gt; GetListEntries()</span><br><span class="line">    &#123;</span><br><span class="line">        return listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void AddListEntry(string entry)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>问题出在方法的返回类型上，它暴露了一个内部细节，ToDoList内部使用List<string>来存储待办事项列表。</string></p>
-<p>现在问题来了，如果待办事项列表程序主要执行插入和删除操作，那么选择使用List<string>没啥问题；但是后来发现查找频率比修改频率高，那么使用HashTable可能更合适。然而GetListEntries()的返回类型是List<string>，如果修改这个方法的返回类型，可能破坏依赖于这个方法的客户程序。如果要支持未来数据结构的变更，方法返回类型可以使用IEnumerable（C#中的集合类型都实现的接口类型），这样可以做到在不改变方法签名的条件下(里氏替换原则)，替换存储待办事项列表的数据结构。</string></string></p>
-<p><strong>重构后的代码实现：</strong></p>
-<p>使用List数据结构：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ToDoList</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;<span class="built_in">string</span>&gt; listEntries = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable <span class="title">GetListEntries</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddListEntry</span><span class="params">(<span class="built_in">string</span> entry)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用Hashtable数据结构：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ToDoList</span><br><span class="line">&#123;</span><br><span class="line">    private Hashtable listEntries = new Hashtable();</span><br><span class="line"></span><br><span class="line">    public IEnumerable GetListEntries()</span><br><span class="line">    &#123;</span><br><span class="line">        return listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void AddListEntry(string entry)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>方法GetListEntries()存在另一个严重的问题是，它返回一个指向内部数据结构的引用，通过这个引用，客户程序可以绕过AddListEntry()方法直接修改数据结构。当然如果使用IEnumerable这个问题也就迎刃而解了，因为IEnumerable接口没有相应的针对于某一种数据集合的操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public interface IEnumerable</span><br><span class="line">&#123;</span><br><span class="line">    //</span><br><span class="line">    // 摘要:</span><br><span class="line">    //     返回循环访问集合的枚举数。</span><br><span class="line">    //</span><br><span class="line">    // 返回结果:</span><br><span class="line">    //     一个可用于循环访问集合的 System.Collections.IEnumerator 对象。</span><br><span class="line">    [DispId(-4)]</span><br><span class="line">    IEnumerator GetEnumerator();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>假设显式图像包含4个步骤，这些步骤必须按照特定顺序执行，图形才可以正常显式。</p>
-<p>现在在Image类中提供4个公有方法Load(),Process(),Validate(),Show()供客户程序使用，但是这样有一个很麻烦的问题是写客户程序的开发人员不一定会按照正确顺序调用方法使用（永远不要给客户选择的权利）。而且客户程序只是想要显式图像，我们为什么要向它们暴露4个内部步骤呢？这就是泄露的封装的潜在原因——使用细粒度接口。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class Image</span><br><span class="line">&#123;</span><br><span class="line">    public void Load()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public void Process()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public void Validate()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public void Show()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要解决这个问题，可以让Image类只向客户程序暴露一个方法Display()，然后在这个方法内部按照特定顺序调用4个步骤方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class Image</span><br><span class="line">&#123;</span><br><span class="line">    private void Load()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    private void Process()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    private void Validate()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    private void Show()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void Display()</span><br><span class="line">    &#123;</span><br><span class="line">        Load();</span><br><span class="line">        Process();</span><br><span class="line">        Validate();</span><br><span class="line">        Show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>抽象通过公有接口暴露或泄露了实现细节时，客户程序可能直接依赖于实现细节吗，这种直接依赖性使得难以在不破坏既有客户代码的情况下对设计进行修改或扩展。</li>
-<li>抽象泄露了内部数据结构时，抽象的完整性遭到了破坏。增加了代码运行阶段发生问题的可能性。</li>
-</ol>
-<p>参考：《软件设计重构》</p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
       
   <nav class="pagination">
     
@@ -1158,7 +1109,7 @@
      
       2017 - 
     
-    2018
+    2019
 
     <span class="heart">
       <i class="iconfont icon-heart"></i>

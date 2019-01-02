@@ -208,6 +208,100 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/08/20/MySQL——优化ORDER-BY语句/">MySQL——优化ORDER BY语句</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-20
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p>本篇文章我们将了解ORDER BY语句的优化，在此之前，你需要对索引有基本的了解，不了解的老少爷们可以先看一下我之前写过的索引相关文章。现在让我们开始吧。</p>
+<h2 id="MySQL中的两种排序方式"><a href="#MySQL中的两种排序方式" class="headerlink" title="MySQL中的两种排序方式"></a>MySQL中的两种排序方式</h2><p>1.<strong>通过有序索引顺序扫描直接返回有序数据</strong></p>
+<p>因为索引的结构是B+树，索引中的数据是按照一定顺序进行排列的，所以在排序查询中如果能利用索引，就能避免额外的排序操作。EXPLAIN分析查询时，Extra显示为Using index。</p>
+<p>2.<strong>Filesort排序，对返回的数据进行排序</strong></p>
+<p>所有不是通过索引直接返回排序结果的操作都是Filesort排序，也就是说进行了额外的排序操作。EXPLAIN分析查询时，Extra显示为Using filesort。</p>
+          <div class="read-more">
+            <a href="/2018/08/20/MySQL——优化ORDER-BY语句/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/08/19/MySQL——索引实现原理/">MySQL——索引实现原理</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-19
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p>在MySQL中，索引属于存储引擎级别的概念，不同存储引擎对索引的实现方式是不同的，本文主要讨论MyISAM和InnoDB两个存储引擎的索引实现方式。</p>
+          <div class="read-more">
+            <a href="/2018/08/19/MySQL——索引实现原理/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/08/18/是什么影响了数据库索引选型？/">是什么影响了数据库索引选型？</a>
         
       </h1>
@@ -662,109 +756,6 @@
   </article>
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/26/Docker常用命令/">Docker常用命令</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-26
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <h1 id="Docker常用命令："><a href="#Docker常用命令：" class="headerlink" title="Docker常用命令："></a>Docker常用命令：</h1><ol>
-<li><p><code>docker pull 镜像名称</code></p>
-<p>拉取某个镜像到本地</p>
-</li>
-<li><p><code>docker images</code></p>
-<p>查看镜像列表</p>
-</li>
-<li><p><code>docker inspect 镜像名称</code></p>
-<p>查看某个镜像详情</p>
-</li>
-<li><p><code>docker rmi 镜像名称</code></p>
-<p>删除某个镜像。对于存在容器的镜像，首先需要删除其对应的容器才能删除该镜像。</p>
-</li>
-<li><p><code>docker inspect --format=&#39;{ {.NetworkSettings.IPAddress} }&#39; 容器名称|容器id</code></p>
-<p>查看容器IP</p>
-</li>
-</ol>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/">Docker问题(一)：bash: vi: command not found</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-26
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <h2 id="Docker问题-一-：bash-vi-command-not-found"><a href="#Docker问题-一-：bash-vi-command-not-found" class="headerlink" title="Docker问题(一)：bash: vi: command not found"></a>Docker问题(一)：bash: vi: command not found</h2><p>在使用docker时，有时候我们需要编辑配置文件，需要使用vim或者vi命令,但是会发现：</p>
-<p><code>bash: vi: command not found</code></p>
-<p>因为vim没有安装，这个时候需要我们使用<code>apt-get install vim</code>命令安装vim</p>
-<p>会出现如下问题：</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading <span class="keyword">state</span> information... Done</span><br><span class="line">E: Unable <span class="keyword">to</span> locate package vim</span><br></pre></td></tr></table></figure>
-<p>此时执行<code>apt-get update</code>，然后再次执行<code>apt-get install vim</code>即可成功安装vim。</p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
       
   <nav class="pagination">
     
@@ -854,7 +845,7 @@
      
       2017 - 
     
-    2018
+    2019
 
     <span class="heart">
       <i class="iconfont icon-heart"></i>

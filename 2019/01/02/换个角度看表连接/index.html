@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="换个角度看表连接">
+
+
+
+
+  <meta name="keywords" content="SQL, CoderFocus">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/2019/01/02/换个角度看表连接/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
+  
+
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> 换个角度看表连接 - CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          换个角度看表连接
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-01-02
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#外连接的基础概念"><span class="toc-text">外连接的基础概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用表连接进行集合运算"><span class="toc-text">用表连接进行集合运算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#交集"><span class="toc-text">交集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#并集"><span class="toc-text">并集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#差集"><span class="toc-text">差集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#异或集"><span class="toc-text">异或集</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <h2 id="外连接的基础概念"><a href="#外连接的基础概念" class="headerlink" title="外连接的基础概念"></a>外连接的基础概念</h2><p>标准SQL里定义了外连接的三种类型，如下：</p>
+<ul>
+<li>左外连接「LEFT OUTER JOIN」</li>
+<li>右外连接「RIGHT OUTER JOIN」</li>
+<li>全外连接「FULL OUTER JOIN」</li>
+</ul>
+<p>在这三种中，左外连接和右外连接功能上没有什么区别，我们都比较熟悉，全外连接相对来说使用较少。</p>
+<p>我们使用具体的实例说明，橘子、苹果同时属于两张表，而香蕉和菠萝分别只属于一张表。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wdO81kjaiabIEVVv0FZB9BZeBlzvvxSYWzpmc1Fh2BaDOs3xWSnApEHQ/640?wx_fmt=jpeg" alt="img"><img src="https://mmbiz.qpic.cn/mmbiz_jpg/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wtt13vFia9u6lrYXhDSUATzDofTjeiayrnaia1fZeXyD12ic4FU1kvibqb5Q/640?wx_fmt=jpeg" alt="img"></p>
+<p>（1）左外连接「LEFT OUTER JOIN」</p>
+<p>左外连接是从两张内容不一致的表里确保获取左表全部数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>    </span><br><span class="line">A.id,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span>    </span><br><span class="line">Basket_A A <span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wcD8pSRValGWYZ8ibtlfbPfllcFdNFXpPJgAURzMeKNesNEuHdMWuJzA/640?wx_fmt=png" alt="img"></p>
+<p>（2）右外连接「RIGHT OUTER JOIN」</p>
+<p>右外连接是从两张内容不一致的表里确保获取右表全部数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">B.id,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">RIGHT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wtVXJwbg8Kib9N0cVibC2d13nNiah1T8Al87tlhw7SeeWJ3fJeskXBVYvA/640?wx_fmt=png" alt="img"></p>
+<p>（3）全外连接「FULL OUTER JOIN」</p>
+<p>全外连接是从两张内容不一致的表里获取左右表全部数据，相当于左右表都是主表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">FULL</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id;</span><br></pre></td></tr></table></figure>
+<p>个别数据库不支持全外连接，可以分别进行左外连接和右外连接，再用 UNION 将两个结果集合并起来。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用UNION合并左外连接和右外连接代替全外连接</span></span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">A.id,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id</span><br><span class="line"><span class="keyword">UNION</span> </span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">B.id,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">RIGHT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id;</span><br></pre></td></tr></table></figure>
+<h2 id="用表连接进行集合运算"><a href="#用表连接进行集合运算" class="headerlink" title="用表连接进行集合运算"></a>用表连接进行集合运算</h2><p>SQL是以「集合论」为基础的，我们可以换个角度，把「表」看成「集合」，把「表连接」看成「集合运算」。</p>
+<h3 id="交集"><a href="#交集" class="headerlink" title="交集"></a>交集</h3><p><strong>内连接相当于求集合的积 「INTERSECT」</strong></p>
+<p><img src="http://songwenjie.vip/blog/20181230/JIy6AtotfOMr.png" alt="img"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">A. <span class="keyword">id</span>,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">INNER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wAJ5w3ueBaHicjaLVfBicc7zvFRwjeVQFzR8BvJr7FXD7l0icKnlFNibAEg/640?wx_fmt=png" alt="img"></p>
+<h3 id="并集"><a href="#并集" class="headerlink" title="并集"></a>并集</h3><p><strong>全外连接相当于求集合的和 「UNION」</strong></p>
+<p><img src="http://songwenjie.vip/blog/20181230/NGwbHwGvWO9p.png" alt="img"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> </span><br><span class="line">A.id,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id</span><br><span class="line"><span class="keyword">UNION</span> </span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">B.id,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">RIGHT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wic6wAaYvnExxMvoicLGibJRhJtQ2lw884zzXTXANG7siaQ7D6Eic8ZzibA6g/640?wx_fmt=png" alt="img"></p>
+<h3 id="差集"><a href="#差集" class="headerlink" title="差集"></a>差集</h3><p>观察前面的全外连接结果集，我们可以发现，香蕉在表 BasketA 里存在而在表 BasketB 里不存在，「Bname」列是 NULL；相反，菠萝在表 BasketB 里存在而在表 BasketA 里不存在，「Aname」列是 NULL。所以，我们可以通过表连接后的某些字段是否为NULL来求得差集。</p>
+<p><strong>用外连接求差集「A - B」</strong></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3weOENoQ8kDO9f7S67v7jHRUZdOABcGPko4oOXaxD4EG3Cnj3EBCaoCw/640?wx_fmt=png" alt="img"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">A.id,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">LEFT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id</span><br><span class="line"><span class="keyword">WHERE</span> B. <span class="keyword">NAME</span> <span class="keyword">IS</span> <span class="literal">NULL</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wxz3iaasia1wRFTCdpcnEFdjXoTTPyCkRKG6E1elwNewd8ica7yVZibnExQ/640?wx_fmt=png" alt="img"></p>
+<p><strong>用外连接求差集「B - A」</strong></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wiaUDM6FAQKpqSRKDaRmnYvYJ7kztnYrhXQH65T7WvysUJ3EsRgNCUBA/640?wx_fmt=png" alt="img"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">B.id,A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">RIGHT</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id</span><br><span class="line"><span class="keyword">WHERE</span> A. <span class="keyword">NAME</span> <span class="keyword">IS</span> <span class="literal">NULL</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3w1icS6HiaRXrsN7jq0h5JbHHM1TnsJl9nvbKFxJbEQNS1BRGpOU4UHLZg/640?wx_fmt=png" alt="img"></p>
+<h3 id="异或集"><a href="#异或集" class="headerlink" title="异或集"></a>异或集</h3><p>求两个集合的异或集有两种办法：</p>
+<p>（1） ( A UNION B ）- ( A INTERSECT B)</p>
+<p>（2） ( A -B ) UNION ( B - A )</p>
+<p><strong>用全外连接求异或集</strong></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wP1Myo1jCh7wYicYI6xfx9AnTF2SfpLdmZqjytL5C1OglKPF7EXNjJ1A/640?wx_fmt=png" alt="img"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">A. <span class="keyword">NAME</span> <span class="keyword">AS</span> A_name,B. <span class="keyword">NAME</span> <span class="keyword">AS</span> B_name</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">Basket_A A <span class="keyword">FULL</span> <span class="keyword">OUTER</span> <span class="keyword">JOIN</span> Basket_B B <span class="keyword">ON</span> A.id = B.id</span><br><span class="line"><span class="keyword">WHERE</span> A. <span class="keyword">NAME</span> <span class="keyword">IS</span> <span class="literal">NULL</span> <span class="keyword">OR</span> B. <span class="keyword">NAME</span> <span class="keyword">IS</span> <span class="literal">NULL</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/05WWCKpvZiapee6mytqXLJB0NXGPMzz3wnsoJ200Fib47d4rSbFYZ9x7G3ibO5ARshbTpT9KJjzNnT6dgEyNXB6Og/640?wx_fmt=png" alt="img"></p>
+<hr>
+<p><strong>SQL是以「集合论」为基础的，无论是表还是视图，本质上都是集合——集合是SQL唯一能处理的数据结构</strong>。从行数来看，表连接可以看做是表的乘法。使用连接便可以实现各种集合运算。</p>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/01/02/换个角度看表连接/">https://songwenjie.coding.me/2019/01/02/换个角度看表连接/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/SQL/">SQL</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/01/01/自连接的妙用/">
+        <span class="next-text nav-default">自连接的妙用</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
+
+  </body>
+</html>
