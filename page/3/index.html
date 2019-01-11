@@ -208,6 +208,86 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/07/29/MySQL中能够使用索引的场景/">MySQL中能够使用索引的场景</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-29
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h3 id="匹配全值"><a href="#匹配全值" class="headerlink" title="匹配全值"></a>匹配全值</h3><p><strong>对索引中所有列都有指定具体值，即是对索引中的所有列都有等值匹配的条件</strong>。</p>
+<p>rental表的索引情况，其中idx_rental_date是复合索引：</p>
+<p><img src="http://songwenjie.vip/blog/180729/7a3GHJhAG8.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND inventory_id=373 AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/cfG1j75Hkc.png?imageslim" alt="mark"></p>
+<p>优化器选择了复合索引idx_rental_date</p>
+<h3 id="匹配值的范围查询"><a href="#匹配值的范围查询" class="headerlink" title="匹配值的范围查询"></a>匹配值的范围查询</h3><p><strong>对索引的值进行范围查找。</strong></p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE customer_id&gt;373 AND customer_id&lt;400;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/LI0HcJl9f2.png?imageslim" alt="mark"></p>
+<p>优化器选择索引范围查询，使用索引idx_fk_customer_id加速访问。注意Extra列为<code>Using index condition</code>，表明MySQL使用了<strong>ICP</strong>进一步优化查询。关于<strong>ICP</strong>后面会单独介绍。</p>
+<h3 id="匹配最左前缀"><a href="#匹配最左前缀" class="headerlink" title="匹配最左前缀"></a>匹配最左前缀</h3><p><strong>MySQL中B-Tree索引使用的首要原则——最左匹配原则</strong></p>
+<p>对于复合索引而言，MySQL仅仅使用索引的最左列进行查找。比如在col1+col2+col3字段上的联合索引能够被包含col1、（col1+col2)、（col1+col2+col3）的等值查询利用到，但是不能够被col2、col3、（col2+col3）的等值查询利用到。</p>
+<p>如果查询条件中包含了索引的第一列rental_date和第三列customer_id，从key中可以看出优化器使用了复合索引idx_rental_date进行条件过滤：</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/HbIlhCG9C1.png?imageslim" alt="mark"></p>
+<p>如果查询条件中包含了索引的第二列inventory_id和第三列customer_id，从key中可以看出优化器使用了其各自的索引进行条件过滤，但是进行了索引合并优化（type=index_merge）：</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE  inventory_id=373 AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/bAJch04gGK.png?imageslim" alt="mark"></p>
+<h3 id="仅仅对索引进行查询"><a href="#仅仅对索引进行查询" class="headerlink" title="仅仅对索引进行查询"></a>仅仅对索引进行查询</h3><p><strong>当查询的列都在索引的字段中时，查询的效率更高。</strong></p>
+<p><code>EXPLAIN SELECT customer_id FROM rental;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/iaifmeLbB1.png?imageslim" alt="mark"></p>
+<p>优化器选择了查询列的索引加速访问，并且Extra为<code>Using index</code>意味着直接访问索引就足够取到所需要的数据，不会再通过索引回表查询。</p>
+<h3 id="匹配列前缀"><a href="#匹配列前缀" class="headerlink" title="匹配列前缀"></a>匹配列前缀</h3><p><strong>使用只包含索引字段开头一部分进行数据查找</strong></p>
+<p>为customer表建立前缀索引：</p>
+<p><img src="http://songwenjie.vip/blog/180729/ile7h05eJG.png?imageslim" alt="mark"></p>
+<p>查看customer表的索引情况：</p>
+<p><img src="http://songwenjie.vip/blog/180729/igk78mI9dA.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT email  FROM customer WHERE email LIKE &#39;MARY%&#39;;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/m5dAfFIh21.png?imageslim" alt="mark"></p>
+<p>可以看到，前缀索引idx_email已经被利用上了，Extra为<code>Using where</code>表明优化器还需要通过索引回表查询数据，因为索引的只是email字段的前5个字符。</p>
+<h3 id="如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）"><a href="#如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）" class="headerlink" title="如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）"></a>如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）</h3><p><img src="http://songwenjie.vip/blog/180729/69A8elfdf0.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM payment WHERE rental_id IS NULL;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/dgAJBA6gH3.png?imageslim" alt="mark"></p>
+<h3 id="ICP优化"><a href="#ICP优化" class="headerlink" title="ICP优化"></a>ICP优化</h3><p>MySQL5.6引入了Index Condition Pushdown（ICP）的特性，进一步优化了查询。Pushdown表示操作下放，某些情况下的条件过滤操作下放到存储引擎。</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND customer_id&gt;=300 AND customer_id&lt;=400;</code></p>
+<p>在5.6版本之前：</p>
+<p>优化器首先使用复合索引idx_rental_date过滤出符合条件<code>rental_date=&#39;2005-05-25&#39;</code>的记录，然后根据复合索引idx_rental_date回表获取记录，最终根据条件<code>customer_id&gt;=300 AND customer_id&lt;=400</code>过滤出最后的查询结果（在服务层完成）。</p>
+<p>在5.6版本之后：</p>
+<p>MySQL使用了ICP来进一步优化查询，在检索的时候，把条件<code>customer_id&gt;=300 AND customer_id&lt;=400</code>也推到存储引擎层完成过滤，这样能够降低不必要的IO访问。Extra为<code>Using index condition</code>就表示使用了ICP优化。</p>
+<p><img src="http://songwenjie.vip/blog/180729/FDGC3F3EJ1.png?imageslim" alt="mark"></p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">MySQL主从复制——主库已有数据的解决方案</a>
         
       </h1>
@@ -819,198 +899,6 @@
 <h3 id="2-4-3-Content-Type"><a href="#2-4-3-Content-Type" class="headerlink" title="2.4.3 Content-Type"></a>2.4.3 Content-Type</h3><p>首部字段Content-Type说明了实体主体内对象的媒体类型。字段值采用type/subtype形式赋值。</p>
 <p>这个字段我们实际接触是比较多的，当使用网络接口调试工具调试接口时就需要选择Content-Type，例如指定使用json媒体格式<code>Content-Type:Application/json;charset=UTF-8</code>。</p>
 <p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/G0kem3IE1K.png?imageslim" alt="mark"></p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/23/CSharp集合类型大揭秘/">C#集合类型大揭秘</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-23
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <h1 id="C-集合类型大揭秘"><a href="#C-集合类型大揭秘" class="headerlink" title="C#集合类型大揭秘"></a>C#集合类型大揭秘</h1><p>集合是.NET FCL(Framework Class Library)的重要组成部分，我们平常撸C#代码时免不了和集合打交道，FCL提供了丰富易用的集合类型，给我们撸码提供了极大的便利。正是因为这种与生俱来的便利性，使得我们对集合既熟悉又陌生。很多同学可能一直还是停留在使用的层面上，那么今天我们一起来深入学习一下C#语言中的各种集合。</p>
-<p>首先我们看一下 FCL 给我们提供的集合接口：</p>
-<p><img src="http://songwenjie.vip/blog/180612/d7khhhKg0C.png?imageslim" alt="mark"></p>
-<p>FCL提供了<strong>泛型</strong>和<strong>非泛型</strong>两大类集合类型。因为<strong>非泛型</strong>集合装箱和拆箱带来的性能开销问题，和<strong>泛型</strong>集合相比，已经变得越来越鸡肋。所以我们也侧重于<strong>泛型集合</strong>的分析，但是两者差别不大。</p>
-<h2 id="IEnumerable和IEnumerator"><a href="#IEnumerable和IEnumerator" class="headerlink" title="IEnumerable和IEnumerator"></a>IEnumerable和IEnumerator</h2><p><img src="http://songwenjie.vip/blog/180612/1CiFbkmDg6.png?imageslim" alt="mark"></p>
-<p><strong>IEnumerable</strong>接口是所有集合类型的祖宗接口，其作用相当于<strong>Object</strong>类型之于其它类型。如果某个类型实现了<strong>IEnumerable</strong>接口，就意味着它可以被迭代访问，也就可以称之为集合类型（可枚举）。<strong>IEnumerable</strong>接口定义非常简单，只有一个GetEnumerator()方法用于获取<strong>IEnumerator</strong>类型的迭代器。</p>
-<p><img src="http://songwenjie.vip/blog/180612/6ALfLDkdjf.png?imageslim" alt="mark"></p>
-<p>我们可以将迭代器想象成数据库的游标，即序列（集合）中的某个位置，迭代器只能在序列（集合）中向前移动。每调用一次MoveNext()，如果序列（集合）中还有下一个元素，则迭代器移动到下一个元素；Current用于获取序列（集合）中的当前元素；因为迭代器调用一次代码只需要获取一个元素，这意味着我们需要确定访问到了序列（集合）中的哪个位置。Reset()用于重置这种状态，但是基本上不会使用Reset()重置状态。</p>
-<p><strong>同一个序列（集合）可能同时存在多个迭代器操作，相当于同时对一个集合进行多个遍历。这种情况下可能会出现迭代彼此交错。那么如何解决呢？</strong></p>
-<p>集合类不直接支持 <strong>IEnumerator<t></t></strong> 和<br><strong>IEnumerator</strong> 接口。而是直接支持 <strong>IEnumerable<t></t></strong>接口，其唯一方法是 <strong>GetEnumerator</strong>，此方法用于返回支持 <strong>IEnumerator<t></t></strong> 的对象。<strong>每次调用GetEnumerator()方法时都需要创建一个新的对象，同时迭代器必须保存自身的状态，记录此时已经迭代到哪一个元素</strong>。这样枚举器就像是序列中的游标。可以有多个游标，移动其中任何一个都可以枚举集合，与其他枚举器互不影响。</p>
-<h3 id="foreach是怎么实现的？"><a href="#foreach是怎么实现的？" class="headerlink" title="foreach是怎么实现的？"></a>foreach是怎么实现的？</h3><p><strong>for</strong>依赖对 Length 属性和索引运算符 ([]) 的支持。借助 Length 属性，C# 编译器可以使用 <strong>for</strong> 语句迭代数组中的每个元素。<strong>for</strong>适用于长度固定且始终支持索引运算符的数组，但并不是所有类型集合的元素数量都是已知的。此外，许多集合类（包括 Stack<t>、Queue<t> 和 Dictionary<tkey ,tvalue="">）都不支持按索引检索元素。因此，需要使用一种更为通用的方法来迭代元素集合。假设可以确定第一个、第二个和最后一个元素，那么就没有必要知道元素数量，也没有必要支持按索引检索元素。<strong>foreach</strong>在这种背景下应运而生。实际上，<strong>foreach</strong>内部使用迭代器的MoveNext和Current完成元素的遍历。</tkey></t></t></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">List&lt;int&gt; list = new List&lt;int&gt;();</span><br><span class="line">List&lt;int&gt;.Enumerator enumerator = list.GetEnumerator();</span><br><span class="line">try</span><br><span class="line">&#123;</span><br><span class="line">    int number;</span><br><span class="line">    while (enumerator.MoveNext())</span><br><span class="line">    &#123;</span><br><span class="line">        number = enumerator.Current;</span><br><span class="line">        Console.WriteLine(number);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">finally</span><br><span class="line">&#123;</span><br><span class="line">    enumerator.Dispose();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="实现自定义集合"><a href="#实现自定义集合" class="headerlink" title="实现自定义集合"></a>实现自定义集合</h3><p>我们可以自己实现IEnumerable接口和IEnumerator接口实现自定义集合。</p>
-<p><strong>实现自定义可枚举类型：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class MySet : IEnumerable</span><br><span class="line">&#123;</span><br><span class="line">    internal object[] values;</span><br><span class="line"></span><br><span class="line">    public MySet(object[] values)</span><br><span class="line">    &#123;</span><br><span class="line">        this.values = values;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public IEnumerator GetEnumerator()</span><br><span class="line">    &#123;</span><br><span class="line">        return new MySetIterator(this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>手写实现自定义迭代器：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public class MySetIterator : IEnumerator</span><br><span class="line">&#123;</span><br><span class="line">    MySet set;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 保存迭代到的位置</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    int position;</span><br><span class="line">    internal MySetIterator(MySet set)</span><br><span class="line">    &#123;</span><br><span class="line">        this.set = set;</span><br><span class="line">        position = -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public object Current</span><br><span class="line">    &#123;</span><br><span class="line">        get</span><br><span class="line">        &#123;           		</span><br><span class="line">        	if(position==-1||position==set.values.Length)</span><br><span class="line">       		&#123;</span><br><span class="line">             	throw new 	InvalidOperationException();</span><br><span class="line">             &#125;</span><br><span class="line">             int index = position;</span><br><span class="line">             return set.values[index];</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	public bool MoveNext()</span><br><span class="line">	&#123;</span><br><span class="line">	    if(position!=set.values.Length)</span><br><span class="line">	    &#123;</span><br><span class="line">	        position++;</span><br><span class="line">	    &#125;</span><br><span class="line">	    return position &lt; set.values.Length;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void Reset()</span><br><span class="line">	&#123;</span><br><span class="line">    	position = -1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>测试程序：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">object[] values = &#123; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot; &#125;;</span><br><span class="line">MySet mySet = new MySet(values);</span><br><span class="line">foreach (var item in mySet)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个例子也证明了foreach内部使用迭代器的MoveNext和Current完成遍历。</p>
-<p>上面的例子中手写实现迭代器是十分麻烦的，在c#1.0中这是唯一的方式。在c#2.0中，我们可以使用<strong>yield</strong>语法糖简化迭代器。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public IEnumerator GetEnumerator()</span><br><span class="line">&#123;</span><br><span class="line">    for (int i = 0; i &lt; values.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        yield return values[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>IEnumerable</strong>和<strong>IEnumerator</strong>虽然实现简单，只有简单的几个成员，但是却支撑起了C#语言中<strong>集合</strong>这座高楼大厦。</p>
-<h2 id="ICollection和ICollection"><a href="#ICollection和ICollection" class="headerlink" title="ICollection和ICollection"></a>ICollection<t>和ICollection</t></h2><p>从第一张图中，我们可以得知<strong>ICollection<t></t></strong>继承于<strong>IEnumerable<t></t></strong>接口，并且扩展了<strong>IEnumerable<t></t></strong>接口。</p>
-<p><img src="http://songwenjie.vip/blog/180612/GIGiHI4iBe.png?imageslim" alt="mark"></p>
-<p>主要扩展的功能有：</p>
-<ol>
-<li>新增了属性Count,用于记录集合元素个数</li>
-<li>支持添加元素和移除元素</li>
-<li>支持是否包含某元素</li>
-<li>支持清空集合等等</li>
-</ol>
-<p>对于任何实现了<strong>ICollection<t></t></strong>接口的集合，我们都可以通过第1条Count属性获取当前集合的元素数，所以这些集合也被称为计数集合。</p>
-<h2 id="IList和IList"><a href="#IList和IList" class="headerlink" title="IList和IList"></a>IList<t>和IList</t></h2><p><img src="http://songwenjie.vip/blog/180612/1kDaJAbffG.png?imageslim" alt="mark"></p>
-<p><strong>IList<t></t></strong>接口直接继承于<strong>ICollection<t></t></strong>接口和<strong>IEnumerable<t></t></strong>接口，并且扩展了通过<strong>索引</strong>操作集合的功能。</p>
-<p>主要扩展的功能有：</p>
-<ol>
-<li>通过索引获取集合中某个元素</li>
-<li>通过元素获取元素在集合中的索引值</li>
-<li>通过索引插入元素到集合指定位置</li>
-<li>移除集合指定索引处的元素</li>
-</ol>
-<p>##IDictionary&lt;TKey, TValue&gt;和IDictionary</p>
-<p><img src="http://songwenjie.vip/blog/180612/ikDGE6JcmF.png?imageslim" alt="mark"></p>
-<p><strong>IDictionary<t></t></strong>接口直接继承于<strong>ICollection<t></t></strong>接口和<strong>IEnumerable<t></t></strong>接口，存储的元素是键值对，扩展了通过<strong>键</strong>操作键值对集合的功能。</p>
-<p>主要扩展的功能有：</p>
-<ol>
-<li>通过键KEY获取值VALUE</li>
-<li>插入新的键值对{KEY:VALUE}</li>
-<li>是否包含KEY</li>
-<li>通过KEY移除键值对元素</li>
-</ol>
-<p>主要的集合的接口介绍完了，下面我们来看一下具体的集合类型。</p>
-<h1 id="关联性泛型集合类"><a href="#关联性泛型集合类" class="headerlink" title="关联性泛型集合类"></a>关联性泛型集合类</h1><h2 id="1-Dictionary-lt-TKey-TValue-gt"><a href="#1-Dictionary-lt-TKey-TValue-gt" class="headerlink" title="1.Dictionary&lt;TKey,TValue&gt;"></a>1.Dictionary&lt;TKey,TValue&gt;</h2><p><strong>Dictionary&lt;TKey,TValue&gt;</strong>的查询数据所花费的时间是所有集合类里面最快的，因为其内部使用了散列函数加双数组来实现，所以其查询数据操作的时间复杂度可以认为是O（1）。<strong>Dictionary&lt;TKey,TValue&gt;</strong>的实现是一种典型的<strong>牺牲空间换取时间</strong>（双数组）的做法。</p>
-<p><img src="http://songwenjie.vip/blog/180614/H8c6kFHcd0.png?imageslim" alt="mark"></p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;添加新元素的实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/B7f0Ga1Hc7.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180613/f1GBGe5FI2.png?imageslim" alt="mark"></p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>内部有两个数组，一个数组名为<strong>buckets</strong>，用于存放由多个同义词组成的静态链表头指针（链表的第一个元素在数组中的索引号，当它的值为-1时表示此哈希地址不存在元素）；另一个数组为<strong>entries</strong>，它用于存放哈希表中的实际数据，同时这些数据通过next指针构成多个单链表。<strong>entries</strong>数组中所存放的是Entry结构体，Entry结构体由4个部分组成，如下所示：</p>
-<p><img src="http://songwenjie.vip/blog/180613/iHcd30m90c.png?imageslim" alt="mark"></p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>计算key的哈希值使用的是取余法，这种方式可能会产生冲突，所以进行冲突解决。<strong>Dictionary&lt;TKey,TValue&gt;</strong>解决冲突的方式是链接法。</p>
-<p><img src="http://songwenjie.vip/blog/180613/fGj4c7dg8I.png?imageslim" alt="mark"></p>
-<p>我们可以根据源码来模拟推导一下这个过程：</p>
-<p>当添加第一个元素时，此时会分配哈希表<strong>buckets</strong>数组和<strong>entries</strong>数组的空间和初始大小，默认为3，关于初始数组的大小有大学问。对key=1进行哈希求值，假设第一个元素的哈希值=9，然后targetBucket = 9%buckets.Length(3)的值为0，所以第一个元素应该放在<strong>entries</strong>数组的第一位。最后对哈希表<strong>buckets</strong>数组赋值，数组索引为0，值为0。此时内部结构如图所示：</p>
-<p><img src="http://songwenjie.vip/blog/180613/dgclB002G0.png?imageslim" alt="mark"></p>
-<p>然后插入第二个元素，对key=2进行哈希求值，假设第二个元素的哈希值=3，然后targetBucket = 3%buckets.Length(3)的值为0，所以第二个元素应该放在<strong>entries</strong>数组的第一位。但是<strong>entries</strong>数组的第一位已经存在元素了，这就发生了冲突。<strong>Dictionary&lt;TKey,TValue&gt;</strong>解决冲突的方式是链接法，把发生冲突的元素链接之前元素的后面，通过next属性来指定冲突关系，最后更新哈希表<strong>buckets</strong>数组。此时内部结构如图所示：</p>
-<p><img src="http://songwenjie.vip/blog/180613/EB5B4ECAdI.png?imageslim" alt="mark"></p>
-<p>我们可以通过<strong>Dictionary&lt;TKey,TValue&gt;</strong>查找元素的实现来证明我们上面的分析是正确的。</p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;查找元素的实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/aH4lLfaad8.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180613/192DmFLe28.png?imageslim" alt="mark"></p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>之所以能实现快速查找元素，其内部使用哈希表来存储元素对应的位置，我们可以通过哈希值快速地从哈希表中定位元素所在的位置索引，从而快速获取到key对应的Value值。物极必反，<strong>Dictionary&lt;TKey,TValue&gt;</strong>的缺点也很明显，就是里面的数据是无序排列的，所以按照一定顺序遍历查找数据效率是非常低的。</p>
-<h2 id="2-SortedDictionary-lt-TKey-TValue-gt"><a href="#2-SortedDictionary-lt-TKey-TValue-gt" class="headerlink" title="2.SortedDictionary&lt;TKey,TValue&gt;"></a>2.SortedDictionary&lt;TKey,TValue&gt;</h2><p><strong>SortedDictionary&lt;TKey,TValue&gt;</strong>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>类似，至于区别我们从名称上就可以看出来，<strong>Dictionary&lt;TKey,TValue&gt;</strong>是无序的，<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>则是有序的。key要保证唯一，而且还要有序排列，这让我们很自然的就想到了搜索二叉树。<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>使用一种平衡搜索二叉树——红黑树，作为存储结构。因为基于二分查找，所以添加、查找、删除元素的时间复杂度是O(log n)。相对于下面提到的<strong>SortedList&lt;TKey,TValue&gt;</strong>来说，<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>在添加和删除元素时更快一些。如果想要快速查询的同时又能很好的支持排序的话，并且添加和删除元素也比较频繁，可以使用<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>。</p>
-<p><strong>SortedDictionary&lt;TKey,TValue&gt;添加新元素的实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180614/2Jgfm57dD0.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180614/bCeAC1dEgc.png?imageslim" alt="mark"></p>
-<h2 id="3-SortedList-lt-TKey-TValue-gt"><a href="#3-SortedList-lt-TKey-TValue-gt" class="headerlink" title="3.SortedList&lt;TKey,TValue&gt;"></a>3.SortedList&lt;TKey,TValue&gt;</h2><p>在既需要快速查找又需要顺序排列的场景下，<strong>Dictionary&lt;TKey,TValue&gt;</strong>就无能为力了，因为<strong>Dictionary&lt;TKey,TValue&gt;</strong>使用了散列函数，并不支持线性排序。我们可以使用<strong>SortedList&lt;TKey,TValue&gt;</strong>集合类来应对这种场景。</p>
-<p><strong>SortedList&lt;TKey,TValue&gt;</strong>集合内部是使用数组实现的，添加和删除元素的时间复杂度是O(n)，查找元素利用了二分查找，所以查找元素的时间复杂度是O(log n)。所以<strong>SortedList&lt;TKey,TValue&gt;</strong>虽然支持了有序排列，但是却是以牺牲查找效率为代价的。</p>
-<p><strong>SortedList&lt;TKey,TValue&gt;</strong>和<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>同时支持快速查询和排序，<strong>SortedList&lt;TKey,TValue&gt;</strong> 优势在于使用的内存比 <strong>SortedDictionary&lt;TKey,TValue&gt;</strong> 少；但是<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>可对未排序的数据执行更快的插入和移除操作：它的时间复杂度为 O(log n)，而 <strong>SortedList&lt;TKey,TValue&gt;</strong> 为 O(n)。所以<strong>SortedList&lt;TKey,TValue&gt;</strong>适用于既需要快速查找又需要顺序排列但是添加和删除元素较少的场景。</p>
-<p><strong>内部实现结构：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/H659I0Ki3d.png?imageslim" alt="mark"></p>
-<p><strong>根据Key获取Value的实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/Bmfkm3BIhH.png?imageslim" alt="mark"></p>
-<p><strong>IndexOfKey实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/Fhcejc99ce.png?imageslim" alt="mark"></p>
-<p><strong>添加新元素：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/ja7bHhAKEJ.png?imageslim" alt="mark"></p>
-<p><strong>添加操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/9lIe5L2mfL.png?imageslim" alt="mark"></p>
-<p>#非关联性泛型集合类</p>
-<h2 id="1-List"><a href="#1-List" class="headerlink" title="1.List"></a>1.List<t></t></h2><p>泛型的List 类提供了不限制长度的集合类型，List内部实现使用数据结构是数组。我们都知道数组是长度固定的，那么List不限制长度必定需要维护这个数组。实际上List维护了一定长度的数组（默认为4），当插入元素的个数超过4或初始长度时，会去重新创建一个新的数组,这个新数组的长度是初始长度的2倍，然后将原来的数组赋值到新的数组中。</p>
-<p>我们可以通过ILSpy看一下List<t>源码证明我们上面所说的：</t></p>
-<p><strong>List<t>内部重要变量：</t></strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/Km0fDlC87C.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180612/ciEdc7Jhf5.png?imageslim" alt="mark"></p>
-<p><strong>新增元素操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/dKkcLLF21k.png?imageslim" alt="mark"></p>
-<p><strong>新增元素确认数组容量：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/mEIG0G1ACg.png?imageslim" alt="mark"></p>
-<p><strong>真正的数组扩容操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/38ceHBHcKk.png?imageslim" alt="mark"></p>
-<p>数组扩容的场景涉及到对象的创建和赋值，是比较消耗性能的。所以如果能指定一个合适的初始长度，能避免频繁的对象创建和赋值。再者，因为内部的数据结构是数组，插入和删除操作需要移动元素位置，所以不适合频繁的进行插入和删除操作；但是可以通过数组下标查找元素。所以List<t>适合<strong>读多写少</strong>的场景。</t></p>
-<h2 id="2-LinkedList"><a href="#2-LinkedList" class="headerlink" title="2.LinkedList"></a>2.LinkedList<t></t></h2><p>上面我们提到List<t>适合<strong>读多写少</strong>的场景，那么必定有一个List<t>适合<strong>写多读少</strong>的场景，就是这货了——<strong>LinkedList<t></t></strong>。至于为什么适合<strong>写多读少</strong>，熟悉数据结构的同学应该已经猜到了。因为<strong>LinkedList<t></t></strong>的内部实现使用的是链表结构，而且还是双向链表。直接看源码：</t></t></p>
-<p><img src="http://songwenjie.vip/blog/180612/jBIeI76jH7.png?imageslim" alt="mark"></p>
-<p>因为内部实现结构是链表，所以可以在某一个节点前或节点后插入新的元素。</p>
-<p>链表节点定义：</p>
-<p><img src="http://songwenjie.vip/blog/180612/0emaCGgk0J.png?imageslim" alt="mark"></p>
-<p>我们以在某个节点前插入新元素为例：</p>
-<p><img src="http://songwenjie.vip/blog/180612/JhLlhIeHCC.png?imageslim" alt="mark"></p>
-<p>具体的插入操作，注意操作步骤不能颠倒：</p>
-<p><img src="http://songwenjie.vip/blog/180612/Ag1ggleAlD.png?imageslim" alt="mark"></p>
-<p>##3.HashSet<t></t></p>
-<p><strong>HashSet<t></t></strong>是一个无序的能够保持唯一性的集合。我们可以将<strong>HashSet<t></t></strong>看作是简化的<strong>Dictionary&lt;TKey,TValue&gt;</strong>，只不过<strong>Dictionary&lt;TKey,TValue&gt;</strong>存储的键值对对象，而<strong>HashSet<t></t></strong>存储的是普通对象。其内部实现也和<strong>Dictionary&lt;TKey,TValue&gt;</strong>基本一致，也是散列函数加双数组实现的,区别是存储的<strong>Slot</strong>结构体不再有key。</p>
-<p><strong>内部实现数据结构：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180614/4LjC671Gk5.png?imageslim" alt="mark"></p>
-<p><strong>m_slots</strong>中所存放的是<strong>Slot</strong>结构体，<strong>Slot</strong>结构体由3个部分组成，如下所示：</p>
-<p><img src="http://songwenjie.vip/blog/180614/gdGEgdcE0j.png?imageslim" alt="mark"></p>
-<p><strong>添加新元素的具体实现：</strong></p>
-<p>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>添加新元素的实现基本一致。</p>
-<p><img src="http://songwenjie.vip/blog/180614/CcIc1kFj21.png?imageslim" alt="mark"></p>
-<p>##4.SortedSet<t></t></p>
-<p><strong>SortedSet<t></t></strong>和<strong>HashSet<t></t></strong>,就像<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>一样。<strong>SortedSet<t></t></strong>支持元素按顺序排列，内部实现也是红黑树，并且<strong>SortedSet<t></t></strong>对于红黑树的操作方法和<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>完全相同。所以不再做过多的分析。</p>
-<p>##5.Stack<t></t></p>
-<p>栈是一种后进先出的结构，C#的栈是借助数组实现的，考虑到栈后进先出的特性，使用数组来实现貌似是水到渠成的事。</p>
-<p><img src="http://songwenjie.vip/blog/180612/kKhkc5kC4i.png?imageslim" alt="mark"></p>
-<p><strong>入栈操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/cHK1hKA9G9.png?imageslim" alt="mark"></p>
-<p><strong>弹栈操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/hbDecBcCEF.png?imageslim" alt="mark"></p>
-<p>##6.Queue<t></t></p>
-<p>队列是一种先进先出的结构，C#的队列也是借助数组实现的，有了前面的经验，借助数组实现必然会有数组扩容。C#的队列实现其实是循环队列的方式，可以简单的理解为将队列的头尾相接。至于为什么要这么做？为了节省存储空间和减少元素的移动。因为元素出队列时后面的元素跟着前移是非常消耗性能的，但是不跟着向前移动的话，前面就会一直存在空闲的空间浪费内存。所以使用循环队列来解决这种问题。</p>
-<p><img src="http://songwenjie.vip/blog/180612/2geF2Gd9jb.png?imageslim" alt="mark"></p>
-<p><strong>入队操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/C87bh2Fle6.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180612/m86FgiL6Cg.png?imageslim" alt="mark"></p>
-<p><strong>出队操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/lCimmDJ4G6.png?imageslim" alt="mark"></p>
-<p>#线程安全的集合类</p>
-<p>需要我们注意的是，上面我们所介绍的集合并不是线程安全的，在多线程环境下，可能会出现线程安全问题。在多线程读的情况下，我们使用普通集合即可。在多线程添加/更新/删除时，我们可以采用手动锁定的方式确保线程安全，但是应该注意加锁的范围和粒度，加锁不当可能会导致程序性能低下甚至产生死锁。</p>
-<p>更好的选择的是使用的C#提供的线程安全集合（命名空间：System.Collections.Concurrent）。线程安全集合使用几种算法来最小化线程阻塞。</p>
-<p><img src="http://songwenjie.vip/blog/180613/l7I0Fhlh8b.png?imageslim" alt="mark"></p>
-<ol>
-<li><strong>ConcurrentQueue</strong>： 线程安全版本的Queue</li>
-<li><strong>ConcurrentStack</strong>：线程安全版本的Stack</li>
-<li><strong>ConcurrentBag</strong>：线程安全的对象集合</li>
-<li><strong>ConcurrentDictionary</strong>：线程安全的Dictionary</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>写着写着突然发现跑到数据结构上来了。程序=数据结构+算法。上面提到的集合类型，我们需要在不同的场景进行合适的选择，其实本质上就是选择合适的数据结构。</p>
-<h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><p><a href="https://www.cnblogs.com/jesse2013/p/CollectionsInCSharp.html" target="_blank" rel="noopener">https://www.cnblogs.com/jesse2013/p/CollectionsInCSharp.html</a></p>
-<p><a href="https://www.c-sharpcorner.com/article/concurrent-collections-in-net-concurrentdictionary-part-one/" target="_blank" rel="noopener">https://www.c-sharpcorner.com/article/concurrent-collections-in-net-concurrentdictionary-part-one/</a></p>
-<p><a href="http://www.cnblogs.com/jeffwongishandsome/archive/2012/09/09/2677293.html" target="_blank" rel="noopener">http://www.cnblogs.com/jeffwongishandsome/archive/2012/09/09/2677293.html</a></p>
-<p><a href="http://www.cnblogs.com/edisonchou/p/4706253.html" target="_blank" rel="noopener">http://www.cnblogs.com/edisonchou/p/4706253.html</a></p>
 
         
       

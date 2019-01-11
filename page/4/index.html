@@ -208,7 +208,7 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2018/07/23/缺失封装/">缺失封装</a>
+          <a class="post-link" href="/2018/07/23/CSharp集合类型大揭秘/">C#集合类型大揭秘</a>
         
       </h1>
 
@@ -231,57 +231,158 @@
         
 
         
-          <p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
-<h1 id="缺失封装"><a href="#缺失封装" class="headerlink" title="缺失封装"></a>缺失封装</h1><p>没有将实现变化封装在抽象和层次结构中时，将导致这种坏味。</p>
-<p>表现形式通常如下:</p>
-<ul>
-<li>客户程序与其需要的服务变种紧密耦合，每当需要支持新变种或修改既有变种时，都将影响客户程序。</li>
-<li>每当需要在层次结构中支持新变种时，都添加了大量不必要的类，这增加了设计的复杂度。</li>
-</ul>
-<h2 id="为什么不能缺失封装？"><a href="#为什么不能缺失封装？" class="headerlink" title="为什么不能缺失封装？"></a>为什么不能缺失封装？</h2><p>开闭原则（OCP）指出，类型应对扩展开放，对修改关闭。也就是说应该通过扩展（而不是修改）来改变类型的行为。没有在类型或层次结构中封装实现变化时，便违反了OCP。</p>
-<h2 id="缺失封装潜在的原因"><a href="#缺失封装潜在的原因" class="headerlink" title="缺失封装潜在的原因"></a>缺失封装潜在的原因</h2><h3 id="未意识到关注点会不断变化"><a href="#未意识到关注点会不断变化" class="headerlink" title="未意识到关注点会不断变化"></a>未意识到关注点会不断变化</h3><p>没有预测到关注点可能发生变化，进而没有在设计中正确封装这些关注点。</p>
-<h3 id="混合关注点"><a href="#混合关注点" class="headerlink" title="混合关注点"></a>混合关注点</h3><p>将彼此独立的各个关注点聚合在一个层次结构中，而不是分开时，如果关注点发生变化，可能导致类的数量呈爆炸式增长。</p>
-<h3 id="幼稚的设计决策"><a href="#幼稚的设计决策" class="headerlink" title="幼稚的设计决策"></a>幼稚的设计决策</h3><p>采用过于简单的方法，如为每种变化组合创建一个类时，可能导致设计无谓的复杂。</p>
-<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><p>假设有一个Entryption类，它需要使用加密算法对数据进行加密。可供选择的加密算法有很多，包括DES(数据加密标准)、AES(高级加密标准)、TDES(三重数据加密标准)等。Entryption类使用DES算法对数据进行加密。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>假设出现了新需求，要求使用AES算法对数据进行加密。</p>
-<p><strong>最差的方案出现了：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingDES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     /// &lt;summary&gt;</span><br><span class="line">    /// 使用AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingAES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种方案有很多不尽如人意的地方:</p>
-<ul>
-<li>Encryption类变得更大、更难以维护，因为它实现了多种加密算法，但是每次只使用一种。</li>
-<li>难以添加新算法以及修改既有算法，因为加密算法是Encryption类不可分割的部分。</li>
-<li>加密算法向Encryption类提供服务，但是与Encryption类紧紧耦合在一起，无法在其它地方重用。</li>
-</ul>
-<p>不满意就重构，首先使用继承进行重构，会有2种方案可以选择：</p>
-<p>选择1:</p>
-<p>让Encryption类根据需求继承AESEncryptionAlgorithm或DESEncryptionAlgorithm类，并提供方法Encrypt()。这种方案带来的问题是Encryption类在编译阶段就将关联到特定的加密算法,更严重的是类之间的关系并不是is-a关系。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingAES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingDES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Encryption: AESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        EncryptUsingAES();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>选择2：</p>
-<p>创建子类AESEncryption和DESEncryption,它们都扩展了Encryption类，并分别包含加密算法AES和DES的实现。客户程序可创建Encryption的引用，这些引用指向特定子类的对象。通过添加新的子类，很容易支持新的加密算法。但是这种方案的问题是AESEncryption和DESEncryption将继承Encryption类的其它方法，降低了加密算法的可重用性。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public abstract class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public abstract void Encrypt();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryption : Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用 AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public override void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用 AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryption : Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用 DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public override void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用 DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>最佳的选择是使用策略模式:</strong></p>
-<ul>
-<li>可在运行阶段给Encryption对象配置特定的加密算法</li>
-<li>可在其它地方重用层次结构EncryptionAlgorithm中定义的算法</li>
-<li>很容易根据需要支持新的算法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 算法加密接口</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public interface EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">   void Encrypt();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryptionAlgorithm : EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        //使用 DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryptionAlgorithm : EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        //使用 AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    EncryptionAlgorithm algo;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        algo.Encrypt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>支持使用不同算法（DES和AES）对各种内容（Image和Text）进行加密的设计。</p>
-<p>最简单最直观的的设计：</p>
-<p><img src="http://songwenjie.vip/blog/180430/7F26LAmlLC.png?imageslim" alt="mark"></p>
-<p>在这个设计中，有两个变化点：支持的内容类型和加密算法类型。对于这两个变化点的每种可能组合，都使用了一个类来表示。这样会有一个严重的问题：假设现在要求支持新加密算法TDES和新内容类型Data,类的数量呈爆炸性增长。因为变化点混在了一起，没有分别进行封装。</p>
-<p><img src="http://songwenjie.vip/blog/180430/LeL7eKmk79.png?imageslim" alt="mark"></p>
-<p><strong>使用桥接模式进行封装：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180430/iImmK945h6.png?imageslim" alt="mark"></p>
-<p>使用桥接模式，分别封装这两个关注点的变化。现在要引入新内容类型Data和新加密算法TDES，只需要添加两个新类。既解决了类数量呈爆炸增长的问题，又增加了根为接口EncryptionAlgorithm层次结构中的加密算法的可重用性。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>不相关的关注点混在一起，抽象将变得难以重用。</li>
+          <h1 id="C-集合类型大揭秘"><a href="#C-集合类型大揭秘" class="headerlink" title="C#集合类型大揭秘"></a>C#集合类型大揭秘</h1><p>集合是.NET FCL(Framework Class Library)的重要组成部分，我们平常撸C#代码时免不了和集合打交道，FCL提供了丰富易用的集合类型，给我们撸码提供了极大的便利。正是因为这种与生俱来的便利性，使得我们对集合既熟悉又陌生。很多同学可能一直还是停留在使用的层面上，那么今天我们一起来深入学习一下C#语言中的各种集合。</p>
+<p>首先我们看一下 FCL 给我们提供的集合接口：</p>
+<p><img src="http://songwenjie.vip/blog/180612/d7khhhKg0C.png?imageslim" alt="mark"></p>
+<p>FCL提供了<strong>泛型</strong>和<strong>非泛型</strong>两大类集合类型。因为<strong>非泛型</strong>集合装箱和拆箱带来的性能开销问题，和<strong>泛型</strong>集合相比，已经变得越来越鸡肋。所以我们也侧重于<strong>泛型集合</strong>的分析，但是两者差别不大。</p>
+<h2 id="IEnumerable和IEnumerator"><a href="#IEnumerable和IEnumerator" class="headerlink" title="IEnumerable和IEnumerator"></a>IEnumerable和IEnumerator</h2><p><img src="http://songwenjie.vip/blog/180612/1CiFbkmDg6.png?imageslim" alt="mark"></p>
+<p><strong>IEnumerable</strong>接口是所有集合类型的祖宗接口，其作用相当于<strong>Object</strong>类型之于其它类型。如果某个类型实现了<strong>IEnumerable</strong>接口，就意味着它可以被迭代访问，也就可以称之为集合类型（可枚举）。<strong>IEnumerable</strong>接口定义非常简单，只有一个GetEnumerator()方法用于获取<strong>IEnumerator</strong>类型的迭代器。</p>
+<p><img src="http://songwenjie.vip/blog/180612/6ALfLDkdjf.png?imageslim" alt="mark"></p>
+<p>我们可以将迭代器想象成数据库的游标，即序列（集合）中的某个位置，迭代器只能在序列（集合）中向前移动。每调用一次MoveNext()，如果序列（集合）中还有下一个元素，则迭代器移动到下一个元素；Current用于获取序列（集合）中的当前元素；因为迭代器调用一次代码只需要获取一个元素，这意味着我们需要确定访问到了序列（集合）中的哪个位置。Reset()用于重置这种状态，但是基本上不会使用Reset()重置状态。</p>
+<p><strong>同一个序列（集合）可能同时存在多个迭代器操作，相当于同时对一个集合进行多个遍历。这种情况下可能会出现迭代彼此交错。那么如何解决呢？</strong></p>
+<p>集合类不直接支持 <strong>IEnumerator<t></t></strong> 和<br><strong>IEnumerator</strong> 接口。而是直接支持 <strong>IEnumerable<t></t></strong>接口，其唯一方法是 <strong>GetEnumerator</strong>，此方法用于返回支持 <strong>IEnumerator<t></t></strong> 的对象。<strong>每次调用GetEnumerator()方法时都需要创建一个新的对象，同时迭代器必须保存自身的状态，记录此时已经迭代到哪一个元素</strong>。这样枚举器就像是序列中的游标。可以有多个游标，移动其中任何一个都可以枚举集合，与其他枚举器互不影响。</p>
+<h3 id="foreach是怎么实现的？"><a href="#foreach是怎么实现的？" class="headerlink" title="foreach是怎么实现的？"></a>foreach是怎么实现的？</h3><p><strong>for</strong>依赖对 Length 属性和索引运算符 ([]) 的支持。借助 Length 属性，C# 编译器可以使用 <strong>for</strong> 语句迭代数组中的每个元素。<strong>for</strong>适用于长度固定且始终支持索引运算符的数组，但并不是所有类型集合的元素数量都是已知的。此外，许多集合类（包括 Stack<t>、Queue<t> 和 Dictionary<tkey ,tvalue="">）都不支持按索引检索元素。因此，需要使用一种更为通用的方法来迭代元素集合。假设可以确定第一个、第二个和最后一个元素，那么就没有必要知道元素数量，也没有必要支持按索引检索元素。<strong>foreach</strong>在这种背景下应运而生。实际上，<strong>foreach</strong>内部使用迭代器的MoveNext和Current完成元素的遍历。</tkey></t></t></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">List&lt;int&gt; list = new List&lt;int&gt;();</span><br><span class="line">List&lt;int&gt;.Enumerator enumerator = list.GetEnumerator();</span><br><span class="line">try</span><br><span class="line">&#123;</span><br><span class="line">    int number;</span><br><span class="line">    while (enumerator.MoveNext())</span><br><span class="line">    &#123;</span><br><span class="line">        number = enumerator.Current;</span><br><span class="line">        Console.WriteLine(number);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">finally</span><br><span class="line">&#123;</span><br><span class="line">    enumerator.Dispose();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="实现自定义集合"><a href="#实现自定义集合" class="headerlink" title="实现自定义集合"></a>实现自定义集合</h3><p>我们可以自己实现IEnumerable接口和IEnumerator接口实现自定义集合。</p>
+<p><strong>实现自定义可枚举类型：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class MySet : IEnumerable</span><br><span class="line">&#123;</span><br><span class="line">    internal object[] values;</span><br><span class="line"></span><br><span class="line">    public MySet(object[] values)</span><br><span class="line">    &#123;</span><br><span class="line">        this.values = values;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public IEnumerator GetEnumerator()</span><br><span class="line">    &#123;</span><br><span class="line">        return new MySetIterator(this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>手写实现自定义迭代器：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public class MySetIterator : IEnumerator</span><br><span class="line">&#123;</span><br><span class="line">    MySet set;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 保存迭代到的位置</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    int position;</span><br><span class="line">    internal MySetIterator(MySet set)</span><br><span class="line">    &#123;</span><br><span class="line">        this.set = set;</span><br><span class="line">        position = -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public object Current</span><br><span class="line">    &#123;</span><br><span class="line">        get</span><br><span class="line">        &#123;           		</span><br><span class="line">        	if(position==-1||position==set.values.Length)</span><br><span class="line">       		&#123;</span><br><span class="line">             	throw new 	InvalidOperationException();</span><br><span class="line">             &#125;</span><br><span class="line">             int index = position;</span><br><span class="line">             return set.values[index];</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	public bool MoveNext()</span><br><span class="line">	&#123;</span><br><span class="line">	    if(position!=set.values.Length)</span><br><span class="line">	    &#123;</span><br><span class="line">	        position++;</span><br><span class="line">	    &#125;</span><br><span class="line">	    return position &lt; set.values.Length;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void Reset()</span><br><span class="line">	&#123;</span><br><span class="line">    	position = -1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>测试程序：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">object[] values = &#123; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot; &#125;;</span><br><span class="line">MySet mySet = new MySet(values);</span><br><span class="line">foreach (var item in mySet)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个例子也证明了foreach内部使用迭代器的MoveNext和Current完成遍历。</p>
+<p>上面的例子中手写实现迭代器是十分麻烦的，在c#1.0中这是唯一的方式。在c#2.0中，我们可以使用<strong>yield</strong>语法糖简化迭代器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public IEnumerator GetEnumerator()</span><br><span class="line">&#123;</span><br><span class="line">    for (int i = 0; i &lt; values.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        yield return values[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>IEnumerable</strong>和<strong>IEnumerator</strong>虽然实现简单，只有简单的几个成员，但是却支撑起了C#语言中<strong>集合</strong>这座高楼大厦。</p>
+<h2 id="ICollection和ICollection"><a href="#ICollection和ICollection" class="headerlink" title="ICollection和ICollection"></a>ICollection<t>和ICollection</t></h2><p>从第一张图中，我们可以得知<strong>ICollection<t></t></strong>继承于<strong>IEnumerable<t></t></strong>接口，并且扩展了<strong>IEnumerable<t></t></strong>接口。</p>
+<p><img src="http://songwenjie.vip/blog/180612/GIGiHI4iBe.png?imageslim" alt="mark"></p>
+<p>主要扩展的功能有：</p>
+<ol>
+<li>新增了属性Count,用于记录集合元素个数</li>
+<li>支持添加元素和移除元素</li>
+<li>支持是否包含某元素</li>
+<li>支持清空集合等等</li>
 </ol>
-<ol start="2">
-<li>对业务中可能的变化点，要给予扩展点，保证开闭原则（OCP），对扩展开放，对修改关闭。</li>
+<p>对于任何实现了<strong>ICollection<t></t></strong>接口的集合，我们都可以通过第1条Count属性获取当前集合的元素数，所以这些集合也被称为计数集合。</p>
+<h2 id="IList和IList"><a href="#IList和IList" class="headerlink" title="IList和IList"></a>IList<t>和IList</t></h2><p><img src="http://songwenjie.vip/blog/180612/1kDaJAbffG.png?imageslim" alt="mark"></p>
+<p><strong>IList<t></t></strong>接口直接继承于<strong>ICollection<t></t></strong>接口和<strong>IEnumerable<t></t></strong>接口，并且扩展了通过<strong>索引</strong>操作集合的功能。</p>
+<p>主要扩展的功能有：</p>
+<ol>
+<li>通过索引获取集合中某个元素</li>
+<li>通过元素获取元素在集合中的索引值</li>
+<li>通过索引插入元素到集合指定位置</li>
+<li>移除集合指定索引处的元素</li>
 </ol>
-<p>参考：《软件设计重构》</p>
+<p>##IDictionary&lt;TKey, TValue&gt;和IDictionary</p>
+<p><img src="http://songwenjie.vip/blog/180612/ikDGE6JcmF.png?imageslim" alt="mark"></p>
+<p><strong>IDictionary<t></t></strong>接口直接继承于<strong>ICollection<t></t></strong>接口和<strong>IEnumerable<t></t></strong>接口，存储的元素是键值对，扩展了通过<strong>键</strong>操作键值对集合的功能。</p>
+<p>主要扩展的功能有：</p>
+<ol>
+<li>通过键KEY获取值VALUE</li>
+<li>插入新的键值对{KEY:VALUE}</li>
+<li>是否包含KEY</li>
+<li>通过KEY移除键值对元素</li>
+</ol>
+<p>主要的集合的接口介绍完了，下面我们来看一下具体的集合类型。</p>
+<h1 id="关联性泛型集合类"><a href="#关联性泛型集合类" class="headerlink" title="关联性泛型集合类"></a>关联性泛型集合类</h1><h2 id="1-Dictionary-lt-TKey-TValue-gt"><a href="#1-Dictionary-lt-TKey-TValue-gt" class="headerlink" title="1.Dictionary&lt;TKey,TValue&gt;"></a>1.Dictionary&lt;TKey,TValue&gt;</h2><p><strong>Dictionary&lt;TKey,TValue&gt;</strong>的查询数据所花费的时间是所有集合类里面最快的，因为其内部使用了散列函数加双数组来实现，所以其查询数据操作的时间复杂度可以认为是O（1）。<strong>Dictionary&lt;TKey,TValue&gt;</strong>的实现是一种典型的<strong>牺牲空间换取时间</strong>（双数组）的做法。</p>
+<p><img src="http://songwenjie.vip/blog/180614/H8c6kFHcd0.png?imageslim" alt="mark"></p>
+<p><strong>Dictionary&lt;TKey,TValue&gt;添加新元素的实现：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180613/B7f0Ga1Hc7.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180613/f1GBGe5FI2.png?imageslim" alt="mark"></p>
+<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>内部有两个数组，一个数组名为<strong>buckets</strong>，用于存放由多个同义词组成的静态链表头指针（链表的第一个元素在数组中的索引号，当它的值为-1时表示此哈希地址不存在元素）；另一个数组为<strong>entries</strong>，它用于存放哈希表中的实际数据，同时这些数据通过next指针构成多个单链表。<strong>entries</strong>数组中所存放的是Entry结构体，Entry结构体由4个部分组成，如下所示：</p>
+<p><img src="http://songwenjie.vip/blog/180613/iHcd30m90c.png?imageslim" alt="mark"></p>
+<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>计算key的哈希值使用的是取余法，这种方式可能会产生冲突，所以进行冲突解决。<strong>Dictionary&lt;TKey,TValue&gt;</strong>解决冲突的方式是链接法。</p>
+<p><img src="http://songwenjie.vip/blog/180613/fGj4c7dg8I.png?imageslim" alt="mark"></p>
+<p>我们可以根据源码来模拟推导一下这个过程：</p>
+<p>当添加第一个元素时，此时会分配哈希表<strong>buckets</strong>数组和<strong>entries</strong>数组的空间和初始大小，默认为3，关于初始数组的大小有大学问。对key=1进行哈希求值，假设第一个元素的哈希值=9，然后targetBucket = 9%buckets.Length(3)的值为0，所以第一个元素应该放在<strong>entries</strong>数组的第一位。最后对哈希表<strong>buckets</strong>数组赋值，数组索引为0，值为0。此时内部结构如图所示：</p>
+<p><img src="http://songwenjie.vip/blog/180613/dgclB002G0.png?imageslim" alt="mark"></p>
+<p>然后插入第二个元素，对key=2进行哈希求值，假设第二个元素的哈希值=3，然后targetBucket = 3%buckets.Length(3)的值为0，所以第二个元素应该放在<strong>entries</strong>数组的第一位。但是<strong>entries</strong>数组的第一位已经存在元素了，这就发生了冲突。<strong>Dictionary&lt;TKey,TValue&gt;</strong>解决冲突的方式是链接法，把发生冲突的元素链接之前元素的后面，通过next属性来指定冲突关系，最后更新哈希表<strong>buckets</strong>数组。此时内部结构如图所示：</p>
+<p><img src="http://songwenjie.vip/blog/180613/EB5B4ECAdI.png?imageslim" alt="mark"></p>
+<p>我们可以通过<strong>Dictionary&lt;TKey,TValue&gt;</strong>查找元素的实现来证明我们上面的分析是正确的。</p>
+<p><strong>Dictionary&lt;TKey,TValue&gt;查找元素的实现：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180613/aH4lLfaad8.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180613/192DmFLe28.png?imageslim" alt="mark"></p>
+<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>之所以能实现快速查找元素，其内部使用哈希表来存储元素对应的位置，我们可以通过哈希值快速地从哈希表中定位元素所在的位置索引，从而快速获取到key对应的Value值。物极必反，<strong>Dictionary&lt;TKey,TValue&gt;</strong>的缺点也很明显，就是里面的数据是无序排列的，所以按照一定顺序遍历查找数据效率是非常低的。</p>
+<h2 id="2-SortedDictionary-lt-TKey-TValue-gt"><a href="#2-SortedDictionary-lt-TKey-TValue-gt" class="headerlink" title="2.SortedDictionary&lt;TKey,TValue&gt;"></a>2.SortedDictionary&lt;TKey,TValue&gt;</h2><p><strong>SortedDictionary&lt;TKey,TValue&gt;</strong>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>类似，至于区别我们从名称上就可以看出来，<strong>Dictionary&lt;TKey,TValue&gt;</strong>是无序的，<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>则是有序的。key要保证唯一，而且还要有序排列，这让我们很自然的就想到了搜索二叉树。<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>使用一种平衡搜索二叉树——红黑树，作为存储结构。因为基于二分查找，所以添加、查找、删除元素的时间复杂度是O(log n)。相对于下面提到的<strong>SortedList&lt;TKey,TValue&gt;</strong>来说，<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>在添加和删除元素时更快一些。如果想要快速查询的同时又能很好的支持排序的话，并且添加和删除元素也比较频繁，可以使用<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>。</p>
+<p><strong>SortedDictionary&lt;TKey,TValue&gt;添加新元素的实现：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180614/2Jgfm57dD0.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180614/bCeAC1dEgc.png?imageslim" alt="mark"></p>
+<h2 id="3-SortedList-lt-TKey-TValue-gt"><a href="#3-SortedList-lt-TKey-TValue-gt" class="headerlink" title="3.SortedList&lt;TKey,TValue&gt;"></a>3.SortedList&lt;TKey,TValue&gt;</h2><p>在既需要快速查找又需要顺序排列的场景下，<strong>Dictionary&lt;TKey,TValue&gt;</strong>就无能为力了，因为<strong>Dictionary&lt;TKey,TValue&gt;</strong>使用了散列函数，并不支持线性排序。我们可以使用<strong>SortedList&lt;TKey,TValue&gt;</strong>集合类来应对这种场景。</p>
+<p><strong>SortedList&lt;TKey,TValue&gt;</strong>集合内部是使用数组实现的，添加和删除元素的时间复杂度是O(n)，查找元素利用了二分查找，所以查找元素的时间复杂度是O(log n)。所以<strong>SortedList&lt;TKey,TValue&gt;</strong>虽然支持了有序排列，但是却是以牺牲查找效率为代价的。</p>
+<p><strong>SortedList&lt;TKey,TValue&gt;</strong>和<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>同时支持快速查询和排序，<strong>SortedList&lt;TKey,TValue&gt;</strong> 优势在于使用的内存比 <strong>SortedDictionary&lt;TKey,TValue&gt;</strong> 少；但是<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>可对未排序的数据执行更快的插入和移除操作：它的时间复杂度为 O(log n)，而 <strong>SortedList&lt;TKey,TValue&gt;</strong> 为 O(n)。所以<strong>SortedList&lt;TKey,TValue&gt;</strong>适用于既需要快速查找又需要顺序排列但是添加和删除元素较少的场景。</p>
+<p><strong>内部实现结构：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180613/H659I0Ki3d.png?imageslim" alt="mark"></p>
+<p><strong>根据Key获取Value的实现：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180613/Bmfkm3BIhH.png?imageslim" alt="mark"></p>
+<p><strong>IndexOfKey实现：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180613/Fhcejc99ce.png?imageslim" alt="mark"></p>
+<p><strong>添加新元素：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180613/ja7bHhAKEJ.png?imageslim" alt="mark"></p>
+<p><strong>添加操作：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180613/9lIe5L2mfL.png?imageslim" alt="mark"></p>
+<p>#非关联性泛型集合类</p>
+<h2 id="1-List"><a href="#1-List" class="headerlink" title="1.List"></a>1.List<t></t></h2><p>泛型的List 类提供了不限制长度的集合类型，List内部实现使用数据结构是数组。我们都知道数组是长度固定的，那么List不限制长度必定需要维护这个数组。实际上List维护了一定长度的数组（默认为4），当插入元素的个数超过4或初始长度时，会去重新创建一个新的数组,这个新数组的长度是初始长度的2倍，然后将原来的数组赋值到新的数组中。</p>
+<p>我们可以通过ILSpy看一下List<t>源码证明我们上面所说的：</t></p>
+<p><strong>List<t>内部重要变量：</t></strong></p>
+<p><img src="http://songwenjie.vip/blog/180612/Km0fDlC87C.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180612/ciEdc7Jhf5.png?imageslim" alt="mark"></p>
+<p><strong>新增元素操作：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180612/dKkcLLF21k.png?imageslim" alt="mark"></p>
+<p><strong>新增元素确认数组容量：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180612/mEIG0G1ACg.png?imageslim" alt="mark"></p>
+<p><strong>真正的数组扩容操作：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180612/38ceHBHcKk.png?imageslim" alt="mark"></p>
+<p>数组扩容的场景涉及到对象的创建和赋值，是比较消耗性能的。所以如果能指定一个合适的初始长度，能避免频繁的对象创建和赋值。再者，因为内部的数据结构是数组，插入和删除操作需要移动元素位置，所以不适合频繁的进行插入和删除操作；但是可以通过数组下标查找元素。所以List<t>适合<strong>读多写少</strong>的场景。</t></p>
+<h2 id="2-LinkedList"><a href="#2-LinkedList" class="headerlink" title="2.LinkedList"></a>2.LinkedList<t></t></h2><p>上面我们提到List<t>适合<strong>读多写少</strong>的场景，那么必定有一个List<t>适合<strong>写多读少</strong>的场景，就是这货了——<strong>LinkedList<t></t></strong>。至于为什么适合<strong>写多读少</strong>，熟悉数据结构的同学应该已经猜到了。因为<strong>LinkedList<t></t></strong>的内部实现使用的是链表结构，而且还是双向链表。直接看源码：</t></t></p>
+<p><img src="http://songwenjie.vip/blog/180612/jBIeI76jH7.png?imageslim" alt="mark"></p>
+<p>因为内部实现结构是链表，所以可以在某一个节点前或节点后插入新的元素。</p>
+<p>链表节点定义：</p>
+<p><img src="http://songwenjie.vip/blog/180612/0emaCGgk0J.png?imageslim" alt="mark"></p>
+<p>我们以在某个节点前插入新元素为例：</p>
+<p><img src="http://songwenjie.vip/blog/180612/JhLlhIeHCC.png?imageslim" alt="mark"></p>
+<p>具体的插入操作，注意操作步骤不能颠倒：</p>
+<p><img src="http://songwenjie.vip/blog/180612/Ag1ggleAlD.png?imageslim" alt="mark"></p>
+<p>##3.HashSet<t></t></p>
+<p><strong>HashSet<t></t></strong>是一个无序的能够保持唯一性的集合。我们可以将<strong>HashSet<t></t></strong>看作是简化的<strong>Dictionary&lt;TKey,TValue&gt;</strong>，只不过<strong>Dictionary&lt;TKey,TValue&gt;</strong>存储的键值对对象，而<strong>HashSet<t></t></strong>存储的是普通对象。其内部实现也和<strong>Dictionary&lt;TKey,TValue&gt;</strong>基本一致，也是散列函数加双数组实现的,区别是存储的<strong>Slot</strong>结构体不再有key。</p>
+<p><strong>内部实现数据结构：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180614/4LjC671Gk5.png?imageslim" alt="mark"></p>
+<p><strong>m_slots</strong>中所存放的是<strong>Slot</strong>结构体，<strong>Slot</strong>结构体由3个部分组成，如下所示：</p>
+<p><img src="http://songwenjie.vip/blog/180614/gdGEgdcE0j.png?imageslim" alt="mark"></p>
+<p><strong>添加新元素的具体实现：</strong></p>
+<p>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>添加新元素的实现基本一致。</p>
+<p><img src="http://songwenjie.vip/blog/180614/CcIc1kFj21.png?imageslim" alt="mark"></p>
+<p>##4.SortedSet<t></t></p>
+<p><strong>SortedSet<t></t></strong>和<strong>HashSet<t></t></strong>,就像<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>一样。<strong>SortedSet<t></t></strong>支持元素按顺序排列，内部实现也是红黑树，并且<strong>SortedSet<t></t></strong>对于红黑树的操作方法和<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>完全相同。所以不再做过多的分析。</p>
+<p>##5.Stack<t></t></p>
+<p>栈是一种后进先出的结构，C#的栈是借助数组实现的，考虑到栈后进先出的特性，使用数组来实现貌似是水到渠成的事。</p>
+<p><img src="http://songwenjie.vip/blog/180612/kKhkc5kC4i.png?imageslim" alt="mark"></p>
+<p><strong>入栈操作：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180612/cHK1hKA9G9.png?imageslim" alt="mark"></p>
+<p><strong>弹栈操作：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180612/hbDecBcCEF.png?imageslim" alt="mark"></p>
+<p>##6.Queue<t></t></p>
+<p>队列是一种先进先出的结构，C#的队列也是借助数组实现的，有了前面的经验，借助数组实现必然会有数组扩容。C#的队列实现其实是循环队列的方式，可以简单的理解为将队列的头尾相接。至于为什么要这么做？为了节省存储空间和减少元素的移动。因为元素出队列时后面的元素跟着前移是非常消耗性能的，但是不跟着向前移动的话，前面就会一直存在空闲的空间浪费内存。所以使用循环队列来解决这种问题。</p>
+<p><img src="http://songwenjie.vip/blog/180612/2geF2Gd9jb.png?imageslim" alt="mark"></p>
+<p><strong>入队操作：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180612/C87bh2Fle6.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/180612/m86FgiL6Cg.png?imageslim" alt="mark"></p>
+<p><strong>出队操作：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180612/lCimmDJ4G6.png?imageslim" alt="mark"></p>
+<p>#线程安全的集合类</p>
+<p>需要我们注意的是，上面我们所介绍的集合并不是线程安全的，在多线程环境下，可能会出现线程安全问题。在多线程读的情况下，我们使用普通集合即可。在多线程添加/更新/删除时，我们可以采用手动锁定的方式确保线程安全，但是应该注意加锁的范围和粒度，加锁不当可能会导致程序性能低下甚至产生死锁。</p>
+<p>更好的选择的是使用的C#提供的线程安全集合（命名空间：System.Collections.Concurrent）。线程安全集合使用几种算法来最小化线程阻塞。</p>
+<p><img src="http://songwenjie.vip/blog/180613/l7I0Fhlh8b.png?imageslim" alt="mark"></p>
+<ol>
+<li><strong>ConcurrentQueue</strong>： 线程安全版本的Queue</li>
+<li><strong>ConcurrentStack</strong>：线程安全版本的Stack</li>
+<li><strong>ConcurrentBag</strong>：线程安全的对象集合</li>
+<li><strong>ConcurrentDictionary</strong>：线程安全的Dictionary</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>写着写着突然发现跑到数据结构上来了。程序=数据结构+算法。上面提到的集合类型，我们需要在不同的场景进行合适的选择，其实本质上就是选择合适的数据结构。</p>
+<h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><p><a href="https://www.cnblogs.com/jesse2013/p/CollectionsInCSharp.html" target="_blank" rel="noopener">https://www.cnblogs.com/jesse2013/p/CollectionsInCSharp.html</a></p>
+<p><a href="https://www.c-sharpcorner.com/article/concurrent-collections-in-net-concurrentdictionary-part-one/" target="_blank" rel="noopener">https://www.c-sharpcorner.com/article/concurrent-collections-in-net-concurrentdictionary-part-one/</a></p>
+<p><a href="http://www.cnblogs.com/jeffwongishandsome/archive/2012/09/09/2677293.html" target="_blank" rel="noopener">http://www.cnblogs.com/jeffwongishandsome/archive/2012/09/09/2677293.html</a></p>
+<p><a href="http://www.cnblogs.com/edisonchou/p/4706253.html" target="_blank" rel="noopener">http://www.cnblogs.com/edisonchou/p/4706253.html</a></p>
 
         
       
@@ -362,6 +463,97 @@
 <p>代码3：</p>
 <figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng3</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
 <p>obj可以是XXX、YYY、ZZZ。对于现在的代码，新增一个类NNN，代码1、2、3甚至n处根本不需要任何改动。因为它们实现了统一的接口，并且符合开闭原则。</p>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/23/缺失封装/">缺失封装</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
+<h1 id="缺失封装"><a href="#缺失封装" class="headerlink" title="缺失封装"></a>缺失封装</h1><p>没有将实现变化封装在抽象和层次结构中时，将导致这种坏味。</p>
+<p>表现形式通常如下:</p>
+<ul>
+<li>客户程序与其需要的服务变种紧密耦合，每当需要支持新变种或修改既有变种时，都将影响客户程序。</li>
+<li>每当需要在层次结构中支持新变种时，都添加了大量不必要的类，这增加了设计的复杂度。</li>
+</ul>
+<h2 id="为什么不能缺失封装？"><a href="#为什么不能缺失封装？" class="headerlink" title="为什么不能缺失封装？"></a>为什么不能缺失封装？</h2><p>开闭原则（OCP）指出，类型应对扩展开放，对修改关闭。也就是说应该通过扩展（而不是修改）来改变类型的行为。没有在类型或层次结构中封装实现变化时，便违反了OCP。</p>
+<h2 id="缺失封装潜在的原因"><a href="#缺失封装潜在的原因" class="headerlink" title="缺失封装潜在的原因"></a>缺失封装潜在的原因</h2><h3 id="未意识到关注点会不断变化"><a href="#未意识到关注点会不断变化" class="headerlink" title="未意识到关注点会不断变化"></a>未意识到关注点会不断变化</h3><p>没有预测到关注点可能发生变化，进而没有在设计中正确封装这些关注点。</p>
+<h3 id="混合关注点"><a href="#混合关注点" class="headerlink" title="混合关注点"></a>混合关注点</h3><p>将彼此独立的各个关注点聚合在一个层次结构中，而不是分开时，如果关注点发生变化，可能导致类的数量呈爆炸式增长。</p>
+<h3 id="幼稚的设计决策"><a href="#幼稚的设计决策" class="headerlink" title="幼稚的设计决策"></a>幼稚的设计决策</h3><p>采用过于简单的方法，如为每种变化组合创建一个类时，可能导致设计无谓的复杂。</p>
+<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><p>假设有一个Entryption类，它需要使用加密算法对数据进行加密。可供选择的加密算法有很多，包括DES(数据加密标准)、AES(高级加密标准)、TDES(三重数据加密标准)等。Entryption类使用DES算法对数据进行加密。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设出现了新需求，要求使用AES算法对数据进行加密。</p>
+<p><strong>最差的方案出现了：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingDES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     /// &lt;summary&gt;</span><br><span class="line">    /// 使用AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingAES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方案有很多不尽如人意的地方:</p>
+<ul>
+<li>Encryption类变得更大、更难以维护，因为它实现了多种加密算法，但是每次只使用一种。</li>
+<li>难以添加新算法以及修改既有算法，因为加密算法是Encryption类不可分割的部分。</li>
+<li>加密算法向Encryption类提供服务，但是与Encryption类紧紧耦合在一起，无法在其它地方重用。</li>
+</ul>
+<p>不满意就重构，首先使用继承进行重构，会有2种方案可以选择：</p>
+<p>选择1:</p>
+<p>让Encryption类根据需求继承AESEncryptionAlgorithm或DESEncryptionAlgorithm类，并提供方法Encrypt()。这种方案带来的问题是Encryption类在编译阶段就将关联到特定的加密算法,更严重的是类之间的关系并不是is-a关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingAES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void EncryptUsingDES()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Encryption: AESEncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        EncryptUsingAES();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>选择2：</p>
+<p>创建子类AESEncryption和DESEncryption,它们都扩展了Encryption类，并分别包含加密算法AES和DES的实现。客户程序可创建Encryption的引用，这些引用指向特定子类的对象。通过添加新的子类，很容易支持新的加密算法。但是这种方案的问题是AESEncryption和DESEncryption将继承Encryption类的其它方法，降低了加密算法的可重用性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public abstract class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public abstract void Encrypt();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryption : Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用 AES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public override void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用 AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryption : Encryption</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用 DES算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public override void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        // 使用 DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>最佳的选择是使用策略模式:</strong></p>
+<ul>
+<li>可在运行阶段给Encryption对象配置特定的加密算法</li>
+<li>可在其它地方重用层次结构EncryptionAlgorithm中定义的算法</li>
+<li>很容易根据需要支持新的算法</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 算法加密接口</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public interface EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">   void Encrypt();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// DES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class DESEncryptionAlgorithm : EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        //使用 DES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// AES算法加密类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class AESEncryptionAlgorithm : EncryptionAlgorithm</span><br><span class="line">&#123;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        //使用 AES算法进行加密</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class Encryption</span><br><span class="line">&#123;</span><br><span class="line">    EncryptionAlgorithm algo;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 使用算法进行加密</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public void Encrypt()</span><br><span class="line">    &#123;</span><br><span class="line">        algo.Encrypt();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>支持使用不同算法（DES和AES）对各种内容（Image和Text）进行加密的设计。</p>
+<p>最简单最直观的的设计：</p>
+<p><img src="http://songwenjie.vip/blog/180430/7F26LAmlLC.png?imageslim" alt="mark"></p>
+<p>在这个设计中，有两个变化点：支持的内容类型和加密算法类型。对于这两个变化点的每种可能组合，都使用了一个类来表示。这样会有一个严重的问题：假设现在要求支持新加密算法TDES和新内容类型Data,类的数量呈爆炸性增长。因为变化点混在了一起，没有分别进行封装。</p>
+<p><img src="http://songwenjie.vip/blog/180430/LeL7eKmk79.png?imageslim" alt="mark"></p>
+<p><strong>使用桥接模式进行封装：</strong></p>
+<p><img src="http://songwenjie.vip/blog/180430/iImmK945h6.png?imageslim" alt="mark"></p>
+<p>使用桥接模式，分别封装这两个关注点的变化。现在要引入新内容类型Data和新加密算法TDES，只需要添加两个新类。既解决了类数量呈爆炸增长的问题，又增加了根为接口EncryptionAlgorithm层次结构中的加密算法的可重用性。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>不相关的关注点混在一起，抽象将变得难以重用。</li>
+</ol>
+<ol start="2">
+<li>对业务中可能的变化点，要给予扩展点，保证开闭原则（OCP），对扩展开放，对修改关闭。</li>
+</ol>
 <p>参考：《软件设计重构》</p>
 
         
@@ -959,90 +1151,6 @@
   </article>
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/20/拆散的模块化/">拆散的模块化</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-20
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <blockquote>
-<p>模块化原则倡导利用集中和分解等手法创建高内聚、低耦合的抽象。</p>
-</blockquote>
-<p><img src="http://songwenjie.vip/blog/180508/4G6DL2kfB5.png?imageslim" alt="mark" title="没有章节的书"></p>
-<p>为了理解模块化的含义及其很重要的原因，来看看一本书的极端情况。假设一本书像讲一个长故事一样阐述其中的内容，中间没有任何停顿，也没有章节。试问面对这样的图书，读者将作何反应呢？我估计心中一定有千万只草泥马在崩腾吧。如果这本书根据内容分为不同的章节（模块）进行讲述，情况是不是就完全不一样了呢？同样，设计软件时，遵循模块化原则也很重要。需要指出的是模块化通常是一个系统级考虑因素，指的是如何将抽象组织成逻辑模块。但是我们这里的<strong>术语模块指的是类级抽象：具体类、抽象类和接口</strong>。模块化的目标是创建高内聚、低耦合的抽象。</p>
-<h2 id="应用模块化原则的实现手法"><a href="#应用模块化原则的实现手法" class="headerlink" title="应用模块化原则的实现手法"></a>应用模块化原则的实现手法</h2><p><img src="http://songwenjie.vip/blog/180508/D1bLjilGdk.png?imageslim" alt="mark" title="模块化原则的实现手法"></p>
-<ul>
-<li>将相关的数据和方法集中在一起：每个抽象都必须是内聚的，即抽象应<strong>将相关的数据和操作它们的方法集中在一起</strong>。</li>
-<li>将抽象分解为易于管理的规模：<strong>将大抽象分解为规模适中（既不太大也不太小）的小抽象</strong>。大类不仅难以理解，而且难以修改，因为这种类实现的职责可能交织在一起。</li>
-<li>创建非循环依赖：<strong>抽象之间不应该存在循环依赖</strong>。否则修改一个抽象可能引起连锁反应，波及整个设计。</li>
-<li>限制依赖关系数：创建扇入和扇出低的抽象。<strong>扇入指的是有多少个抽象依赖于当前的抽象</strong>，因此修改扇入高的抽象时，可能需要修改大量依赖于它的抽象。<strong>扇出指的是当前抽象依赖于多少个其它的抽象</strong>，高扇出意味着修改很多抽象时都可能影响当前抽象。为避免潜在的修改引发连锁反应，减少设计中抽象之间的依赖关系数很重要。</li>
-</ul>
-<p>##违反模块化原则导致的坏味</p>
-<p><img src="http://songwenjie.vip/blog/180508/eL68G2HJ4E.png?imageslim" alt="mark" title="模块化坏味"></p>
-<p>我们这篇博客主要讲解分析<strong>拆散的模块化</strong>坏味，对于其它模块化坏味将在后面的博客讲解分析。</p>
-<h1 id="拆散的模块化"><a href="#拆散的模块化" class="headerlink" title="拆散的模块化"></a>拆散的模块化</h1><p>应集中放在一个抽象中的数据和方法分散在多个抽象中，将导致这种坏味。</p>
-<p>常见表现形式如下：</p>
-<ul>
-<li><p>类被用作数据容器，其中没有任何操作这些数据的方法</p>
-</li>
-<li><p>类的方法更多的被其它类成员调用</p>
-<p>​</p>
-</li>
-</ul>
-<h2 id="为什么不能有拆散的模块化？"><a href="#为什么不能有拆散的模块化？" class="headerlink" title="为什么不能有拆散的模块化？"></a>为什么不能有拆散的模块化？</h2><p>如果抽象只包含数据成员，而操作这些数据成员的方法分散在多个抽象中时，原本应属于一个抽象的成员分散在多个抽象中时，将<strong>导致这些抽象之间紧密耦合</strong>。违反了模块化原则。</p>
-<h2 id="拆散的模块化潜在原因"><a href="#拆散的模块化潜在原因" class="headerlink" title="拆散的模块化潜在原因"></a>拆散的模块化潜在原因</h2><h3 id="以过程型思维使用面向对象语言"><a href="#以过程型思维使用面向对象语言" class="headerlink" title="以过程型思维使用面向对象语言"></a>以过程型思维使用面向对象语言</h3><p>过程型语言倾向于将数据和操作它的函数分开，从而导致这种坏味。</p>
-<h3 id="不熟悉既有设计"><a href="#不熟悉既有设计" class="headerlink" title="不熟悉既有设计"></a>不熟悉既有设计</h3><p>大型的项目设计很复杂。在这样的项目中，每位开发人员通常只负责系统中很小的一部分，不了解设计的其它部分。这可能导致成员被放置到错误的类中。</p>
-<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>来看一个设备管理应用程序。在这个应用程序中，与设备相关的数据存储在DeviceData类中，而处理这些设备数据的方法由Device类提供。DeviceData类只有公共数据成员，没有任何方法。而Device类包含一个类型为DeviceData的对象，并提供了访问和操作该数据成员的方法。</p>
-<p><img src="http://songwenjie.vip/blog/180508/ci9Ghja8Bd.png?imageslim" alt="mark" title="设备管理应用程序的类图"></p>
-<p>这些数据和方法原本应该集中放在一个类中，却分散在了Device和DeviceData类中，显然存在”拆散的模块化”坏味。</p>
-<p><strong>代码实现：</strong></p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DeviceData</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//设备ID   </span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> DeviceID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//设备位置</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> DevicePath &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//是否可用</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> Enabled &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Device</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> DeviceData deviceData = <span class="keyword">new</span> DeviceData();</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 获取设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">GetDeviceID</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> deviceData.DeviceID;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设置设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="deviceID"&gt;</span>设备ID<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">SetDeviceID</span>(<span class="params"><span class="keyword">string</span> deviceID</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        deviceData.DeviceID = deviceID;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否可用</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">IsEnabled</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> deviceData.Enabled;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="重构”拆散的模块化”"><a href="#重构”拆散的模块化”" class="headerlink" title="重构”拆散的模块化”"></a>重构”拆散的模块化”</h3><ul>
-<li>如果一个方法更多地被另一个类（Target类）而不是定义它的类（Source类）调用，就采用“移动方法”，将这个方法从Source类移到Target类中。</li>
-</ul>
-<ul>
-<li>如果一个字段更多地被另一个类（Target类）而不是定义它的类（Source类）使用，就采用“移动字段”，将这个方法从Source类移到Target类中。</li>
-</ul>
-<p><img src="http://songwenjie.vip/blog/180510/hALJC84cLF.png?imageslim" alt="mark" title="移动方法和移动字段"></p>
-<p><img src="http://songwenjie.vip/blog/180510/mD872KdEBL.png?imageslim" alt="mark" title="设备管理应用程序的重构后类图"></p>
-<p><strong>重构后的代码实现：</strong></p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Device</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> DeviceID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设备位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> DevicePath &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否可用</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> Enabled &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 获取设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">GetDeviceID</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> DeviceID;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设置设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="deviceID"&gt;</span>设备ID<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">SetDeviceID</span>(<span class="params"><span class="keyword">string</span> deviceID</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        DeviceID = deviceID;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否可用</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">IsEnabled</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> Enabled;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><h3 id="数据传输对象"><a href="#数据传输对象" class="headerlink" title="数据传输对象"></a>数据传输对象</h3><p>在使用远程接口的情况下，常常使用数据传输对象（DTO）在进程之间传输数据，以减少远程调用数。DTO聚合数据但不包含行为。这是有意为之，为了方便数据同步。</p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
       
   <nav class="pagination">
     
@@ -1051,6 +1159,11 @@
         <span class="prev-text">上一页</span>
       </a>
     
+    
+      <a class="next" href="/page/5/">
+        <span class="next-text">下一页</span>
+        <i class="iconfont icon-right"></i>
+      </a>
     
   </nav>
 

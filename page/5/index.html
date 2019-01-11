@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="记录生活、技术">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/page/5/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
+  
+
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <section id="posts" class="posts">
+    
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/20/拆散的模块化/">拆散的模块化</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-20
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <blockquote>
+<p>模块化原则倡导利用集中和分解等手法创建高内聚、低耦合的抽象。</p>
+</blockquote>
+<p><img src="http://songwenjie.vip/blog/180508/4G6DL2kfB5.png?imageslim" alt="mark" title="没有章节的书"></p>
+<p>为了理解模块化的含义及其很重要的原因，来看看一本书的极端情况。假设一本书像讲一个长故事一样阐述其中的内容，中间没有任何停顿，也没有章节。试问面对这样的图书，读者将作何反应呢？我估计心中一定有千万只草泥马在崩腾吧。如果这本书根据内容分为不同的章节（模块）进行讲述，情况是不是就完全不一样了呢？同样，设计软件时，遵循模块化原则也很重要。需要指出的是模块化通常是一个系统级考虑因素，指的是如何将抽象组织成逻辑模块。但是我们这里的<strong>术语模块指的是类级抽象：具体类、抽象类和接口</strong>。模块化的目标是创建高内聚、低耦合的抽象。</p>
+<h2 id="应用模块化原则的实现手法"><a href="#应用模块化原则的实现手法" class="headerlink" title="应用模块化原则的实现手法"></a>应用模块化原则的实现手法</h2><p><img src="http://songwenjie.vip/blog/180508/D1bLjilGdk.png?imageslim" alt="mark" title="模块化原则的实现手法"></p>
+<ul>
+<li>将相关的数据和方法集中在一起：每个抽象都必须是内聚的，即抽象应<strong>将相关的数据和操作它们的方法集中在一起</strong>。</li>
+<li>将抽象分解为易于管理的规模：<strong>将大抽象分解为规模适中（既不太大也不太小）的小抽象</strong>。大类不仅难以理解，而且难以修改，因为这种类实现的职责可能交织在一起。</li>
+<li>创建非循环依赖：<strong>抽象之间不应该存在循环依赖</strong>。否则修改一个抽象可能引起连锁反应，波及整个设计。</li>
+<li>限制依赖关系数：创建扇入和扇出低的抽象。<strong>扇入指的是有多少个抽象依赖于当前的抽象</strong>，因此修改扇入高的抽象时，可能需要修改大量依赖于它的抽象。<strong>扇出指的是当前抽象依赖于多少个其它的抽象</strong>，高扇出意味着修改很多抽象时都可能影响当前抽象。为避免潜在的修改引发连锁反应，减少设计中抽象之间的依赖关系数很重要。</li>
+</ul>
+<p>##违反模块化原则导致的坏味</p>
+<p><img src="http://songwenjie.vip/blog/180508/eL68G2HJ4E.png?imageslim" alt="mark" title="模块化坏味"></p>
+<p>我们这篇博客主要讲解分析<strong>拆散的模块化</strong>坏味，对于其它模块化坏味将在后面的博客讲解分析。</p>
+<h1 id="拆散的模块化"><a href="#拆散的模块化" class="headerlink" title="拆散的模块化"></a>拆散的模块化</h1><p>应集中放在一个抽象中的数据和方法分散在多个抽象中，将导致这种坏味。</p>
+<p>常见表现形式如下：</p>
+<ul>
+<li><p>类被用作数据容器，其中没有任何操作这些数据的方法</p>
+</li>
+<li><p>类的方法更多的被其它类成员调用</p>
+<p>​</p>
+</li>
+</ul>
+<h2 id="为什么不能有拆散的模块化？"><a href="#为什么不能有拆散的模块化？" class="headerlink" title="为什么不能有拆散的模块化？"></a>为什么不能有拆散的模块化？</h2><p>如果抽象只包含数据成员，而操作这些数据成员的方法分散在多个抽象中时，原本应属于一个抽象的成员分散在多个抽象中时，将<strong>导致这些抽象之间紧密耦合</strong>。违反了模块化原则。</p>
+<h2 id="拆散的模块化潜在原因"><a href="#拆散的模块化潜在原因" class="headerlink" title="拆散的模块化潜在原因"></a>拆散的模块化潜在原因</h2><h3 id="以过程型思维使用面向对象语言"><a href="#以过程型思维使用面向对象语言" class="headerlink" title="以过程型思维使用面向对象语言"></a>以过程型思维使用面向对象语言</h3><p>过程型语言倾向于将数据和操作它的函数分开，从而导致这种坏味。</p>
+<h3 id="不熟悉既有设计"><a href="#不熟悉既有设计" class="headerlink" title="不熟悉既有设计"></a>不熟悉既有设计</h3><p>大型的项目设计很复杂。在这样的项目中，每位开发人员通常只负责系统中很小的一部分，不了解设计的其它部分。这可能导致成员被放置到错误的类中。</p>
+<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>来看一个设备管理应用程序。在这个应用程序中，与设备相关的数据存储在DeviceData类中，而处理这些设备数据的方法由Device类提供。DeviceData类只有公共数据成员，没有任何方法。而Device类包含一个类型为DeviceData的对象，并提供了访问和操作该数据成员的方法。</p>
+<p><img src="http://songwenjie.vip/blog/180508/ci9Ghja8Bd.png?imageslim" alt="mark" title="设备管理应用程序的类图"></p>
+<p>这些数据和方法原本应该集中放在一个类中，却分散在了Device和DeviceData类中，显然存在”拆散的模块化”坏味。</p>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DeviceData</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//设备ID   </span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> DeviceID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//设备位置</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> DevicePath &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//是否可用</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> Enabled &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Device</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> DeviceData deviceData = <span class="keyword">new</span> DeviceData();</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 获取设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">GetDeviceID</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> deviceData.DeviceID;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设置设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="deviceID"&gt;</span>设备ID<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">SetDeviceID</span>(<span class="params"><span class="keyword">string</span> deviceID</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        deviceData.DeviceID = deviceID;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否可用</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">IsEnabled</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> deviceData.Enabled;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="重构”拆散的模块化”"><a href="#重构”拆散的模块化”" class="headerlink" title="重构”拆散的模块化”"></a>重构”拆散的模块化”</h3><ul>
+<li>如果一个方法更多地被另一个类（Target类）而不是定义它的类（Source类）调用，就采用“移动方法”，将这个方法从Source类移到Target类中。</li>
+</ul>
+<ul>
+<li>如果一个字段更多地被另一个类（Target类）而不是定义它的类（Source类）使用，就采用“移动字段”，将这个方法从Source类移到Target类中。</li>
+</ul>
+<p><img src="http://songwenjie.vip/blog/180510/hALJC84cLF.png?imageslim" alt="mark" title="移动方法和移动字段"></p>
+<p><img src="http://songwenjie.vip/blog/180510/mD872KdEBL.png?imageslim" alt="mark" title="设备管理应用程序的重构后类图"></p>
+<p><strong>重构后的代码实现：</strong></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Device</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> DeviceID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设备位置</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">string</span> DevicePath &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否可用</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">bool</span> Enabled &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 获取设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">GetDeviceID</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> DeviceID;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 设置设备ID</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="deviceID"&gt;</span>设备ID<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">SetDeviceID</span>(<span class="params"><span class="keyword">string</span> deviceID</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        DeviceID = deviceID;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 是否可用</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">IsEnabled</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> Enabled;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><h3 id="数据传输对象"><a href="#数据传输对象" class="headerlink" title="数据传输对象"></a>数据传输对象</h3><p>在使用远程接口的情况下，常常使用数据传输对象（DTO）在进程之间传输数据，以减少远程调用数。DTO聚合数据但不包含行为。这是有意为之，为了方便数据同步。</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+      
+  <nav class="pagination">
+    
+      <a class="prev" href="/page/4/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    
+    
+  </nav>
+
+
+    
+  </section>
+
+          </div>
+          
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
+
+  </body>
+</html>
