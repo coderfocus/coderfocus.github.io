@@ -17,10 +17,12 @@
 
 
 
-  <meta name="description" content="记录生活、技术">
+  <meta name="description" content="Spring Boot 热部署">
 
 
 
+
+  <meta name="keywords" content="Spring Boot, Java, CoderFocus">
 
 
 
@@ -40,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/archives/2019/01/">
+<link rel="canonical" href="https://songwenjie.coding.me/2019/02/28/Spring-Boot-热部署/">
 
 
 
@@ -88,11 +90,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title>
-  
-    归档 - CoderFocus
-  
-</title>
+    <title> Spring Boot 热部署 - CoderFocus </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -204,119 +202,109 @@
           <div id="content" class="content">
             
   
-  
-  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Spring Boot 热部署
+        
+      </h1>
 
-  <section id="archive" class="archive">
-    
-      
-        <div class="archive-title">
-          <span class="archive-post-counter">
-            目前共计 42 篇日志
-          </span>
-        </div>
-      
-    
-
-    
-      
+      <div class="post-meta">
+        <span class="post-time">
+          2019-02-28
+        </span>
         
         
+      </div>
+    </header>
 
+    
+    
+
+
+    <div class="post-content">
+      
+        <p>我们知道 Java 是一门编译型语言，在本地开发时，如果我们修改了代码，需要重启一下服务器，并且重新运行代码。热部署可以解决掉这个问题，有了热部署之后，只需要重新 Build 一下就可以看到修改代码后的效果，不需要重启服务器。</p>
+<p>在 Spring Boot 中，我们可以通过 spring-boot-devtools 实现热部署。</p>
+<a id="more"></a>
+<p>maven pom.xml 文件中添加如下依赖：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;</span><br><span class="line">     &lt;optional&gt;true&lt;/optional&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>并且修改 <build><plugins> 下的节点</plugins></build></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">        &lt;plugins&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">                &lt;/configuration&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">        &lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
+<p>如果不想手动 Build 项目，可以在 IDEA 中配置自动 Build</p>
+<p>File-&gt;Build-&gt;Compiler,选中 Build peoject automatically</p>
+<p><img src="http://songwenjie.vip/blog/20190228/U51CE7fnuGUO.png?imageslim" alt="mark"></p>
+<p>然后组合键 Ctrl + Shift  + Alt + / ,选中 Registry ,使 compiler.automake.allow.when.app.running  选中</p>
+<p><img src="http://songwenjie.vip/blog/20190228/jfyO1zIixkhs.png?imageslim" alt="mark"></p>
+<p>重启 IDEA ,就可以使用热部署功能了。需要注意的是，这种方式只适用于 Spring Boot 项目。</p>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/02/28/Spring-Boot-热部署/">https://songwenjie.coding.me/2019/02/28/Spring-Boot-热部署/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
         
-          
-          <div class="collection-title">
-            <h2 class="archive-year">2019</h2>
+          <div class="post-tags">
+            
+              <a href="/tags/Spring-Boot/">Spring Boot</a>
+            
+              <a href="/tags/Java/">Java</a>
+            
           </div>
         
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            01-11
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2019/01/11/基于jquery的formHelp插件/" class="archive-post-link">
-            基于jquery的formHelp插件
-          </a>
-        </span>
-      </div>
+        
+        
+  <nav class="post-nav">
     
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            01-02
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2019/01/02/耳机种草指北/" class="archive-post-link">
-            耳机种草指北
-          </a>
-        </span>
-      </div>
     
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            01-02
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2019/01/02/换个角度看表连接/" class="archive-post-link">
-            换个角度看表连接
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            01-01
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2019/01/01/自连接的妙用/" class="archive-post-link">
-            自连接的妙用
-          </a>
-        </span>
-      </div>
-    
-  </section>
-
-  
-  <nav class="pagination">
-    
+      <a class="next" href="/2019/01/11/基于jquery的formHelp插件/">
+        <span class="next-text nav-default">基于jquery的formHelp插件</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
     
   </nav>
 
 
+      </footer>
+    
+
+  </article>
 
 
           </div>
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
       </main>
@@ -401,6 +389,11 @@
     </div>
 
     
+  
+  
+
+  
+
 
 
     

@@ -208,6 +208,65 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/08/01/网络分层的真实含义是什么/">网络分层的真实含义是什么</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-01
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h2 id="四个问题"><a href="#四个问题" class="headerlink" title="四个问题"></a>四个问题</h2><ol>
+<li><p><strong>TCP 在进行三次握手的时候，IP 层和 MAC 层对应都有什么操作呢？</strong></p>
+<p>TCP 发送每一个消息，都会带着 IP 层和 MAC 层了。因为，TCP 每发送一个消息，IP 层和 MAC 层的所有机制都要运行一遍。而你只看到 TCP 三次握手了，其实，IP 层和 MAC 层为此也忙活好久了。</p>
+</li>
+<li><p><strong>A 知道自己的下一个中转站是 B，那从 A 发出来的包，应该把 B 的 IP 地址放在哪里呢？B 知道自己的下一个中转站是 C，从 B 发出来的包，应该把 C 的 IP 地址放在哪里呢？如果放在 IP 协议中的目标地址，那包到了中转站，怎么知道最终的目的地址是 D 呢？</strong></p>
+</li>
+</ol>
+<ol start="3">
+<li><p><strong>二层设备处理的通常是 MAC 层的东西。那我发送一个 HTTP 的包，是在第七层工作的，那是不是不需要经过二层设备？或者即便经过了，二层设备也不处理呢？或者换一种问法，二层设备处理的包里，有没有 HTTP 层的内容呢？</strong></p>
+<p>二层设备收进去的是整个网络包。这里面 HTTP、TCP、 IP、 MAC 都有。什么叫二层设备，就是只把 MAC 头摘下来，看看到底是丢弃、转发，还是自己留着。</p>
+</li>
+<li><p>从你的电脑，通过 SSH 登录到公有云主机里面，都需要经历哪些过程？或者说你打开一个电商网站，都需要经历哪些过程？说得越详细越好。</p>
+</li>
+</ol>
+<h2 id="网络为什么要分层？"><a href="#网络为什么要分层？" class="headerlink" title="网络为什么要分层？"></a>网络为什么要分层？</h2><p>因为复杂的程序都要分层。所谓的二层设备、三层设备，都是这些设备上跑的程序不同而已。始终想象自己是一个处理网络包的程序，如何拿到网络包、如何根据规则进行处理、如何把包发出去。</p>
+<h2 id="程序是如何工作的？"><a href="#程序是如何工作的？" class="headerlink" title="程序是如何工作的？"></a>程序是如何工作的？</h2><p><img src="http://songwenjie.vip/blog/180731/EJdJIc9Kak.png?imageslim" alt="mark"></p>
+<p>想象自己是一个处理网络包的程序，接收到Buffer时，调用process_layer2(buffer)函数，摘掉二层的头（MAC头），如果MAC地址和自己的相符，则说明包是发送给自己的。继续调用process_layer3(buffer)函数，此时Buffer里已经没有二层的头（MAC头）了。如果IP地址不是自己的，那就应该转发出去；如果IP地址是自己的，就是发送给自己的。摘掉三层的头（IP头），继续交给上一层处理。假设上层是基于TCP，则调用process_tcp(buffer)函数。此时Buffer中已经没有三层的头（IP头），所以需要查看四层的头（TCP头）。看这是发起还是应答，或者是一个普通的数据包。如果是发起或者应答，则接下来可能要发送一个回复包。如果是一个普通数据包，则交由上层处理（process_http(buffer)函数）。或者交由应用程序程序自己去处理，交给哪个应用程序呢？在四层的头（TCP头）里有端口号，不同的程序的监听不同的端口号。我们假设交给浏览器去处理，浏览器解析HTML，展示出页面。</p>
+<p>此时用户点击页面上的按钮，浏览器发起一次新的HTTP请求。首先调用send_tcp(buffer)函数，buffer就是HTTP请求内容，这个函数会给buffer加一个TCP头，记录下源端口号和目标端口号（浏览器会提供）。然后调用send_layer3(buffer)函数，此时buffer中包含了HTTP的请求内容和请求头以及TCP头，在这个函数里加一个IP头，记录下源IP地址和目标IP地址。然后调用send_layer2(buffer)函数，buffer里面已经包含了HTTP的请求内容和请求头、TCP头以及IP头，在这个函数里面加一个MAC头，记录源MAC地址和目标MAC地址，此时目标MAC地址不一定能知道，如果不知道的话，需要通过ARP协议获取MAC地址。MAC地址是必须要有的。</p>
+<h2 id="层与层之间的关系"><a href="#层与层之间的关系" class="headerlink" title="层与层之间的关系"></a>层与层之间的关系</h2><p>层层封装的关系，可以想象为套娃。<strong>只要是在网络上跑的包，都是完整的。可以有下层没上层，但是绝对不可能有上层没下层。</strong></p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/29/MySQL中能够使用索引的场景/">MySQL中能够使用索引的场景</a>
         
       </h1>
@@ -802,103 +861,6 @@
 </blockquote>
 <h2 id="要怀有感恩之心。"><a href="#要怀有感恩之心。" class="headerlink" title="要怀有感恩之心。"></a>要怀有感恩之心。</h2><p>人要懂得感恩。人的一生可能会在一些关键的节点上遇到对你帮助很大的人们，要对他们怀有一颗感恩之心。以我个人举例，我感恩的人比较多。首先要感谢文宾哥，当初我选择走程序员这条路，也是因为他给我问题的回答让我无比坚定。我问他，程序员真的是青春饭吗？他说，不是。然后要感谢领我入门的德进哥，一直忘不了您的谆谆教诲，文杰啊，你要努力！还有您鼓励我的那500块钱工资。还要感谢我在公司的第一个师傅潇哥，感谢你没有嫌弃那么菜的我，还给我在书上画重点，让我重点学习哪一块技术。感谢我的老组长峰哥，现在不在一个项目组了，还给我的分享用心提出了整整两屏幕半的建议，每一条都非常诚恳，说实话我当时很意外很感动，以后的分享要注意这些建议的地方。感谢我的领导东哥，一年半前的那次谈话改变了我，也感谢你对我的信任和鼓励。感谢我的同事和好朋友法师，一位优秀的有追求的程序员，我在公司和法师的交流是最多的，在他身上学习到了不少东西。在他们身上我感受到了无数的正能量。我现在想尽最大能力帮助你们提升的原因，一是因为大家都比较年轻，刚进公司的你们或者现在的你们，很像那时候的我，懵懂无知，但是却苛求进步。二是因为正能量是可以“传染”的，他们“传染“给我，我”传染“给你们，你们可能要”传染“给将来的新人。最后应该感恩的是我的家人和我的女朋友。我的父母都是农民，但是他们在教育这件事上一点都不马虎，当年我的父亲想尽一切办法让我去了市里数一数二的初中高中读书，我从13岁到现在在外地上班就没怎么在家住过。直到现在他们还在为我操劳着，我亏欠父母的确实太多了。我的姐姐从7岁开始带我，以至于现在叫自己孩子名字都经常叫成我的名字。我的女朋友和我相恋5年了，这5年来无论我做什么决定，她都在背后默默支持。开始工作到现在，我的时间都分给了工作和研究技术，她从来没有和我抱怨过，虽然我陪她的时间少的过分。你轻松的生活工作背后一定有人在替你负重前行，对于我来说就是我的家人和我的女朋友。可能这个主题我跟你们讲不太合适，但是这个真的很重要。在你比较困难的时候，只要想起他们，你的心中就会充满了正能量。毕竟他们是希望你好的人，不能让他们失望。常怀感恩之心，你会走的更远。<br><br></p>
 <p>写了四个小时，该结束了。本篇文章纯属有感而发，写给我的组员们（和曾经的组员们）。希望你们看过之后有收获。</p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/23/HTTP首部扫盲/">HTTP首部扫盲</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-23
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <h1 id="HTTP首部扫盲"><a href="#HTTP首部扫盲" class="headerlink" title="HTTP首部扫盲"></a>HTTP首部扫盲</h1><p> 之前在做web开发时使用到HTTP首部的时候遇到不熟悉的都是现用现查，时间一长印象就不深刻了。最近在重读《图解HTTP》，其中有一章是专门讲解HTTP首部的，讲解的HTTP首部很多，在这里总结了一些平常使用比较多的首部。</p>
-<h1 id="1-HTTP报文首部"><a href="#1-HTTP报文首部" class="headerlink" title="1. HTTP报文首部"></a>1. HTTP报文首部</h1><p><strong>HTTP的请求和响应报文必定包含HTTP首部</strong>。首部内容为客户端和服务器分别处理请求和响应提供所需要的信息。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/4JdHjHhIFA.png?imageslim" alt="mark"></p>
-<p>##1.1 HTTP请求报文</p>
-<p><strong>HTTP请求报文由方法、URI、HTTP版本、HTTP首部字段等部分构成</strong>。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/8Jm11291mH.png?imageslim" alt="mark">我们可以自己通过浏览器查看请求首部信息，浏览器F12控制台选择Network,下面是我访问图灵社区网站的请求头部信息：</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Request URL: http://www.ituring.com.cn/</span><br><span class="line">Request Method: GET</span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate</span><br><span class="line"><span class="attribute">Accept-Language</span>: zh-CN,zh;q=0.9</span><br><span class="line"><span class="attribute">Cache-Control</span>: max-age=0</span><br><span class="line"><span class="attribute">Connection</span>: keep-alive</span><br><span class="line"><span class="attribute">Host</span>: www.ituring.com.cn</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span>: 1</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36</span><br></pre></td></tr></table></figure>
-<h2 id="1-2-HTTP响应报文"><a href="#1-2-HTTP响应报文" class="headerlink" title="1.2 HTTP响应报文"></a>1.2 HTTP响应报文</h2><p><strong>HTTP响应报文由HTTP版本、状态码、HTTP首部字段3部分构成</strong>。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/dI0755de1j.png?imageslim" alt="mark">访问图灵社区网站的响应头部信息：</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Status Code: 200 OK</span><br><span class="line"><span class="attribute">Cache-Control</span>: private</span><br><span class="line"><span class="attribute">Content-Encoding</span>: gzip</span><br><span class="line"><span class="attribute">Content-Length</span>: 25620</span><br><span class="line"><span class="attribute">Content-Type</span>: text/html; charset=utf-8</span><br><span class="line"><span class="attribute">Date</span>: Sat, 14 Apr 2018 15:07:28 GMT</span><br><span class="line"><span class="attribute">Server</span>: Microsoft-IIS/8.5</span><br><span class="line"><span class="attribute">Vary</span>: Accept-Encoding</span><br><span class="line"><span class="attribute">X-AspNet-Version</span>: 4.0.30319</span><br><span class="line"><span class="attribute">X-AspNetMvc-Version</span>: 5.2</span><br><span class="line"><span class="attribute">X-Powered-By</span>: ASP.NET</span><br></pre></td></tr></table></figure>
-<h1 id="2-四种HTTP首部字段类型"><a href="#2-四种HTTP首部字段类型" class="headerlink" title="2. 四种HTTP首部字段类型"></a>2. 四种HTTP首部字段类型</h1><h2 id="2-1-通用首部字段"><a href="#2-1-通用首部字段" class="headerlink" title="2.1 通用首部字段"></a>2.1 通用首部字段</h2><p><strong>请求报文和响应报文两方都会使用的首部</strong>。</p>
-<h3 id="2-1-1-Connection"><a href="#2-1-1-Connection" class="headerlink" title="2.1.1 Connection"></a>2.1.1 Connection</h3><p>Connection首部字段具备如下两个作用：</p>
-<ul>
-<li><p>控制不再转发给代理的首部字段</p>
-<p>请求报文和响应报文可以通过<code>Connection:不再转发的首部字段名</code>控制不再转发的首部字段</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/ifdcgLA2L1.png?imageslim" alt="mark"></p>
-</li>
-<li><p>管理持久连接</p>
-<p>HTTP/1.1版本的默认连接都是持久连接，客户端会在持久连接上连续发送请求。当服务器想要断开连接时则指定Connection值为Close。HTTP/1.1版本之前的HTTP版本的默认连接都是非持久连接，因此如果想要在旧版本的HTTP协议上维持持久连接，则需要显式指定Connection首部字段值为keep-alive。</p>
-<p>Connection:keep-alive</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/CBgJ25hgEE.png?imageslim" alt="mark"></p>
-<p>Connection:Close</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/9D11B3lCGh.png?imageslim" alt="mark"></p>
-</li>
-</ul>
-<h3 id="2-1-2-Upgrade"><a href="#2-1-2-Upgrade" class="headerlink" title="2.1.2 Upgrade"></a>2.1.2 Upgrade</h3><p>Upgrade字段用于检测HTTP协议以及其他协议是否可使用更高的版本进行通信，或者是否可以切换到其他协议进行通信。Upgrade字段产生作用的Upgrade对象仅限于客户端和邻接服务器之间，因此使用首部字段Upgrade时，需要额外指定Connection:Upgrade，此时Connection起到的作用就是前面提到的“控制不再转发给代理的首部字段”。对于附有首部字段Upgrade的请求，服务器可用101状态码作为响应返回。</p>
-<p>  <img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/dc119bD9hH.png?imageslim" alt="mark"></p>
-<p>关于Upgrade字段，最常用的场景就是由HTTP协议升级为Websock协议时，之前我还对这个过程进行了抓包分析，感兴趣的同学或者对Websock协议不是很了解的同学可以移步我之前的一篇博客<a href="http://www.cnblogs.com/songwenjie/p/8575579.html" target="_blank" rel="noopener">原来你是这样的Websocket–抓包分析</a>。</p>
-<h2 id="2-2-请求首部字段"><a href="#2-2-请求首部字段" class="headerlink" title="2.2 请求首部字段"></a>2.2 请求首部字段</h2><p><strong>从客户端向服务器发送请求报文时使用的首部</strong>。</p>
-<h3 id="2-2-1-Accept"><a href="#2-2-1-Accept" class="headerlink" title="2.2.1 Accept"></a>2.2.1 Accept</h3><p>Accept首部字段可通知服务器，用户代理能够处理的媒体类型及媒体类型的相对优先级。可以使用type/subtype这种形式，一次指定多种媒体类型。若想要给媒体类型显式增加优先级，则使用q=来额外表示权重值，用（；）进行分隔。权重范围为0~1，默认权重为q=1.0。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/igDjF4F0eD.png?imageslim" alt="mark"></p>
-<p>###2.2.2 Authorization</p>
-<p>首部字段Authorization是用来告知服务器，用户代理的认证信息（证书值）。通常在需要认证的网络资源中，没有附加Authorization字段或Authorization字段值错误的请求，会被认为是非法请求，响应状态码为401。在Token认证方式下，客户端就是通过Authorization字段将Token值告知服务器的。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/L24l2ED670.png?imageslim" alt="mark"></p>
-<h3 id="2-2-3-Host"><a href="#2-2-3-Host" class="headerlink" title="2.2.3 Host"></a>2.2.3 Host</h3><p>首部字段Host会告知服务器，请求的资源所处的互联网主机名和端口号。<strong>Host首部字段在HTTP/1.1规范内是唯一一个必须被包含在请求内的首部字段</strong>。首部字段Host和单台服务器分配多个域名的虚拟主机的工作机制有很密切的联系，这是首部字段Host必须存在的意义。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/iD12iFB2dk.png?imageslim" alt="mark"></p>
-<h3 id="2-2-4-Referer"><a href="#2-2-4-Referer" class="headerlink" title="2.2.4 Referer"></a>2.2.4 Referer</h3><p>首部字段Referer会告知服务器请求的原始资源的URI。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/amcFDGmJhI.png?imageslim" alt="mark"></p>
-<h3 id="2-2-5-User-Agent"><a href="#2-2-5-User-Agent" class="headerlink" title="2.2.5 User-Agent"></a>2.2.5 User-Agent</h3><p>首部字段User-Agent会将创建请求的浏览器和用户代理名称等信息传达给服务器。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/1jlBmbJDAb.png?imageslim" alt="mark"></p>
-<h2 id="2-3-响应首部字段"><a href="#2-3-响应首部字段" class="headerlink" title="2.3 响应首部字段"></a>2.3 响应首部字段</h2><p><strong>从服务器向客户端返回响应报文时使用的首部</strong>。</p>
-<h3 id="2-3-1-Location"><a href="#2-3-1-Location" class="headerlink" title="2.3.1 Location"></a>2.3.1 Location</h3><p>使用首部字段Location可以将响应接收方引导至某个与请求URI位置不同的资源。该字段会配合3XX:Redirection的响应，提供重定向的URI。几乎所有的浏览器接收到包含首部字段Location的响应后，都会强制性的尝试对已提示的重定向资源的访问。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/1gK39AFF4E.png?imageslim" alt="mark"></p>
-<h3 id="2-3-2-Server"><a href="#2-3-2-Server" class="headerlink" title="2.3.2 Server"></a>2.3.2 Server</h3><p>首部字段告知客户端当前服务器上安装的HTTP服务器应用程序的信息。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/Ggf07lHbi8.png?imageslim" alt="mark"></p>
-<p>###2.3.3 WWW-Authenticate</p>
-<p>首部字段WWW-Authenticate用于HTTP的访问认证。它会告知客户端用于访问请求的URI所指定资源的认证方案（Basic或Digest）和带参数提示的质询。<strong>状态码401 Unauthorized响应中，肯定带有首部字段WWW-Authenticate</strong>。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/4kKKCAG7hF.png?imageslim" alt="mark"></p>
-<h2 id="2-4-实体首部字段"><a href="#2-4-实体首部字段" class="headerlink" title="2.4 实体首部字段"></a>2.4 实体首部字段</h2><p><strong>请求报文和响应报文的实体部分使用的首部</strong>。</p>
-<h3 id="2-4-1-Allow"><a href="#2-4-1-Allow" class="headerlink" title="2.4.1 Allow"></a>2.4.1 Allow</h3><p>首部字段Allow用于通知客户端能够支持Request-URI指定资源的所有HTTP方法。当服务器收到不支持的HTTP方法时，会以状态码405 Method Not Allowed 作为响应返回。与此同时，还会把所有能支持的HTTP方法写入首部字段Allow后返回。</p>
-<p> <img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/hGHAJkjf5c.png?imageslim" alt="mark"></p>
-<h3 id="2-4-2-Content-Length"><a href="#2-4-2-Content-Length" class="headerlink" title="2.4.2 Content-Length"></a>2.4.2 Content-Length</h3><p>首部字段Content-Length表明了实体主体部分的大小（单位是字节）。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/jab0G9GI9e.png?imageslim" alt="mark"></p>
-<h3 id="2-4-3-Content-Location"><a href="#2-4-3-Content-Location" class="headerlink" title="2.4.3 Content-Location"></a>2.4.3 Content-Location</h3><p>首部字段Content-Location给出与报文主体部分相对应的URI。和首部字段Location不同，Content-Location表示的是报文主体返回资源对应的URI。目的是为了当返回的页面内容和实际请求的对象不同时，Content-Location内会写明URI。</p>
-<h3 id="2-4-3-Content-Type"><a href="#2-4-3-Content-Type" class="headerlink" title="2.4.3 Content-Type"></a>2.4.3 Content-Type</h3><p>首部字段Content-Type说明了实体主体内对象的媒体类型。字段值采用type/subtype形式赋值。</p>
-<p>这个字段我们实际接触是比较多的，当使用网络接口调试工具调试接口时就需要选择Content-Type，例如指定使用json媒体格式<code>Content-Type:Application/json;charset=UTF-8</code>。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/G0kem3IE1K.png?imageslim" alt="mark"></p>
 
         
       
