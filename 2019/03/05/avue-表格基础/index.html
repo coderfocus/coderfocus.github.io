@@ -17,12 +17,12 @@
 
 
 
-  <meta name="description" content="Spring Boot 热部署">
+  <meta name="description" content="avue 表格基础">
 
 
 
 
-  <meta name="keywords" content="Spring Boot, Java, CoderFocus">
+  <meta name="keywords" content="Vue  , avue, CoderFocus">
 
 
 
@@ -42,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/2019/02/28/Spring-Boot-热部署/">
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/05/avue-表格基础/">
 
 
 
@@ -90,7 +90,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> Spring Boot 热部署 - CoderFocus </title>
+    <title> avue 表格基础 - CoderFocus </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -206,13 +206,13 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          Spring Boot 热部署
+          avue 表格基础
         
       </h1>
 
       <div class="post-meta">
         <span class="post-time">
-          2019-02-28
+          2019-03-05
         </span>
         
         
@@ -221,23 +221,45 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#表格基本配置"><span class="toc-text">表格基本配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#丰富表格选项"><span class="toc-text">丰富表格选项</span></a></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        <p>我们知道 Java 是一门编译型语言，在本地开发时，如果我们修改了代码，需要重启一下服务器，并且重新运行代码。热部署可以解决掉这个问题，有了热部署之后，只需要重新 Build 一下就可以看到修改代码后的效果，不需要重启服务器。</p>
-<p>在 Spring Boot 中，我们可以通过 spring-boot-devtools 实现热部署。</p>
-<a id="more"></a>
-<p>maven pom.xml 文件中添加如下依赖：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;</span><br><span class="line">     &lt;optional&gt;true&lt;/optional&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
-<p>并且修改 <build><plugins> 下的节点</plugins></build></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;build&gt;</span><br><span class="line">        &lt;plugins&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;fork&gt;true&lt;/fork&gt;</span><br><span class="line">                &lt;/configuration&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">        &lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
-<p>如果不想手动 Build 项目，可以在 IDEA 中配置自动 Build</p>
-<p>File-&gt;Build-&gt;Compiler,选中 Build peoject automatically</p>
-<p><img src="http://songwenjie.vip/blog/20190228/U51CE7fnuGUO.png?imageslim" alt="mark"></p>
-<p>然后组合键 Ctrl + Shift  + Alt + / ,选中 Registry ,使 compiler.automake.allow.when.app.running  选中</p>
-<p><img src="http://songwenjie.vip/blog/20190228/jfyO1zIixkhs.png?imageslim" alt="mark"></p>
-<p>重启 IDEA ,就可以使用热部署功能了。需要注意的是，这种方式只适用于 Spring Boot 项目。</p>
+        <p><strong>avue是一个配置化前端框架，一切基于配置</strong></p>
+<h3 id="表格基本配置"><a href="#表格基本配置" class="headerlink" title="表格基本配置"></a>表格基本配置</h3><p>使用 <code>&lt;avue-crud :data=&quot;data&quot; :option=&quot;option&quot;&gt;&lt;/avue-crud&gt;</code> 构建表格</p>
+<p><code>data</code> 为数据的对象数组，<code>option</code> 为表格要配置的数据列</p>
+<p>因为  <code>option</code>  为表格要配置的数据列,当表格列数比较多的时候，配置项也会急剧膨胀，配置项和业务代码混杂在一起，也不利于项目代码的可读性和可维护性。为了解决这个问题，可以将配置代码和业务代码分离。</p>
+<p>业务代码：</p>
+<p><img src="http://songwenjie.vip/blog/20190305/iaP30z5vJvSb.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190305/41q9M4ScVIFf.png?imageslim" alt="mark"></p>
+<p>配置代码：</p>
+<p><img src="http://songwenjie.vip/blog/20190305/p4UssYwJkk07.png?imageslim" alt="mark"></p>
+<h3 id="丰富表格选项"><a href="#丰富表格选项" class="headerlink" title="丰富表格选项"></a>丰富表格选项</h3><p>我们还可以通过配置丰富表格选项：</p>
+<p><strong>显示边框：</strong></p>
+<p><code>border: true</code></p>
+<p><img src="http://songwenjie.vip/blog/20190305/2uguhsFXDFHw.png?imageslim" alt="mark"></p>
+<p><strong>显示斑马纹：</strong></p>
+<p><code>stripe: true</code></p>
+<p><img src="http://songwenjie.vip/blog/20190305/A4BBfULpycno.png?imageslim" alt="mark"></p>
+<p><strong>显示索引：</strong></p>
+<p><code>index: true,
+indexLabel: &#39;序号&#39;</code></p>
+<p><img src="http://songwenjie.vip/blog/20190305/2VFGUinvWeHw.png?imageslim" alt="mark"></p>
+<p><strong>显示多选框：</strong></p>
+<p><code>selection: true</code></p>
+<p><img src="http://songwenjie.vip/blog/20190305/THTzWhweNJwp.png?imageslim" alt="mark"></p>
+<p><strong>显示表头：</strong></p>
+<p><code>showHeader: true</code></p>
+<p><img src="http://songwenjie.vip/blog/20190305/GxAtvpDJYfGS.png?imageslim" alt="mark"></p>
+<p><strong>复杂表头：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">column: [</span><br><span class="line">    &#123;</span><br><span class="line">      label: <span class="string">'名称及作者'</span>,</span><br><span class="line">      prop: <span class="string">'nameAndAuthor'</span>,</span><br><span class="line">      children:[</span><br><span class="line">        &#123;</span><br><span class="line">          label: <span class="string">'书籍名称'</span>,</span><br><span class="line">          prop: <span class="string">'bookName'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          label: <span class="string">'作者'</span>,</span><br><span class="line">          prop: <span class="string">'author'</span></span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190305/Uv06akIKXtuB.png?imageslim" alt="mark"></p>
 
       
     </div>
@@ -253,7 +275,7 @@
     </p>
     <p class="copyright-item">
       <span>原文链接: </span>
-      <a href="https://songwenjie.coding.me/2019/02/28/Spring-Boot-热部署/">https://songwenjie.coding.me/2019/02/28/Spring-Boot-热部署/</a>
+      <a href="https://songwenjie.coding.me/2019/03/05/avue-表格基础/">https://songwenjie.coding.me/2019/03/05/avue-表格基础/</a>
     </p>
     <p class="copyright-item">
       <span>许可协议: </span>
@@ -273,9 +295,9 @@
         
           <div class="post-tags">
             
-              <a href="/tags/Spring-Boot/">Spring Boot</a>
+              <a href="/tags/Vue/">Vue  </a>
             
-              <a href="/tags/Java/">Java</a>
+              <a href="/tags/avue/">avue</a>
             
           </div>
         
@@ -283,15 +305,9 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2019/03/05/avue/">
-        <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">基于avue和SpringBoot的代码生成</span>
-        <span class="prev-text nav-mobile">上一篇</span>
-      </a>
     
-    
-      <a class="next" href="/2019/01/11/基于jquery的formHelp插件/">
-        <span class="next-text nav-default">基于jquery的formHelp插件</span>
+      <a class="next" href="/2019/03/05/avue/">
+        <span class="next-text nav-default">基于avue和SpringBoot的代码生成</span>
         <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>

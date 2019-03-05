@@ -17,10 +17,12 @@
 
 
 
-  <meta name="description" content="记录生活、技术">
+  <meta name="description" content="基于avue和SpringBoot的代码生成">
 
 
 
+
+  <meta name="keywords" content="Spring Boot, avue, Vue , CoderFocus">
 
 
 
@@ -40,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/">
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/05/avue/">
 
 
 
@@ -88,7 +90,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> CoderFocus </title>
+    <title> 基于avue和SpringBoot的代码生成 - CoderFocus </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -200,15 +202,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/03/05/avue-表格基础/">avue 表格基础</a>
+          基于avue和SpringBoot的代码生成
         
       </h1>
 
@@ -223,83 +221,18 @@
 
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><strong>avue是一个配置化前端框架，一切基于配置</strong></p>
-<h3 id="表格基本配置"><a href="#表格基本配置" class="headerlink" title="表格基本配置"></a>表格基本配置</h3><p>使用 <code>&lt;avue-crud :data=&quot;data&quot; :option=&quot;option&quot;&gt;&lt;/avue-crud&gt;</code> 构建表格</p>
-<p><code>data</code> 为数据的对象数组，<code>option</code> 为表格要配置的数据列</p>
-<p>因为  <code>option</code>  为表格要配置的数据列,当表格列数比较多的时候，配置项也会急剧膨胀，配置项和业务代码混杂在一起，也不利于项目代码的可读性和可维护性。为了解决这个问题，可以将配置代码和业务代码分离。</p>
-<p>业务代码：</p>
-<p><img src="http://songwenjie.vip/blog/20190305/iaP30z5vJvSb.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190305/41q9M4ScVIFf.png?imageslim" alt="mark"></p>
-<p>配置代码：</p>
-<p><img src="http://songwenjie.vip/blog/20190305/p4UssYwJkk07.png?imageslim" alt="mark"></p>
-<h3 id="丰富表格选项"><a href="#丰富表格选项" class="headerlink" title="丰富表格选项"></a>丰富表格选项</h3><p>我们还可以通过配置丰富表格选项：</p>
-<p><strong>显示边框：</strong></p>
-<p><code>border: true</code></p>
-<p><img src="http://songwenjie.vip/blog/20190305/2uguhsFXDFHw.png?imageslim" alt="mark"></p>
-<p><strong>显示斑马纹：</strong></p>
-<p><code>stripe: true</code></p>
-<p><img src="http://songwenjie.vip/blog/20190305/A4BBfULpycno.png?imageslim" alt="mark"></p>
-<p><strong>显示索引：</strong></p>
-<p><code>index: true,
-indexLabel: &#39;序号&#39;</code></p>
-<p><img src="http://songwenjie.vip/blog/20190305/2VFGUinvWeHw.png?imageslim" alt="mark"></p>
-<p><strong>显示多选框：</strong></p>
-<p><code>selection: true</code></p>
-<p><img src="http://songwenjie.vip/blog/20190305/THTzWhweNJwp.png?imageslim" alt="mark"></p>
-<p><strong>显示表头：</strong></p>
-<p><code>showHeader: true</code></p>
-<p><img src="http://songwenjie.vip/blog/20190305/GxAtvpDJYfGS.png?imageslim" alt="mark"></p>
-<p><strong>复杂表头：</strong></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">column: [</span><br><span class="line">    &#123;</span><br><span class="line">      label: <span class="string">'名称及作者'</span>,</span><br><span class="line">      prop: <span class="string">'nameAndAuthor'</span>,</span><br><span class="line">      children:[</span><br><span class="line">        &#123;</span><br><span class="line">          label: <span class="string">'书籍名称'</span>,</span><br><span class="line">          prop: <span class="string">'bookName'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          label: <span class="string">'作者'</span>,</span><br><span class="line">          prop: <span class="string">'author'</span></span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p><img src="http://songwenjie.vip/blog/20190305/Uv06akIKXtuB.png?imageslim" alt="mark"></p>
-
-        
-      
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据库"><span class="toc-text">数据库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前台项目"><span class="toc-text">前台项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#后台项目"><span class="toc-text">后台项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a></li></ol>
     </div>
+  </div>
 
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue/">基于avue和SpringBoot的代码生成</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <p>使用系统管理-代码生成，根据数据库表定义生成相关模板代码，生成目录如下：</p>
+        <p>使用系统管理-代码生成，根据数据库表定义生成相关模板代码，生成目录如下：</p>
 <p><img src="http://songwenjie.vip/blog/20190305/PWYJp4ii2K2y.png?imageslim" alt="mark"></p>
 <h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>执行 book_menu Sql文件，应注意层级对应关系，例如：1000-1600-1601</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 该脚本不要执行，请完善 ID 对应关系,注意层级关系 !!!!</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 菜单SQL</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">`sys_menu`</span> ( <span class="string">`parent_id`</span>, <span class="string">`component`</span>, <span class="string">`permission`</span>, <span class="string">`type`</span>, <span class="string">`path`</span>, <span class="string">`icon`</span>, <span class="string">`menu_id`</span>, <span class="string">`del_flag`</span>, <span class="string">`create_time`</span>, <span class="string">`sort`</span>, <span class="string">`update_time`</span>, <span class="string">`name`</span>)</span><br><span class="line">    <span class="keyword">values</span> ( <span class="string">'1000'</span>, <span class="string">'views/book/book/index'</span>, <span class="string">''</span>, <span class="string">'0'</span>, <span class="string">'book'</span>, <span class="string">'icon-bangzhushouji'</span>, <span class="string">'1600'</span>, <span class="string">'0'</span>, <span class="string">'2018-01-20 13:17:19'</span>, <span class="string">'8'</span>, <span class="string">'2018-07-29 13:38:19'</span>, <span class="string">'书籍表管理'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 菜单对应按钮SQL</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">`sys_menu`</span> ( <span class="string">`parent_id`</span>, <span class="string">`component`</span>, <span class="string">`permission`</span>, <span class="string">`type`</span>, <span class="string">`path`</span>, <span class="string">`icon`</span>, <span class="string">`menu_id`</span>, <span class="string">`del_flag`</span>, <span class="string">`create_time`</span>, <span class="string">`sort`</span>, <span class="string">`update_time`</span>, <span class="string">`name`</span>)</span><br><span class="line">    <span class="keyword">values</span> ( <span class="string">'1600'</span>, <span class="literal">null</span>, <span class="string">'book_book_add'</span>, <span class="string">'1'</span>, <span class="literal">null</span>, <span class="string">'1'</span>, <span class="string">'1601'</span>, <span class="string">'0'</span>, <span class="string">'2018-05-15 21:35:18'</span>, <span class="string">'0'</span>, <span class="string">'2018-07-29 13:38:59'</span>, <span class="string">'书籍表新增'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">`sys_menu`</span> ( <span class="string">`parent_id`</span>, <span class="string">`component`</span>, <span class="string">`permission`</span>, <span class="string">`type`</span>, <span class="string">`path`</span>, <span class="string">`icon`</span>, <span class="string">`menu_id`</span>, <span class="string">`del_flag`</span>, <span class="string">`create_time`</span>, <span class="string">`sort`</span>, <span class="string">`update_time`</span>, <span class="string">`name`</span>)</span><br><span class="line">    <span class="keyword">values</span> ( <span class="string">'1600'</span>, <span class="literal">null</span>, <span class="string">'book_book_edit'</span>, <span class="string">'1'</span>, <span class="literal">null</span>, <span class="string">'1'</span>, <span class="string">'1602'</span>, <span class="string">'0'</span>, <span class="string">'2018-05-15 21:35:18'</span>, <span class="string">'1'</span>, <span class="string">'2018-07-29 13:38:59'</span>, <span class="string">'书籍表修改'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="string">`sys_menu`</span> ( <span class="string">`parent_id`</span>, <span class="string">`component`</span>, <span class="string">`permission`</span>, <span class="string">`type`</span>, <span class="string">`path`</span>, <span class="string">`icon`</span>, <span class="string">`menu_id`</span>, <span class="string">`del_flag`</span>, <span class="string">`create_time`</span>, <span class="string">`sort`</span>, <span class="string">`update_time`</span>, <span class="string">`name`</span>)</span><br><span class="line">    <span class="keyword">values</span> ( <span class="string">'1600'</span>, <span class="literal">null</span>, <span class="string">'book_book_del'</span>, <span class="string">'1'</span>, <span class="literal">null</span>, <span class="string">'1'</span>, <span class="string">'1603'</span>, <span class="string">'0'</span>, <span class="string">'2018-05-15 21:35:18'</span>, <span class="string">'2'</span>, <span class="string">'2018-07-29 13:38:59'</span>, <span class="string">'书籍表删除'</span>);</span><br></pre></td></tr></table></figure>
@@ -329,438 +262,80 @@ indexLabel: &#39;序号&#39;</code></p>
 <li>其他原因</li>
 </ol>
 
-        
       
     </div>
 
     
+      
+      
 
-    
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/05/avue/">https://songwenjie.coding.me/2019/03/05/avue/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
 
-  </article>
+
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/02/28/Spring-Boot-热部署/">Spring Boot 热部署</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-02-28
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
+    
 
+    
+      <footer class="post-footer">
         
-          <p>我们知道 Java 是一门编译型语言，在本地开发时，如果我们修改了代码，需要重启一下服务器，并且重新运行代码。热部署可以解决掉这个问题，有了热部署之后，只需要重新 Build 一下就可以看到修改代码后的效果，不需要重启服务器。</p>
-<p>在 Spring Boot 中，我们可以通过 spring-boot-devtools 实现热部署。</p>
-          <div class="read-more">
-            <a href="/2019/02/28/Spring-Boot-热部署/" class="read-more-link">阅读更多</a>
+          <div class="post-tags">
+            
+              <a href="/tags/Spring-Boot/">Spring Boot</a>
+            
+              <a href="/tags/avue/">avue</a>
+            
+              <a href="/tags/Vue/">Vue </a>
+            
           </div>
         
-      
-    </div>
-
+        
+        
+  <nav class="post-nav">
     
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/11/基于jquery的formHelp插件/">基于jquery的formHelp插件</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-11
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/JavaScript/">JavaScript</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
+      <a class="prev" href="/2019/03/05/avue-表格基础/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">avue 表格基础</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在日常开发过程中，经常需要获取 form表单的数据和绑定数据到 form表单。记录一个基于jquery的formHelp插件。</p>
-          <div class="read-more">
-            <a href="/2019/01/11/基于jquery的formHelp插件/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/02/耳机种草指北/">耳机种草指北</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-02
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/20190102/3BPFzOv7pvxs.jpg?imageslim" alt="mark"></p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/02/换个角度看表连接/">换个角度看表连接</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-02
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <h2 id="外连接的基础概念"><a href="#外连接的基础概念" class="headerlink" title="外连接的基础概念"></a>外连接的基础概念</h2><p>标准SQL里定义了外连接的三种类型，如下：</p>
-<ul>
-<li>左外连接「LEFT OUTER JOIN」</li>
-<li>右外连接「RIGHT OUTER JOIN」</li>
-<li>全外连接「FULL OUTER JOIN」</li>
-</ul>
-<p>在这三种中，左外连接和右外连接功能上没有什么区别，我们都比较熟悉，全外连接相对来说使用较少。</p>
-          <div class="read-more">
-            <a href="/2019/01/02/换个角度看表连接/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/01/自连接的妙用/">自连接的妙用</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-01
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/SQL/">SQL</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>SQL通常在不同的表或者视图间进行连接运算，但是也可以对相同的表进行“自连接”运算。自连接的处理过程不太容易想象，但是，一旦掌握自连接技术，便能快速解决很多问题。</p>
-<p>一般使用自连接可以解决的问题使用子查询也可以解决，但是与子查询相比，自连接的表达性更强，更加便于理解SQL语句的意义。下面是一些自连接的常用场景。</p>
-          <div class="read-more">
-            <a href="/2019/01/01/自连接的妙用/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/11/14/安装与卸载Windows服务/">安装与卸载Windows服务</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-11-14
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/Windoes服务/">Windoes服务</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>安装服务</p>
-</blockquote>
-<ol>
-<li><p>创建一个Windows Service项目</p>
-</li>
-<li><p>切换到服务的Design视图（右键属性，可修改服务名称，不修改的话，默认服务名与项目名称一样）</p>
-<p><img src="http://songwenjie.vip/blog/181114/L9Agg5GF0i.png?imageslim" alt="mark"></p>
-</li>
-</ol>
-          <div class="read-more">
-            <a href="/2018/11/14/安装与卸载Windows服务/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/11/12/世界是由懒人改变的/">世界是由懒人改变的</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-11-12
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/Hexo/">Hexo</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>最近把放下了近大半年的Hexo博客重新拾起来了，写篇文章记录一下。至于当初为什么会放下，其中一个原因是用户体验太差，还需要手动创建移动md文件，仿佛回到了原始社会。其实最重要的原因是自己太懒。最近重新拾起来Hexo博客的原因也挺简单，大脑是用来思考事物的而不是记录事物的，得有一个地方记录平时一些琐碎的想法，公众号和技术博客显然不是太合适。但是一想起Hexo那原始的操作，就有点头大。在网上搜了搜发现还真有一款管理插件Hexo Admin，能以网页的方式管理Hexo博客。看来这个世界还真是由懒人改变的。</p>
-<p><img src="http://songwenjie.vip/blog/181112/Gi3idLmAij.png?imageslim" alt="mark"></p>
-          <div class="read-more">
-            <a href="/2018/11/12/世界是由懒人改变的/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/11/12/编码最佳实践——依赖注入原则/">编码最佳实践——依赖注入原则</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-11-12
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/编码最佳实践/">编码最佳实践</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>我们在这个系列的前四篇文章中分别介绍了SOLID原则中的前四个原则，今天来介绍最后一个原则——依赖注入原则。依赖注入（DI）是一个很简单的概念，实现起来也很简单。但是简单却掩盖不了它的重要性，如果没有依赖注入，前面的介绍的SOLID技术原则都不可能实际应用。</p>
-          <div class="read-more">
-            <a href="/2018/11/12/编码最佳实践——依赖注入原则/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-      
-  <nav class="pagination">
-    
-    
-      <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/02/28/Spring-Boot-热部署/">
+        <span class="next-text nav-default">Spring Boot 热部署</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
       </main>
@@ -845,6 +420,11 @@ indexLabel: &#39;序号&#39;</code></p>
     </div>
 
     
+  
+  
+
+  
+
 
 
     

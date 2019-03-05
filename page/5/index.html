@@ -208,6 +208,145 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/07/23/命令式抽象/">命令式抽象</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180501/J93f1aEF2g.png?imageslim" alt="mark"></p>
+<h1 id="命令式抽象"><a href="#命令式抽象" class="headerlink" title="命令式抽象"></a>命令式抽象</h1><p>这种坏味是由操作转换为类引起的，表现为类中只定义了一个方法，有时候类名和方法名相同。这种坏味还常常表现为方法操作的数据位于另一个类中。</p>
+<h2 id="为什么不能命令式抽象？"><a href="#为什么不能命令式抽象？" class="headerlink" title="为什么不能命令式抽象？"></a>为什么不能命令式抽象？</h2><p>面向对象的基本原则是，识别真实世界中的事物，并使用抽象来表示它们。在解决方案域中，必须将问题域的对象表示出来，为此可采用<strong>映射域实体</strong>这一实现手法，抽象的每个类都必须封装数据和相关的方法。只包含一个操作的类根本不是抽象，其操作的数据位于其它地方时尤其如此。这样很多操作相同数据的方法位于不同的类中，减低了类的内聚性，违反了封装和模块化原则。</p>
+<h2 id="命令式抽象潜在的原因"><a href="#命令式抽象潜在的原因" class="headerlink" title="命令式抽象潜在的原因"></a>命令式抽象潜在的原因</h2><h3 id="过程式思维"><a href="#过程式思维" class="headerlink" title="过程式思维"></a>过程式思维</h3><p>数据和操作这些数据的方法被封装在不同类中，典型的过程式思维。</p>
+<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>来看报表生成功能，它使用了CreateReport、CopyReport、DisplayReport等类。其中每个类只包含一个方法。与报表相关的数据项，如报表名称等都放在了Report类。很显然程序中存在“命令式抽象”，这种坏味不仅增加了类的数量（至少4个类，理想情况下只需要1个类），而且内聚的方法进行了分离，增加了开发和维护的复杂性。该设计采取的是“<strong>功能分解</strong>”，而非“<strong>面向对象分解</strong>”。</p>
+<p><img src="http://songwenjie.vip/blog/180501/mBGH81Eicb.png?imageslim" alt="mark"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public class Report</span><br><span class="line">&#123;</span><br><span class="line">    public string ReportName &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class CreateReport</span><br><span class="line">&#123;</span><br><span class="line">    public void Create()</span><br><span class="line">    &#123;</span><br><span class="line">        //Create</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DisplayReport</span><br><span class="line">&#123;</span><br><span class="line">    public void Display()</span><br><span class="line">    &#123;</span><br><span class="line">        //Display</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class CopyReport</span><br><span class="line">&#123;</span><br><span class="line">    public void Copy()</span><br><span class="line">    &#123;</span><br><span class="line">        //Copy</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重构：我们将所有存在“命令式抽象”坏味的类中的方法都移到Report类中，那么Report类就变成了一个恰当的抽象，同时消除了“命令式抽象”坏味。</p>
+<p>重构后的实现：</p>
+<p><img src="http://songwenjie.vip/blog/180501/DJHJ2C3Hie.png?imageslim" alt="mark"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class Report</span><br><span class="line">&#123;</span><br><span class="line">    public string ReportName &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    public void Create()</span><br><span class="line">    &#123;</span><br><span class="line">        //Create</span><br><span class="line">    &#125;</span><br><span class="line">    public void Display()</span><br><span class="line">    &#123;</span><br><span class="line">        //Display</span><br><span class="line">    &#125;</span><br><span class="line">    public void Copy()</span><br><span class="line">    &#123;</span><br><span class="line">        //Copy</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><h3 id="具体化"><a href="#具体化" class="headerlink" title="具体化"></a>具体化</h3><p>具体化指的是将不是对象的东西提升为对象。将行为具体化后，便可对其进行存储、传递和转换。具体化可提高系统的灵活性，但是代价是增加了系统的复杂度。</p>
+<p>很多设计模式都使用了具体化：状态模式、命令模式、策略模式。</p>
+<p>为了提高可重用性、灵活性和可扩展性而有意识地将原本不是对象的东西提升为对象，这不能算是坏味。</p>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/23/缺失抽象/">缺失抽象</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <blockquote>
+<p>抽象原则倡导<strong>通过精简和概括来简化实体</strong>：精简是删除不必要的细节，而概括是找出并定义通用的的重要特征。</p>
+</blockquote>
+<p>这是什么?</p>
+<p><img src="http://songwenjie.vip/blog/180501/El1ll82hHE.png?imageslim" alt="mark"></p>
+<p>这是一个笑脸，那么我们是怎么知道这是一个笑脸的呢？通过抽象。人脸数以亿计，却各不相同。我们忽略了不重要的细节，如发型和发色。我们还概括了相同的东西，每个人都有两只眼睛，微笑时嘴角上扬。这就是抽象。对于软件工程师来说，抽象能力是最重要的能力之一，也恰恰是最难得的能力之一。</p>
+<h2 id="应用抽象原则的实现手法"><a href="#应用抽象原则的实现手法" class="headerlink" title="应用抽象原则的实现手法"></a>应用抽象原则的实现手法</h2><p><img src="http://songwenjie.vip/blog/180501/EL5mCge9Hc.png?imageslim" alt="mark"></p>
+<ul>
+<li><p>提供清晰的概念边界和唯一身份</p>
+<p>每个抽象都必须有清晰而明确的概念边界，还必须有身份。例如，不传递一组表示日期、矩形坐标或图片属性的数据值，而是在代码中分别为日期、矩形坐标或图片属性创建抽象。</p>
+</li>
+<li><p>映射域实体</p>
+<p>必须创建从问题域到解决方案域的词汇映射，即对于问题域中的对象，必须在解决方案域中使用相应的抽象来表示它们。</p>
+</li>
+<li><p>确保内聚性和完整性</p>
+<p>抽象必须对其承担的职责提供全面支持。例如表示组合框的类支持禁用或隐藏特定的元素，就必须同时支持启用或显示这些元素的选项。如果只提供方法的一部分，抽象既不内聚也不完整。</p>
+</li>
+<li><p>赋予单一而重要的职责</p>
+<p>确保每个抽象都分配<strong>单一而重要</strong>的职责。</p>
+<p>单一：每个抽象都应该只负责一件或一类事情。</p>
+<p>重要：抽象不能太鸡肋。</p>
+</li>
+<li><p>避免重复</p>
+<p>确保每个抽象（名称和实现）只在设计中出现一次。重复的名称将会给设计的使用者带来困惑，重复的实现将会增加维护负担，因为需要维护多块相同的代码。</p>
+</li>
+</ul>
+<h2 id="违反抽象原则导致的坏味"><a href="#违反抽象原则导致的坏味" class="headerlink" title="违反抽象原则导致的坏味"></a>违反抽象原则导致的坏味</h2><p><img src="http://songwenjie.vip/blog/180501/J93f1aEF2g.png?imageslim" alt="mark"></p>
+<p>我们这篇博客主要讲解分析<strong>缺失抽象</strong>坏味，对于其它抽象坏味将在后面的博客讲解分析。</p>
+<h1 id="缺失抽象"><a href="#缺失抽象" class="headerlink" title="缺失抽象"></a>缺失抽象</h1><p>使用一系列数据或编码字符串，而不创建类或接口时，将引发这种坏味。</p>
+<h2 id="为什么不能缺失抽象？"><a href="#为什么不能缺失抽象？" class="headerlink" title="为什么不能缺失抽象？"></a>为什么不能缺失抽象？</h2><p>通常，由于缺失抽象，相关的数据和行为将会分散在其它抽象中，这将会导致两个问题l:</p>
+<ul>
+<li>可能会向其它抽象暴露实现细节，违反封装原则</li>
+<li>数据和相关的行为分散在不同的抽象中，可能导致实体之间高度耦合，结果是代码脆弱且难以重用。因此，不创建必要的抽象也违反了模块化原则。</li>
+</ul>
+<h2 id="缺失抽象潜在的原因"><a href="#缺失抽象潜在的原因" class="headerlink" title="缺失抽象潜在的原因"></a>缺失抽象潜在的原因</h2><h3 id="未做充分的设计分析"><a href="#未做充分的设计分析" class="headerlink" title="未做充分的设计分析"></a>未做充分的设计分析</h3><p>没有经过充分的设计分析，很容易就会忽略创建抽象，而使用基本数据类型来完成任务。</p>
+<h3 id="未重构"><a href="#未重构" class="headerlink" title="未重构"></a>未重构</h3><p>随着需求的变化和软件的发展，原来使用的基本数据类型可能需要重构为使用类或接口。</p>
+<h3 id="错误地将重点放在细微的性能改善上"><a href="#错误地将重点放在细微的性能改善上" class="headerlink" title="错误地将重点放在细微的性能改善上"></a>错误地将重点放在细微的性能改善上</h3><p>例如直接使用数组，而不创建合适的抽象。这种“优化”带来的性能改善都很有限，不值得为此牺牲设计质量。</p>
+<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><p>在一个图书馆信息管理程序中，ISBN（国际标准书号）的存储和处理十分重要，可以使用字符串类型进行存储，但是这种选择很糟糕。ISBN（国际标准书号）有两种表示方式：10位和13位。图书馆信息管理程序逻辑包含ISBN的接受、验证、处理和转换。如果使用基本的字符串类型存储ISBN，处理的逻辑将会分散在很多地方，实体之间高度耦合，代码脆弱且难以重用。</p>
+<p>正确的方案是：创建一个抽象类或接口ISBN，其中包含通用的操作。并创建子类ISBN-10和ISBN-13，它们都扩展超类ISBN。</p>
+<p><img src="http://songwenjie.vip/blog/180501/546k1hL98L.png?imageslim" alt="mark"></p>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>应用程序中常常包含总是同时使用的基本数据类型，通常情况下这些“数据泥团”就意味着缺失抽象。例如在绘画程序中确定一个二维的点的位置，通常比较差的做法可能会用（double x,double y）。重构的建议是将必不可少的字段提取到一个新类（Rectangle）中，并且将操作这些字段的方法移到这个类中。</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Rectangle</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 横坐标</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> x;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 纵坐标</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> y;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Rectangle</span>(<span class="params"><span class="keyword">int</span> x,<span class="keyword">int</span> y</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">this</span>.x = x;</span><br><span class="line">        <span class="keyword">this</span>.y = y;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Draw</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//绘制(x,y)</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><p>有时候，实体只是数据元素，没有任何相关联的行为。在这种情况下，使用类或接口来表示它们可能导致过度设计，增加了设计的复杂性。因为在创建抽象前，一定要根据应用抽象具体情况分析，再决定是否要创建抽象。</p>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/23/缓存使用的正确姿势/">缓存使用的正确姿势</a>
         
       </h1>
