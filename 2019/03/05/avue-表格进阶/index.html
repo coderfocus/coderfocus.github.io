@@ -17,10 +17,12 @@
 
 
 
-  <meta name="description" content="记录生活、技术">
+  <meta name="description" content="avue 表格进阶">
 
 
 
+
+  <meta name="keywords" content="Vue, CoderFocus">
 
 
 
@@ -40,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/">
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/05/avue-表格进阶/">
 
 
 
@@ -88,7 +90,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> CoderFocus </title>
+    <title> avue 表格进阶 - CoderFocus </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -200,15 +202,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/03/05/avue-表格进阶/">avue 表格进阶</a>
+          avue 表格进阶
         
       </h1>
 
@@ -223,15 +221,18 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#avue-表格进阶"><span class="toc-text">avue 表格进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#面板"><span class="toc-text">面板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#分页"><span class="toc-text">分页</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#排序"><span class="toc-text">排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多选"><span class="toc-text">多选</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#筛选"><span class="toc-text">筛选</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <h2 id="avue-表格进阶"><a href="#avue-表格进阶" class="headerlink" title="avue 表格进阶"></a>avue 表格进阶</h2><h3 id="面板"><a href="#面板" class="headerlink" title="面板"></a>面板</h3><p><strong>配置项：</strong></p>
+        <h2 id="avue-表格进阶"><a href="#avue-表格进阶" class="headerlink" title="avue 表格进阶"></a>avue 表格进阶</h2><h3 id="面板"><a href="#面板" class="headerlink" title="面板"></a>面板</h3><p><strong>配置项：</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">expand:<span class="literal">true</span>,</span><br><span class="line"><span class="comment">//行数据的主键</span></span><br><span class="line">idKey:<span class="string">'bookId'</span>,</span><br></pre></td></tr></table></figure>
 <p><strong>vue文件：</strong></p>
 <p><code>solt</code> 的名称为 <code>expand</code> 时即可，<code>props</code>为返回需要的数据，里面包括了当前行的相关数据</p>
@@ -255,481 +256,70 @@
 <p><strong>回调方法 <code>sort-change</code> 返回排序后的数据，可以利用其搞点事情</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">	sortChange(val)&#123;</span><br><span class="line">		<span class="keyword">this</span>.$message.success(<span class="string">'排序'</span>+ <span class="built_in">JSON</span>.stringify(val));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="多选"><a href="#多选" class="headerlink" title="多选"></a>多选</h3><h3 id="筛选"><a href="#筛选" class="headerlink" title="筛选"></a>筛选</h3>
-        
       
     </div>
 
     
+      
+      
 
-    
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/05/avue-表格进阶/">https://songwenjie.coding.me/2019/03/05/avue-表格进阶/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
 
-  </article>
+
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue-表格基础/">avue 表格基础</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
+    
 
+    
+      <footer class="post-footer">
         
-          <p><strong>avue是一个配置化前端框架，一切基于配置</strong></p>
-<h3 id="表格基本配置"><a href="#表格基本配置" class="headerlink" title="表格基本配置"></a>表格基本配置</h3><p>使用 <code>&lt;avue-crud :data=&quot;data&quot; :option=&quot;option&quot;&gt;&lt;/avue-crud&gt;</code> 构建表格</p>
-<p><code>data</code> 为数据的对象数组，<code>option</code> 为表格要配置的数据列</p>
-<p>因为  <code>option</code>  为表格要配置的数据列,当表格列数比较多的时候，配置项也会急剧膨胀，配置项和业务代码混杂在一起，也不利于项目代码的可读性和可维护性。为了解决这个问题，可以将配置代码和业务代码分离。</p>
-          <div class="read-more">
-            <a href="/2019/03/05/avue-表格基础/" class="read-more-link">阅读更多</a>
+          <div class="post-tags">
+            
+              <a href="/tags/Vue/">Vue</a>
+            
           </div>
         
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue/">基于avue和SpringBoot的代码生成</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
         
         
-      </div>
-    </header>
-
+  <nav class="post-nav">
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>使用系统管理-代码生成，根据数据库表定义生成相关模板代码，生成目录如下：</p>
-<p><img src="http://songwenjie.vip/blog/20190305/PWYJp4ii2K2y.png?imageslim" alt="mark"></p>
-          <div class="read-more">
-            <a href="/2019/03/05/avue/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/02/28/Spring-Boot-热部署/">Spring Boot 热部署</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-02-28
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>我们知道 Java 是一门编译型语言，在本地开发时，如果我们修改了代码，需要重启一下服务器，并且重新运行代码。热部署可以解决掉这个问题，有了热部署之后，只需要重新 Build 一下就可以看到修改代码后的效果，不需要重启服务器。</p>
-<p>在 Spring Boot 中，我们可以通过 spring-boot-devtools 实现热部署。</p>
-          <div class="read-more">
-            <a href="/2019/02/28/Spring-Boot-热部署/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/11/基于jquery的formHelp插件/">基于jquery的formHelp插件</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-11
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/JavaScript/">JavaScript</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在日常开发过程中，经常需要获取 form表单的数据和绑定数据到 form表单。记录一个基于jquery的formHelp插件。</p>
-          <div class="read-more">
-            <a href="/2019/01/11/基于jquery的formHelp插件/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/02/耳机种草指北/">耳机种草指北</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-02
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/20190102/3BPFzOv7pvxs.jpg?imageslim" alt="mark"></p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/02/换个角度看表连接/">换个角度看表连接</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-02
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <h2 id="外连接的基础概念"><a href="#外连接的基础概念" class="headerlink" title="外连接的基础概念"></a>外连接的基础概念</h2><p>标准SQL里定义了外连接的三种类型，如下：</p>
-<ul>
-<li>左外连接「LEFT OUTER JOIN」</li>
-<li>右外连接「RIGHT OUTER JOIN」</li>
-<li>全外连接「FULL OUTER JOIN」</li>
-</ul>
-<p>在这三种中，左外连接和右外连接功能上没有什么区别，我们都比较熟悉，全外连接相对来说使用较少。</p>
-          <div class="read-more">
-            <a href="/2019/01/02/换个角度看表连接/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/01/自连接的妙用/">自连接的妙用</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-01
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/SQL/">SQL</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>SQL通常在不同的表或者视图间进行连接运算，但是也可以对相同的表进行“自连接”运算。自连接的处理过程不太容易想象，但是，一旦掌握自连接技术，便能快速解决很多问题。</p>
-<p>一般使用自连接可以解决的问题使用子查询也可以解决，但是与子查询相比，自连接的表达性更强，更加便于理解SQL语句的意义。下面是一些自连接的常用场景。</p>
-          <div class="read-more">
-            <a href="/2019/01/01/自连接的妙用/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/11/14/安装与卸载Windows服务/">安装与卸载Windows服务</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-11-14
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/Windoes服务/">Windoes服务</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <blockquote>
-<p>安装服务</p>
-</blockquote>
-<ol>
-<li><p>创建一个Windows Service项目</p>
-</li>
-<li><p>切换到服务的Design视图（右键属性，可修改服务名称，不修改的话，默认服务名与项目名称一样）</p>
-<p><img src="http://songwenjie.vip/blog/181114/L9Agg5GF0i.png?imageslim" alt="mark"></p>
-</li>
-</ol>
-          <div class="read-more">
-            <a href="/2018/11/14/安装与卸载Windows服务/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/11/12/世界是由懒人改变的/">世界是由懒人改变的</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-11-12
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/Hexo/">Hexo</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>最近把放下了近大半年的Hexo博客重新拾起来了，写篇文章记录一下。至于当初为什么会放下，其中一个原因是用户体验太差，还需要手动创建移动md文件，仿佛回到了原始社会。其实最重要的原因是自己太懒。最近重新拾起来Hexo博客的原因也挺简单，大脑是用来思考事物的而不是记录事物的，得有一个地方记录平时一些琐碎的想法，公众号和技术博客显然不是太合适。但是一想起Hexo那原始的操作，就有点头大。在网上搜了搜发现还真有一款管理插件Hexo Admin，能以网页的方式管理Hexo博客。看来这个世界还真是由懒人改变的。</p>
-<p><img src="http://songwenjie.vip/blog/181112/Gi3idLmAij.png?imageslim" alt="mark"></p>
-          <div class="read-more">
-            <a href="/2018/11/12/世界是由懒人改变的/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-      
-  <nav class="pagination">
-    
-    
-      <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/03/05/avue-表格基础/">
+        <span class="next-text nav-default">avue 表格基础</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
       </main>
@@ -814,6 +404,11 @@
     </div>
 
     
+  
+  
+
+  
+
 
 
     

@@ -208,6 +208,51 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/08/02/MySQL——索引优化实战/">MySQL——索引优化实战</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-02
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p>上篇文章中介绍了索引的基本内容，这篇文章我们继续介绍索引优化实战。在介绍索引优化实战之前，首先要介绍两个与索引相关的重要概念，这两个概念对于索引优化至关重要。</p>
+          <div class="read-more">
+            <a href="/2018/08/02/MySQL——索引优化实战/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/08/02/MySQL——索引基础/">MySQL——索引基础</a>
         
       </h1>
@@ -725,116 +770,6 @@
 <p>修改完配置文件后, 只需要执行mysqldump 脚本就可以了。备份脚本中不需要涉及用户名密码相关信息。</p>
 <h2 id="mysqladmin"><a href="#mysqladmin" class="headerlink" title="mysqladmin"></a>mysqladmin</h2><p><strong>mysqladmin命令</strong> 是mysql服务器管理任务的客户端工具，它可以检查mytsql服务器的配置和当前工作状态，创建和删除数据库，创建用户和修改用户密码等操作。</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqladmin]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/26/基于Docker的Mysql主从搭建/">基于Docker的Mysql主从搭建</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-26
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <h1 id="基于Docker的Mysql主从复制搭建"><a href="#基于Docker的Mysql主从复制搭建" class="headerlink" title="基于Docker的Mysql主从复制搭建"></a>基于Docker的Mysql主从复制搭建</h1><h2 id="为什么基于Docker搭建？"><a href="#为什么基于Docker搭建？" class="headerlink" title="为什么基于Docker搭建？"></a>为什么基于Docker搭建？</h2><ul>
-<li>资源有限</li>
-<li>虚拟机搭建对机器配置有要求，并且安装mysql步骤繁琐</li>
-<li>一台机器上可以运行多个Docker容器</li>
-<li>Docker容器之间相互独立，有独立ip，互不冲突</li>
-<li>Docker使用步骤简便，启动容器在秒级别</li>
-</ul>
-<h2 id="利用Docker搭建主从服务器"><a href="#利用Docker搭建主从服务器" class="headerlink" title="利用Docker搭建主从服务器"></a>利用Docker搭建主从服务器</h2><p>首先拉取docker镜像,我们这里使用5.7版本的mysql：</p>
-<p><code>docker pull mysql:5.7</code></p>
-<p>然后使用此镜像启动容器，这里需要分别启动主从两个容器</p>
-<p><strong>Master(主)：</strong></p>
-<p><code>docker run -p 3339:3306 --name mymysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7</code></p>
-<p><strong>Slave(从)：</strong></p>
-<p><code>docker run -p 3340:3306 --name mymysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7</code></p>
-<p>Master对外映射的端口是3339，Slave对外映射的端口是3340。因为docker容器是相互独立的，每个容器有其独立的ip，所以不同容器使用相同的端口并不会冲突。这里我们应该尽量使用mysql默认的3306端口，否则可能会出现无法通过ip连接docker容器内mysql的问题。</p>
-<p>使用<code>docker ps</code>命令查看正在运行的容器：</p>
-<p><img src="http://songwenjie.vip/blog/180726/5L4Adf7clg.png?imageslim" alt="mark"></p>
-<p>此时可以使用Navicat等工具测试连接mysql</p>
-<p><img src="http://songwenjie.vip/blog/180726/GADD1hBeH7.png?imageslim" alt="mark"></p>
-<h2 id="配置Master-主"><a href="#配置Master-主" class="headerlink" title="配置Master(主)"></a>配置Master(主)</h2><p>通过<code>docker exec -it 627a2368c865 /bin/bash</code>命令进入到Master容器内部，也可以通过<code>docker exec -it mysql-master /bin/bash</code>命令进入。627a2368c865是容器的id,而mysql-master是容器的名称。</p>
-<p><code>cd /etc/mysql</code>切换到/etc/mysql目录下，然后<code>vi my.cnf</code>对my.cnf进行编辑。此时会报出<code>bash: vi: command not found</code>，需要我们在docker容器内部自行安装vim。使用<code>apt-get install vim</code>命令安装vim</p>
-<p>会出现如下问题：</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading <span class="keyword">state</span> information... Done</span><br><span class="line">E: Unable <span class="keyword">to</span> locate package vim</span><br></pre></td></tr></table></figure>
-<p>执行<code>apt-get update</code>，然后再次执行<code>apt-get install vim</code>即可成功安装vim。然后我们就可以使用vim编辑my.cnf，在my.cnf中添加如下配置：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="comment">## 同一局域网内注意要唯一</span></span><br><span class="line"><span class="attr">server-id</span>=<span class="number">100</span>  </span><br><span class="line"><span class="comment">## 开启二进制日志功能，可以随便取（关键）</span></span><br><span class="line"><span class="attr">log-bin</span>=mysql-bin</span><br></pre></td></tr></table></figure>
-<p>配置完成之后，需要重启mysql服务使配置生效。使用<code>service mysql restart</code>完成重启。重启mysql服务时会使得docker容器停止，我们还需要<code>docker start mysql-master</code>启动容器。</p>
-<p>下一步在Master数据库创建数据同步用户，授予用户 slave REPLICATION SLAVE权限和REPLICATION CLIENT权限，用于在主从库之间同步数据。</p>
-<p><code>CREATE USER &#39;slave&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;;</code></p>
-<p><code>GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO &#39;slave&#39;@&#39;%&#39;;</code></p>
-<p><img src="http://songwenjie.vip/blog/180726/34Hjbf7Ck3.png?imageslim" alt="mark"></p>
-<h2 id="配置Slave-从"><a href="#配置Slave-从" class="headerlink" title="配置Slave(从)"></a>配置Slave(从)</h2><p>和配置Master(主)一样，在Slave配置文件my.cnf中添加如下配置：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="comment">## 设置server_id,注意要唯一</span></span><br><span class="line"><span class="attr">server-id</span>=<span class="number">101</span>  </span><br><span class="line"><span class="comment">## 开启二进制日志功能，以备Slave作为其它Slave的Master时使用</span></span><br><span class="line"><span class="attr">log-bin</span>=mysql-slave-bin   </span><br><span class="line"><span class="comment">## relay_log配置中继日志</span></span><br><span class="line"><span class="attr">relay_log</span>=edu-mysql-relay-bin</span><br></pre></td></tr></table></figure>
-<p>配置完成后也需要重启mysql服务和docker容器，操作和配置Master(主)一致。</p>
-<h2 id="链接Master-主-和Slave-从"><a href="#链接Master-主-和Slave-从" class="headerlink" title="链接Master(主)和Slave(从)"></a>链接Master(主)和Slave(从)</h2><p>在Master进入mysql，执行<code>show master status;</code></p>
-<p><img src="http://songwenjie.vip/blog/180726/Kjja2jAIm4.png?imageslim" alt="mark"></p>
-<p>File和Position字段的值后面将会用到，在后面的操作完成之前，需要保证Master库不能做任何操作，否则将会引起状态变化，File和Position字段的值变化。</p>
-<p>在Slave 中进入 mysql，执行<code>change master to master_host=&#39;172.17.0.2&#39;, master_user=&#39;slave&#39;, master_password=&#39;123456&#39;, master_port=3306, master_log_file=&#39;mysql-bin.000001&#39;, master_log_pos= 2830, master_connect_retry=30;</code></p>
-<p><strong>命令说明：</strong></p>
-<p><strong>master_host</strong> ：Master的地址，指的是容器的独立ip,可以通过<code>docker inspect --format=&#39;{ {.NetworkSettings.IPAddress} }&#39; 容器名称|容器id</code>查询容器的ip</p>
-<p><img src="http://songwenjie.vip/blog/180726/7cEC8DbFI1.png?imageslim" alt="mark"></p>
-<p><strong>master_port</strong>：Master的端口号，指的是容器的端口号</p>
-<p><strong>master_user</strong>：用于数据同步的用户</p>
-<p><strong>master_password</strong>：用于同步的用户的密码</p>
-<p><strong>master_log_file</strong>：指定 Slave 从哪个日志文件开始复制数据，即上文中提到的 File 字段的值</p>
-<p><strong>master_log_pos</strong>：从哪个 Position 开始读，即上文中提到的 Position 字段的值</p>
-<p><strong>master_connect_retry</strong>：如果连接失败，重试的时间间隔，单位是秒，默认是60秒</p>
-<p>在Slave 中的mysql终端执行<code>show slave status \G;</code>用于查看主从同步状态。</p>
-<p><img src="http://songwenjie.vip/blog/180726/2kagID6a2K.png?imageslim" alt="mark"></p>
-<p>正常情况下，SlaveIORunning 和 SlaveSQLRunning 都是No，因为我们还没有开启主从复制过程。使用<code>start slave</code>开启主从复制过程，然后再次查询主从同步状态<code>show slave status \G;</code>。</p>
-<p><img src="http://songwenjie.vip/blog/180726/FG2ja42l86.png?imageslim" alt="mark"></p>
-<p>SlaveIORunning 和 SlaveSQLRunning 都是Yes，说明主从复制已经开启。此时可以进行测试数据同步是否成功。</p>
-<p><strong>主从复制排错：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180726/bdcjbCF1Ii.png?imageslim" alt="mark"></p>
-<p>使用<code>start slave</code>开启主从复制过程后，如果SlaveIORunning一直是Connecting，则说明主从复制一直处于连接状态，这种情况一般是下面几种原因造成的，我们可以根据 Last_IO_Error提示予以排除。</p>
-<ol>
-<li><p>网络不通</p>
-<p>检查ip,端口</p>
-</li>
-<li><p>密码不对</p>
-<p>检查是否创建用于同步的用户和用户密码是否正确</p>
-</li>
-<li><p>pos不对</p>
-<p>检查Master的 Position</p>
-</li>
-</ol>
-<h2 id="测试主从复制"><a href="#测试主从复制" class="headerlink" title="测试主从复制"></a>测试主从复制</h2><p>测试主从复制方式就十分多了，最简单的是在Master创建一个数据库，然后检查Slave是否存在此数据库。</p>
-<p><strong>Master:</strong></p>
-<p><img src="http://songwenjie.vip/blog/180726/Kg1EB8f1HL.png?imageslim" alt="mark"></p>
-<p><strong>Slave:</strong></p>
-<p><img src="http://songwenjie.vip/blog/180726/4Ibh3CF9D3.png?imageslim" alt="mark"></p>
-
         
       
     </div>
