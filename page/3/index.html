@@ -208,52 +208,6 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2018/08/17/数据库索引背后的数据结构/">数据库索引背后的数据结构</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-08-17
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在数据之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构，就是索引。</p>
-<p><img src="http://songwenjie.vip/blog/180803/8mdj0Cc1Ba.png?imageslim" alt="mark"></p>
-          <div class="read-more">
-            <a href="/2018/08/17/数据库索引背后的数据结构/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
           <a class="post-link" href="/2018/08/02/MySQL——索引优化实战/">MySQL——索引优化实战</a>
         
       </h1>
@@ -576,10 +530,10 @@
 <p>我们这里只需要备份<strong>TEST1</strong>数据库，若要备份全部数据库,[DATABASE]处使用<code>--all-databases</code>。</p>
 <p><img src="http://songwenjie.vip/blog/180727/8kfC42Ba9J.png?imageslim" alt="mark"></p>
 <p>此时报出<code>Warning: Using a password on the command line interface can be insecure.</code>，这是因为我们在命令行输入了密码，所以会有安全警告信息。解决方案是在/etc/mysql/my.cnf中加入如下配置：</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqldump]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqldump]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
 <p>修改完配置文件后,再次执行备份命令不需要涉及用户名密码相关信息。</p>
 <p><img src="http://songwenjie.vip/blog/180727/2Eeg3fHiH5.png?imageslim" alt="mark"></p>
-<h3 id="主数据库备份数据导入从数据库"><a href="#主数据库备份数据导入从数据库" class="headerlink" title="主数据库备份数据导入从数据库"></a>主数据库备份数据导入从数据库</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat backup.sql | docker exec -i [<span class="keyword">CONTAINER</span>] /usr/<span class="keyword">bin</span>/mysql -u username <span class="comment">--password=xxx [DATABASE]</span></span><br></pre></td></tr></table></figure>
+<h3 id="主数据库备份数据导入从数据库"><a href="#主数据库备份数据导入从数据库" class="headerlink" title="主数据库备份数据导入从数据库"></a>主数据库备份数据导入从数据库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat backup.sql | docker exec -i [CONTAINER] /usr/bin/mysql -u username --password=xxx [DATABASE]</span><br></pre></td></tr></table></figure>
 <p>和上一步一样，我们也需要在从数据库配置用于备份的用户名和密码信息。</p>
 <p><img src="http://songwenjie.vip/blog/180727/jikB1DLIKh.png?imageslim" alt="mark"></p>
 <p>需要先在从数据库建立一个同名数据库，才能导入主数据库备份数据。切换到从数据库执行<code>CREATE DATABASE TEST1;</code>，然后再次导入主数据备份数据。</p>
@@ -706,7 +660,7 @@
 <p><code>bash: vi: command not found</code></p>
 <p>因为vim没有安装，这个时候需要我们使用<code>apt-get install vim</code>命令安装vim</p>
 <p>会出现如下问题：</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading <span class="keyword">state</span> information... Done</span><br><span class="line">E: Unable <span class="keyword">to</span> locate package vim</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">E: Unable to locate package vim</span><br></pre></td></tr></table></figure>
 <p>此时执行<code>apt-get update</code>，然后再次执行<code>apt-get install vim</code>即可成功安装vim。</p>
 
         
@@ -757,6 +711,65 @@
 <p>保存退出：<strong>：wq</strong></p>
 <p>不保存退出：<strong>：q!</strong></p>
 
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/26/MySQL-警告信息-command-line-interface-can-be-insecure/">MySQL 警告信息 command line interface can be insecure</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-26
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h1 id="MySQL-警告信息-command-line-interface-can-be-insecure"><a href="#MySQL-警告信息-command-line-interface-can-be-insecure" class="headerlink" title="MySQL 警告信息 command line interface can be insecure"></a>MySQL 警告信息 command line interface can be insecure</h1><p>在命令行输入密码，就会提示这些安全警告信息。</p>
+<p>Warning: Using a password on the command line interface can be insecure.</p>
+<p>注: mysql -u root -prootpassword 或 mysqldump -u root -prootpassword 都会输出这样的警告信息.</p>
+<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><p><strong>解决方法：</strong></p>
+<ol>
+<li><p>mysql -u root -prootpassword 改成mysql -u root -p 在输入密码即可</p>
+</li>
+<li><p>配置 /etc/mysql/my.cnf</p>
+<p>vim /etc/mysql/my.cnf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysql]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
+<p>这种方式以后直接输入mysql就可以进入数据库，不需要涉及用户名密码相关信息</p>
+</li>
+</ol>
+<h2 id="mysqldump"><a href="#mysqldump" class="headerlink" title="mysqldump"></a>mysqldump</h2><p><strong>解决方法：</strong></p>
+<p>配置 /etc/mysql/my.cnf</p>
+<p>vim /etc/mysql/my.cnf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqldump]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
+<p>修改完配置文件后, 只需要执行mysqldump 脚本就可以了。备份脚本中不需要涉及用户名密码相关信息。</p>
+<h2 id="mysqladmin"><a href="#mysqladmin" class="headerlink" title="mysqladmin"></a>mysqladmin</h2><p><strong>mysqladmin命令</strong> 是mysql服务器管理任务的客户端工具，它可以检查mytsql服务器的配置和当前工作状态，创建和删除数据库，创建用户和修改用户密码等操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqladmin]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
         
       
     </div>

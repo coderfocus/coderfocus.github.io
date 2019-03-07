@@ -266,11 +266,11 @@
 <p>这种情况反映出来的问题就是没有利用封装，已经有了层次结构，却没有予以利用。没有面向接口编程，每个地方面向的都是具体的实现类，每个地方都需要判断实例的类型才可以进行下一步的动作。</p>
 <p>进行重构：</p>
 <p>代码1：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng1</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomething1();</span><br></pre></td></tr></table></figure>
 <p>代码2：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng2</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomething2();</span><br></pre></td></tr></table></figure>
 <p>代码3：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng3</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomething3();</span><br></pre></td></tr></table></figure>
 <p>obj可以是XXX、YYY、ZZZ。对于现在的代码，新增一个类NNN，代码1、2、3甚至n处根本不需要任何改动。因为它们实现了统一的接口，并且符合开闭原则。</p>
 <p>参考：《软件设计重构》</p>
 
@@ -318,15 +318,15 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2018/07/23/缺失封装/">
+      <a class="prev" href="/2018/07/23/CSharp集合类型大揭秘/">
         <i class="iconfont icon-left"></i>
-        <span class="prev-text nav-default">缺失封装</span>
+        <span class="prev-text nav-default">C#集合类型大揭秘</span>
         <span class="prev-text nav-mobile">上一篇</span>
       </a>
     
     
-      <a class="next" href="/2018/07/23/泄露的封装/">
-        <span class="next-text nav-default">泄露的封装</span>
+      <a class="next" href="/2018/07/23/缺失封装/">
+        <span class="next-text nav-default">缺失封装</span>
         <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>

@@ -22,7 +22,7 @@
 
 
 
-  <meta name="keywords" content="Vue, CoderFocus">
+  <meta name="keywords" content="avue, Vue, CoderFocus">
 
 
 
@@ -291,7 +291,7 @@
 <p><strong>点击搜索功能回调 <code>search-change</code> 方法，返回搜索的参数</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">	searchChange(params)&#123;</span><br><span class="line">		<span class="keyword">this</span>.$message.success(<span class="string">'参数：'</span>+ <span class="built_in">JSON</span>.stringify(params));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>搜索常和分页功能一起使用，一般的做法是在搜索回调方法中调用分页回调方法</p>
-<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">	searchChange(<span class="keyword">params</span>)&#123;</span><br><span class="line">		<span class="keyword">this</span>.onLoad(<span class="keyword">this</span>.page, <span class="keyword">params</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">	searchChange(params)&#123;</span><br><span class="line">		this.onLoad(this.page, params);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="http://songwenjie.vip/blog/20190306/XhPKyzCOxWqa.png?imageslim" alt="mark"></p>
 <p>通过 <code>searchDefault</code> 设置表格搜索的默认值</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">column: [</span><br><span class="line">   &#123;</span><br><span class="line">     label: <span class="string">'书籍名称'</span>,</span><br><span class="line">     prop: <span class="string">'bookName'</span>,</span><br><span class="line">     search: <span class="literal">true</span>,</span><br><span class="line">     searchDefault: <span class="string">'见识'</span></span><br><span class="line">   &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
@@ -331,6 +331,8 @@
         
           <div class="post-tags">
             
+              <a href="/tags/avue/">avue</a>
+            
               <a href="/tags/Vue/">Vue</a>
             
           </div>
@@ -339,7 +341,7 @@
         
   <nav class="post-nav">
     
-      <a class="prev" href="/2019/03/07/avue-表格进阶（二）/">
+      <a class="prev" href="/2019/03/07/avue-表格进阶二/">
         <i class="iconfont icon-left"></i>
         <span class="prev-text nav-default">avue 表格进阶（二）</span>
         <span class="prev-text nav-mobile">上一篇</span>

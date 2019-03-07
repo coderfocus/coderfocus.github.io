@@ -208,65 +208,6 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2018/07/26/MySQL-警告信息-command-line-interface-can-be-insecure/">MySQL 警告信息 command line interface can be insecure</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-26
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <h1 id="MySQL-警告信息-command-line-interface-can-be-insecure"><a href="#MySQL-警告信息-command-line-interface-can-be-insecure" class="headerlink" title="MySQL 警告信息 command line interface can be insecure"></a>MySQL 警告信息 command line interface can be insecure</h1><p>在命令行输入密码，就会提示这些安全警告信息。</p>
-<p>Warning: Using a password on the command line interface can be insecure.</p>
-<p>注: mysql -u root -prootpassword 或 mysqldump -u root -prootpassword 都会输出这样的警告信息.</p>
-<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><p><strong>解决方法：</strong></p>
-<ol>
-<li><p>mysql -u root -prootpassword 改成mysql -u root -p 在输入密码即可</p>
-</li>
-<li><p>配置 /etc/mysql/my.cnf</p>
-<p>vim /etc/mysql/my.cnf</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysql]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
-<p>这种方式以后直接输入mysql就可以进入数据库，不需要涉及用户名密码相关信息</p>
-</li>
-</ol>
-<h2 id="mysqldump"><a href="#mysqldump" class="headerlink" title="mysqldump"></a>mysqldump</h2><p><strong>解决方法：</strong></p>
-<p>配置 /etc/mysql/my.cnf</p>
-<p>vim /etc/mysql/my.cnf</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqldump]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
-<p>修改完配置文件后, 只需要执行mysqldump 脚本就可以了。备份脚本中不需要涉及用户名密码相关信息。</p>
-<h2 id="mysqladmin"><a href="#mysqladmin" class="headerlink" title="mysqladmin"></a>mysqladmin</h2><p><strong>mysqladmin命令</strong> 是mysql服务器管理任务的客户端工具，它可以检查mytsql服务器的配置和当前工作状态，创建和删除数据库，创建用户和修改用户密码等操作。</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[mysqladmin]</span><br><span class="line">user = root</span><br><span class="line">password = rootpassword</span><br></pre></td></tr></table></figure>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
           <a class="post-link" href="/2018/07/26/基于Docker的Mysql主从搭建/">基于Docker的Mysql主从搭建</a>
         
       </h1>
@@ -312,16 +253,16 @@
 <h2 id="配置Master-主"><a href="#配置Master-主" class="headerlink" title="配置Master(主)"></a>配置Master(主)</h2><p>通过<code>docker exec -it 627a2368c865 /bin/bash</code>命令进入到Master容器内部，也可以通过<code>docker exec -it mysql-master /bin/bash</code>命令进入。627a2368c865是容器的id,而mysql-master是容器的名称。</p>
 <p><code>cd /etc/mysql</code>切换到/etc/mysql目录下，然后<code>vi my.cnf</code>对my.cnf进行编辑。此时会报出<code>bash: vi: command not found</code>，需要我们在docker容器内部自行安装vim。使用<code>apt-get install vim</code>命令安装vim</p>
 <p>会出现如下问题：</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading <span class="keyword">state</span> information... Done</span><br><span class="line">E: Unable <span class="keyword">to</span> locate package vim</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">E: Unable to locate package vim</span><br></pre></td></tr></table></figure>
 <p>执行<code>apt-get update</code>，然后再次执行<code>apt-get install vim</code>即可成功安装vim。然后我们就可以使用vim编辑my.cnf，在my.cnf中添加如下配置：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="comment">## 同一局域网内注意要唯一</span></span><br><span class="line"><span class="attr">server-id</span>=<span class="number">100</span>  </span><br><span class="line"><span class="comment">## 开启二进制日志功能，可以随便取（关键）</span></span><br><span class="line"><span class="attr">log-bin</span>=mysql-bin</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">## 同一局域网内注意要唯一</span><br><span class="line">server-id=100  </span><br><span class="line">## 开启二进制日志功能，可以随便取（关键）</span><br><span class="line">log-bin=mysql-bin</span><br></pre></td></tr></table></figure>
 <p>配置完成之后，需要重启mysql服务使配置生效。使用<code>service mysql restart</code>完成重启。重启mysql服务时会使得docker容器停止，我们还需要<code>docker start mysql-master</code>启动容器。</p>
 <p>下一步在Master数据库创建数据同步用户，授予用户 slave REPLICATION SLAVE权限和REPLICATION CLIENT权限，用于在主从库之间同步数据。</p>
 <p><code>CREATE USER &#39;slave&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;;</code></p>
 <p><code>GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO &#39;slave&#39;@&#39;%&#39;;</code></p>
 <p><img src="http://songwenjie.vip/blog/180726/34Hjbf7Ck3.png?imageslim" alt="mark"></p>
 <h2 id="配置Slave-从"><a href="#配置Slave-从" class="headerlink" title="配置Slave(从)"></a>配置Slave(从)</h2><p>和配置Master(主)一样，在Slave配置文件my.cnf中添加如下配置：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="comment">## 设置server_id,注意要唯一</span></span><br><span class="line"><span class="attr">server-id</span>=<span class="number">101</span>  </span><br><span class="line"><span class="comment">## 开启二进制日志功能，以备Slave作为其它Slave的Master时使用</span></span><br><span class="line"><span class="attr">log-bin</span>=mysql-slave-bin   </span><br><span class="line"><span class="comment">## relay_log配置中继日志</span></span><br><span class="line"><span class="attr">relay_log</span>=edu-mysql-relay-bin</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">## 设置server_id,注意要唯一</span><br><span class="line">server-id=101  </span><br><span class="line">## 开启二进制日志功能，以备Slave作为其它Slave的Master时使用</span><br><span class="line">log-bin=mysql-slave-bin   </span><br><span class="line">## relay_log配置中继日志</span><br><span class="line">relay_log=edu-mysql-relay-bin</span><br></pre></td></tr></table></figure>
 <p>配置完成后也需要重启mysql服务和docker容器，操作和配置Master(主)一致。</p>
 <h2 id="链接Master-主-和Slave-从"><a href="#链接Master-主-和Slave-从" class="headerlink" title="链接Master(主)和Slave(从)"></a>链接Master(主)和Slave(从)</h2><p>在Master进入mysql，执行<code>show master status;</code></p>
 <p><img src="http://songwenjie.vip/blog/180726/Kjja2jAIm4.png?imageslim" alt="mark"></p>
@@ -783,6 +724,87 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/07/23/未利用封装/">未利用封装</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
+<h1 id="未利用封装"><a href="#未利用封装" class="headerlink" title="未利用封装"></a>未利用封装</h1><p>客户代码使用显式类型检查（使用一系列if-else或switch语句检查对象的类型），而不利用出层次结构内已封装的类型变化时，将导致这种坏味。</p>
+<h2 id="为什么要利用封装？"><a href="#为什么要利用封装？" class="headerlink" title="为什么要利用封装？"></a>为什么要利用封装？</h2><p>一种臭名昭著的坏味是，在客户代码中使用条件语句（if-else或switch语句）来显式地检查类型，并根据类型执行相应的操作。我们这里讨论的是：<strong>要检查的类型都封装在了层次结构中，但没有利用这一点，即使用显式类型检查，而不依赖于动态多态性</strong>。这将导致如下问题：</p>
+<ul>
+<li>显式类型检查让客户程序和具体类型紧密耦合，降低了设计的可维护性。例如，引入新类型后，必须修改客户程序，在其中检查新类型以及执行相应操作的代码。</li>
+<li>客户程序必须显式地检查层次结构中所有相关的类型。如果未检查一个或多个这样的类型，客户程序在运行阶段可能出现意外的行为。相反，如果利用了<strong>运行时多态</strong>，完全可以避免这种问题。</li>
+</ul>
+<h2 id="未利用封装潜在的原因"><a href="#未利用封装潜在的原因" class="headerlink" title="未利用封装潜在的原因"></a>未利用封装潜在的原因</h2><p>###以过程型思维使用面向对象语言</p>
+<p>开发时的思维是以代码执行过程为导向，自然而然就会使用if-else语句和switch语句。</p>
+<h3 id="未应用面向对象原则"><a href="#未应用面向对象原则" class="headerlink" title="未应用面向对象原则"></a>未应用面向对象原则</h3><p>无力将面向对象的概念付诸实践。</p>
+<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>根为抽象类DataBuffer的层次结构封装了各种基本数据结构型数组，DataBuffer的子类DataBufferByte、DataBufferDouble、DataBufferFloat、DataBufferInt支持相应的基本数据类型数组。DataBuffer定义了常亮TYPE_BYTE、TYPE_DOUBLE、TYPE_FLOAT、TYPE_INT。客户程序使用TYPE_BYTE、TYPE_DOUBLE、TYPE_FLOAT、TYPE_INT的DataBuffer来存储数据。</p>
+<p>下面是客户程序的示例，演示如何使用switch语句执行针对具体类型的显式类型检查。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">switch (transferType)</span><br><span class="line">&#123;</span><br><span class="line">    case DataBuffer.TYPE_BYTE:</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        pixel = bdata[0] &amp; 0xff;</span><br><span class="line">        length = bdata.Length;</span><br><span class="line">        break;</span><br><span class="line">    case DataBuffer.TYPE_USHORT:</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        pixel = sdata[0] &amp; 0xffff;</span><br><span class="line">        length = sdata.Length;</span><br><span class="line">        break;</span><br><span class="line">    case DataBuffer.TYPE_INT:</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        pixel = idata[0];</span><br><span class="line">        length = idata.Length;</span><br><span class="line">        break;</span><br><span class="line">    default:</span><br><span class="line">        throw new Exception(&quot;不支持的transferType&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码使用的数据成员transferType定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protected int transferType;</span><br></pre></td></tr></table></figure>
+<p><strong>重构建议：将决定行为的条件语句删除，并在层次结构中引入多态方法。</strong></p>
+<p>在客户程序中，提供合适的DataBuffer子类对象。在DataBuffer层次结构类型中，定义方法GetPixel()和GetLengthl()。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public abstract class DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public const int TYPE_BYTE = 1;</span><br><span class="line">    public const int TYPE_DOUBLE = 2;</span><br><span class="line">    public const int TYPE_FLOAT = 3;</span><br><span class="line">    public const int TYPE_INT = 4;</span><br><span class="line">    public const int TYPE_USHORT = 5;</span><br><span class="line"></span><br><span class="line">    public abstract int GetPixel(object inData);</span><br><span class="line">    public abstract int GetLength(object inData);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferInt: DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        return  idata[0];</span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        return idata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferByte : DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        return bdata[0] &amp; 0xff;</span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        return bdata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferUShort : DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        return sdata[0] &amp; 0xffff;  </span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        return sdata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并将客户程序switch语句及其case语句简化为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int pixel = GetPixel(inData);</span><br><span class="line">int length = GetLength(inData);</span><br></pre></td></tr></table></figure>
+<p>由于引用dataBuffer指向的是传入的DataBuffer子类对象，因此上述语句将调用相应子类的GetPixel()和GetLength()方法。这里需要注意的是客户程序代码提供特定DataBuffer子类对象，检查输入数据类型和创建DataBuffer子类对象的工作由客户程序负责。可能需要在客户代码或一个工厂类中使用switch-case语句，而<strong>只需要使用一次这个switch-case语句</strong>。由于客户程序不知道具体是哪个DataBuffer子类，所以它与DataBuffer层次结构耦合更低。这样在DataBuffer层次结构修改既有类型和添加新类型时，不会对客户程序造成影响。即使有影响也是只需要使用一次的这个switch-case语句，修改代码代价极小。</p>
+<p>这让我想起，我在看完《重构》后天真幼稚的想消除项目中的switch-case语句，只要项目中存在switch-case语句我就觉得存在坏味道，此后的一段时间我很痛苦，因为项目中总是存在消灭不了的switch-case语句。其实如果项目中需要与外部世界的实体交互，要避免使用条件逻辑很难。例如用户在页面的操作在代码中肯定对应不同的对象来处理，这中间必须使用条件逻辑判断使用哪个对象处理。但是这样的判断应该只有一处，负责日后的代码维护是个灾难。</p>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>还是那句话switch-case语句和if-else语句不可怕，可怕的是多个witch-case语句和if-else语句。</p>
+<p>对于这样的代码我们要给予充分的关注：</p>
+<p>代码1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码3：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样的代码是难以扩展的，新增一个类NNN，就需要找到代码1、2、3甚至n进行修改，很容易遗漏。而且遗漏造成的错误只用在代码运行阶段才能发现。</p>
+<p>这种情况反映出来的问题就是没有利用封装，已经有了层次结构，却没有予以利用。没有面向接口编程，每个地方面向的都是具体的实现类，每个地方都需要判断实例的类型才可以进行下一步的动作。</p>
+<p>进行重构：</p>
+<p>代码1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomething1();</span><br></pre></td></tr></table></figure>
+<p>代码2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomething2();</span><br></pre></td></tr></table></figure>
+<p>代码3：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomething3();</span><br></pre></td></tr></table></figure>
+<p>obj可以是XXX、YYY、ZZZ。对于现在的代码，新增一个类NNN，代码1、2、3甚至n处根本不需要任何改动。因为它们实现了统一的接口，并且符合开闭原则。</p>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/23/缺失封装/">缺失封装</a>
         
       </h1>
@@ -874,87 +896,6 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2018/07/23/未利用封装/">未利用封装</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-23
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
-<h1 id="未利用封装"><a href="#未利用封装" class="headerlink" title="未利用封装"></a>未利用封装</h1><p>客户代码使用显式类型检查（使用一系列if-else或switch语句检查对象的类型），而不利用出层次结构内已封装的类型变化时，将导致这种坏味。</p>
-<h2 id="为什么要利用封装？"><a href="#为什么要利用封装？" class="headerlink" title="为什么要利用封装？"></a>为什么要利用封装？</h2><p>一种臭名昭著的坏味是，在客户代码中使用条件语句（if-else或switch语句）来显式地检查类型，并根据类型执行相应的操作。我们这里讨论的是：<strong>要检查的类型都封装在了层次结构中，但没有利用这一点，即使用显式类型检查，而不依赖于动态多态性</strong>。这将导致如下问题：</p>
-<ul>
-<li>显式类型检查让客户程序和具体类型紧密耦合，降低了设计的可维护性。例如，引入新类型后，必须修改客户程序，在其中检查新类型以及执行相应操作的代码。</li>
-<li>客户程序必须显式地检查层次结构中所有相关的类型。如果未检查一个或多个这样的类型，客户程序在运行阶段可能出现意外的行为。相反，如果利用了<strong>运行时多态</strong>，完全可以避免这种问题。</li>
-</ul>
-<h2 id="未利用封装潜在的原因"><a href="#未利用封装潜在的原因" class="headerlink" title="未利用封装潜在的原因"></a>未利用封装潜在的原因</h2><p>###以过程型思维使用面向对象语言</p>
-<p>开发时的思维是以代码执行过程为导向，自然而然就会使用if-else语句和switch语句。</p>
-<h3 id="未应用面向对象原则"><a href="#未应用面向对象原则" class="headerlink" title="未应用面向对象原则"></a>未应用面向对象原则</h3><p>无力将面向对象的概念付诸实践。</p>
-<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>根为抽象类DataBuffer的层次结构封装了各种基本数据结构型数组，DataBuffer的子类DataBufferByte、DataBufferDouble、DataBufferFloat、DataBufferInt支持相应的基本数据类型数组。DataBuffer定义了常亮TYPE_BYTE、TYPE_DOUBLE、TYPE_FLOAT、TYPE_INT。客户程序使用TYPE_BYTE、TYPE_DOUBLE、TYPE_FLOAT、TYPE_INT的DataBuffer来存储数据。</p>
-<p>下面是客户程序的示例，演示如何使用switch语句执行针对具体类型的显式类型检查。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">switch (transferType)</span><br><span class="line">&#123;</span><br><span class="line">    case DataBuffer.TYPE_BYTE:</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        pixel = bdata[0] &amp; 0xff;</span><br><span class="line">        length = bdata.Length;</span><br><span class="line">        break;</span><br><span class="line">    case DataBuffer.TYPE_USHORT:</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        pixel = sdata[0] &amp; 0xffff;</span><br><span class="line">        length = sdata.Length;</span><br><span class="line">        break;</span><br><span class="line">    case DataBuffer.TYPE_INT:</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        pixel = idata[0];</span><br><span class="line">        length = idata.Length;</span><br><span class="line">        break;</span><br><span class="line">    default:</span><br><span class="line">        throw new Exception(&quot;不支持的transferType&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面代码使用的数据成员transferType定义如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protected int transferType;</span><br></pre></td></tr></table></figure>
-<p><strong>重构建议：将决定行为的条件语句删除，并在层次结构中引入多态方法。</strong></p>
-<p>在客户程序中，提供合适的DataBuffer子类对象。在DataBuffer层次结构类型中，定义方法GetPixel()和GetLengthl()。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public abstract class DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public const int TYPE_BYTE = 1;</span><br><span class="line">    public const int TYPE_DOUBLE = 2;</span><br><span class="line">    public const int TYPE_FLOAT = 3;</span><br><span class="line">    public const int TYPE_INT = 4;</span><br><span class="line">    public const int TYPE_USHORT = 5;</span><br><span class="line"></span><br><span class="line">    public abstract int GetPixel(object inData);</span><br><span class="line">    public abstract int GetLength(object inData);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferInt: DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        return  idata[0];</span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        int[] idata = (int[])inData;</span><br><span class="line">        return idata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferByte : DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        return bdata[0] &amp; 0xff;</span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        byte[] bdata = (byte[])inData;</span><br><span class="line">        return bdata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class DataBufferUShort : DataBuffer</span><br><span class="line">&#123;</span><br><span class="line">    public override int GetPixel(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        return sdata[0] &amp; 0xffff;  </span><br><span class="line">    &#125;</span><br><span class="line">    public override int GetLength(object inData)</span><br><span class="line">    &#123;</span><br><span class="line">        short[] sdata = (short[])inData;</span><br><span class="line">        return sdata.Length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>并将客户程序switch语句及其case语句简化为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int pixel = GetPixel(inData);</span><br><span class="line">int length = GetLength(inData);</span><br></pre></td></tr></table></figure>
-<p>由于引用dataBuffer指向的是传入的DataBuffer子类对象，因此上述语句将调用相应子类的GetPixel()和GetLength()方法。这里需要注意的是客户程序代码提供特定DataBuffer子类对象，检查输入数据类型和创建DataBuffer子类对象的工作由客户程序负责。可能需要在客户代码或一个工厂类中使用switch-case语句，而<strong>只需要使用一次这个switch-case语句</strong>。由于客户程序不知道具体是哪个DataBuffer子类，所以它与DataBuffer层次结构耦合更低。这样在DataBuffer层次结构修改既有类型和添加新类型时，不会对客户程序造成影响。即使有影响也是只需要使用一次的这个switch-case语句，修改代码代价极小。</p>
-<p>这让我想起，我在看完《重构》后天真幼稚的想消除项目中的switch-case语句，只要项目中存在switch-case语句我就觉得存在坏味道，此后的一段时间我很痛苦，因为项目中总是存在消灭不了的switch-case语句。其实如果项目中需要与外部世界的实体交互，要避免使用条件逻辑很难。例如用户在页面的操作在代码中肯定对应不同的对象来处理，这中间必须使用条件逻辑判断使用哪个对象处理。但是这样的判断应该只有一处，负责日后的代码维护是个灾难。</p>
-<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>还是那句话switch-case语句和if-else语句不可怕，可怕的是多个witch-case语句和if-else语句。</p>
-<p>对于这样的代码我们要给予充分的关注：</p>
-<p>代码1：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码2：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码3：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">if(obj is XXX)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情A</span><br><span class="line">&#125;</span><br><span class="line">if(obj is YYY)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情B</span><br><span class="line">&#125;</span><br><span class="line">if(obj is ZZZ)</span><br><span class="line">&#123;</span><br><span class="line">    //做事情C</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样的代码是难以扩展的，新增一个类NNN，就需要找到代码1、2、3甚至n进行修改，很容易遗漏。而且遗漏造成的错误只用在代码运行阶段才能发现。</p>
-<p>这种情况反映出来的问题就是没有利用封装，已经有了层次结构，却没有予以利用。没有面向接口编程，每个地方面向的都是具体的实现类，每个地方都需要判断实例的类型才可以进行下一步的动作。</p>
-<p>进行重构：</p>
-<p>代码1：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng1</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
-<p>代码2：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng2</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
-<p>代码3：</p>
-<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">obj.DoSomethi<span class="symbol">ng3</span><span class="comment">()</span>;</span><br></pre></td></tr></table></figure>
-<p>obj可以是XXX、YYY、ZZZ。对于现在的代码，新增一个类NNN，代码1、2、3甚至n处根本不需要任何改动。因为它们实现了统一的接口，并且符合开闭原则。</p>
-<p>参考：《软件设计重构》</p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
           <a class="post-link" href="/2018/07/23/泄露的封装/">泄露的封装</a>
         
       </h1>
@@ -994,7 +935,7 @@
 <p>现在问题来了，如果待办事项列表程序主要执行插入和删除操作，那么选择使用List<string>没啥问题；但是后来发现查找频率比修改频率高，那么使用HashTable可能更合适。然而GetListEntries()的返回类型是List<string>，如果修改这个方法的返回类型，可能破坏依赖于这个方法的客户程序。如果要支持未来数据结构的变更，方法返回类型可以使用IEnumerable（C#中的集合类型都实现的接口类型），这样可以做到在不改变方法签名的条件下(里氏替换原则)，替换存储待办事项列表的数据结构。</string></string></p>
 <p><strong>重构后的代码实现：</strong></p>
 <p>使用List数据结构：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ToDoList</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;<span class="built_in">string</span>&gt; listEntries = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable <span class="title">GetListEntries</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddListEntry</span><span class="params">(<span class="built_in">string</span> entry)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ToDoList</span><br><span class="line">&#123;</span><br><span class="line">    private List&lt;string&gt; listEntries = new List&lt;string&gt;();</span><br><span class="line"></span><br><span class="line">    public IEnumerable GetListEntries()</span><br><span class="line">    &#123;</span><br><span class="line">        return listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void AddListEntry(string entry)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>使用Hashtable数据结构：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ToDoList</span><br><span class="line">&#123;</span><br><span class="line">    private Hashtable listEntries = new Hashtable();</span><br><span class="line"></span><br><span class="line">    public IEnumerable GetListEntries()</span><br><span class="line">    &#123;</span><br><span class="line">        return listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void AddListEntry(string entry)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>方法GetListEntries()存在另一个严重的问题是，它返回一个指向内部数据结构的引用，通过这个引用，客户程序可以绕过AddListEntry()方法直接修改数据结构。当然如果使用IEnumerable这个问题也就迎刃而解了，因为IEnumerable接口没有相应的针对于某一种数据集合的操作。</p>
@@ -1086,6 +1027,73 @@
 <li><p>抽象允许直接访问其数据成员时，确保数据和整个抽象完整性的职责由抽象转移到了各个客户程序。增加了代码运行阶段发生问题的可能性。</p>
 </li>
 <li><p>相对于使用存取器方法控制对变量访问修改带来的好处，使用存取器方法带来的性能开销可以忽略不计。</p>
+<p>​</p>
+</li>
+</ol>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/23/不必要的抽象/">不必要的抽象</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180501/J93f1aEF2g.png?imageslim" alt="mark" title="抽象型坏味"></p>
+<h1 id="不必要的抽象"><a href="#不必要的抽象" class="headerlink" title="不必要的抽象"></a>不必要的抽象</h1><p>在软件设计中引入实际上不需要的抽象时，将导致这种坏味。</p>
+<p>##为什么不可以有不必要的抽象？</p>
+<p>抽象实体应该具有<strong>单一而重要</strong>的职责。如果创建的没必要或是只是为了方便，它们承担的职责微不足道，甚至没有承担任何职责，这违反了抽象原则。</p>
+<p>##不必要的抽象的潜在原因</p>
+<h3 id="使用的是面向对象语言，思维却是过程型编程思维"><a href="#使用的是面向对象语言，思维却是过程型编程思维" class="headerlink" title="使用的是面向对象语言，思维却是过程型编程思维"></a>使用的是面向对象语言，思维却是过程型编程思维</h3><p>过程型思维常常会创建执行功能而不是表示事物的类。这种类通常只有一两个方法，而这些方法操作的数据位于独立地“数据类”中。</p>
+<h3 id="使用不合适的语言功能"><a href="#使用不合适的语言功能" class="headerlink" title="使用不合适的语言功能"></a>使用不合适的语言功能</h3><p>例如，使用”常量类”而不是枚举。这增加了不必要的类。</p>
+<h3 id="过度设计"><a href="#过度设计" class="headerlink" title="过度设计"></a>过度设计</h3><p>例如，为了表示与Customer对象相关联的客户ID,创建一个名为CustomerID的类。更好的设计是：在Customer对象中使用一个字符串来存储客户ID。</p>
+<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class FormattableFlags</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 禁止显式实例化这个类</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private FormattableFlags()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出左对齐</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public  const int LEFT_JUSTIFY = 1;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出转换为大写</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public const int UPPERCASE = 2;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 要求输出使用替换类型</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public const int ALTERNATE = 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们上面分析过，使用”常量类”而不是枚举，增加了不必要的类。可以使用枚举替换掉”常量类”，消灭掉不必要的类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public enum FormattableFlagsEnum</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出左对齐</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    LEFT_JUSTIFY = 1,</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出转换为大写</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    UPPERCASE = 2,</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 要求输出使用替换类型</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    ALTERNATE = 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>一个电子商务应用程序，其中包含两个类：BestSellerBook和Book。每当客户程序要创建畅销书时，都创建一个BestSellerBook实例。在BestSellerBook内部只是将所有方法都委托给Book类，别的什么都不做。显然抽象BestSellerBook是多余的，因为其行为和抽象Book完全相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Book</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public decimal Price &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;&lt;/param&gt;</span><br><span class="line">    public Book(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 畅销图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public  class BestSellerBook</span><br><span class="line">&#123;</span><br><span class="line">    private Book book = null;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;&lt;/param&gt;</span><br><span class="line">    public BestSellerBook(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        book = new Book(price);</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        book.ModifyPrice(price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于功能有限，不值得创建的类，应将其删除。</p>
+<p>我们可以将BestSellerBook类删除，并且在Book类中添加属性IsBestSeller。这样在客户程序创建Book实例时需要指出图书是否为畅销书，可设置属性IsBestSeller，而不用像以前那样创建BestSellerBook类的实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Book</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public decimal Price &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 是否畅销书</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public bool IsBestSeller &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;价格&lt;/param&gt;</span><br><span class="line">    /// &lt;param name=&quot;isBestSeller&quot;&gt;是否畅销书&lt;/param&gt;</span><br><span class="line">    public Book(decimal price, bool isBestSeller)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">        this.IsBestSeller = isBestSeller;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    ///  修改是否畅销书</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;isBestSeller&quot;&gt;是否畅销书&lt;/param&gt;</span><br><span class="line">    public void ModifyIsBestSeller(bool isBestSeller)</span><br><span class="line">    &#123;</span><br><span class="line">        this.IsBestSeller = isBestSeller;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><p>###设计模式中的委托抽象</p>
+<p>有些设计模式（如代理模式、门面模式和适配器模式）使用了委托，其中包含了一个看似不必要的类。例如，在对象适配器模式中，Adapter类看似只是将客户端请求委托给Adaptee类的相应方法。但是，Adapter类承担了明确而具体的职责：<strong>调整Adaptee类的接口，以满足客户端的需求</strong>。所以，判断抽象是否多余，还要具体情况具体分析。</p>
+<p><img src="http://songwenjie.vip/blog/180506/3KKK089Gi6.png?imageslim" alt="mark" title="对象适配器模式UML图"></p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ol>
+<li><p>包含多余的抽象会增加设计的复杂性，影响整个设计的可理解性。</p>
+</li>
+<li><p>职责独特而明确的抽象有可能得到重用，而当抽象不承担任何职责或承担的职责微不足道时，就不太可能在其它地方重用。</p>
 <p>​</p>
 </li>
 </ol>

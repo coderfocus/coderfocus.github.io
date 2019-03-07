@@ -236,7 +236,7 @@
 <p><code>bash: vi: command not found</code></p>
 <p>因为vim没有安装，这个时候需要我们使用<code>apt-get install vim</code>命令安装vim</p>
 <p>会出现如下问题：</p>
-<figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading <span class="keyword">state</span> information... Done</span><br><span class="line">E: Unable <span class="keyword">to</span> locate package vim</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">E: Unable to locate package vim</span><br></pre></td></tr></table></figure>
 <p>此时执行<code>apt-get update</code>，然后再次执行<code>apt-get install vim</code>即可成功安装vim。</p>
 
       
