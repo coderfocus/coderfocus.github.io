@@ -208,6 +208,73 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/07/23/不必要的抽象/">不必要的抽象</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180501/J93f1aEF2g.png?imageslim" alt="mark" title="抽象型坏味"></p>
+<h1 id="不必要的抽象"><a href="#不必要的抽象" class="headerlink" title="不必要的抽象"></a>不必要的抽象</h1><p>在软件设计中引入实际上不需要的抽象时，将导致这种坏味。</p>
+<p>##为什么不可以有不必要的抽象？</p>
+<p>抽象实体应该具有<strong>单一而重要</strong>的职责。如果创建的没必要或是只是为了方便，它们承担的职责微不足道，甚至没有承担任何职责，这违反了抽象原则。</p>
+<p>##不必要的抽象的潜在原因</p>
+<h3 id="使用的是面向对象语言，思维却是过程型编程思维"><a href="#使用的是面向对象语言，思维却是过程型编程思维" class="headerlink" title="使用的是面向对象语言，思维却是过程型编程思维"></a>使用的是面向对象语言，思维却是过程型编程思维</h3><p>过程型思维常常会创建执行功能而不是表示事物的类。这种类通常只有一两个方法，而这些方法操作的数据位于独立地“数据类”中。</p>
+<h3 id="使用不合适的语言功能"><a href="#使用不合适的语言功能" class="headerlink" title="使用不合适的语言功能"></a>使用不合适的语言功能</h3><p>例如，使用”常量类”而不是枚举。这增加了不必要的类。</p>
+<h3 id="过度设计"><a href="#过度设计" class="headerlink" title="过度设计"></a>过度设计</h3><p>例如，为了表示与Customer对象相关联的客户ID,创建一个名为CustomerID的类。更好的设计是：在Customer对象中使用一个字符串来存储客户ID。</p>
+<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class FormattableFlags</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 禁止显式实例化这个类</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private FormattableFlags()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出左对齐</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public  const int LEFT_JUSTIFY = 1;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出转换为大写</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public const int UPPERCASE = 2;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 要求输出使用替换类型</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public const int ALTERNATE = 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们上面分析过，使用”常量类”而不是枚举，增加了不必要的类。可以使用枚举替换掉”常量类”，消灭掉不必要的类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public enum FormattableFlagsEnum</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出左对齐</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    LEFT_JUSTIFY = 1,</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出转换为大写</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    UPPERCASE = 2,</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 要求输出使用替换类型</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    ALTERNATE = 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>一个电子商务应用程序，其中包含两个类：BestSellerBook和Book。每当客户程序要创建畅销书时，都创建一个BestSellerBook实例。在BestSellerBook内部只是将所有方法都委托给Book类，别的什么都不做。显然抽象BestSellerBook是多余的，因为其行为和抽象Book完全相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Book</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public decimal Price &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;&lt;/param&gt;</span><br><span class="line">    public Book(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 畅销图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public  class BestSellerBook</span><br><span class="line">&#123;</span><br><span class="line">    private Book book = null;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;&lt;/param&gt;</span><br><span class="line">    public BestSellerBook(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        book = new Book(price);</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        book.ModifyPrice(price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于功能有限，不值得创建的类，应将其删除。</p>
+<p>我们可以将BestSellerBook类删除，并且在Book类中添加属性IsBestSeller。这样在客户程序创建Book实例时需要指出图书是否为畅销书，可设置属性IsBestSeller，而不用像以前那样创建BestSellerBook类的实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Book</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public decimal Price &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 是否畅销书</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public bool IsBestSeller &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;价格&lt;/param&gt;</span><br><span class="line">    /// &lt;param name=&quot;isBestSeller&quot;&gt;是否畅销书&lt;/param&gt;</span><br><span class="line">    public Book(decimal price, bool isBestSeller)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">        this.IsBestSeller = isBestSeller;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    ///  修改是否畅销书</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;isBestSeller&quot;&gt;是否畅销书&lt;/param&gt;</span><br><span class="line">    public void ModifyIsBestSeller(bool isBestSeller)</span><br><span class="line">    &#123;</span><br><span class="line">        this.IsBestSeller = isBestSeller;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><p>###设计模式中的委托抽象</p>
+<p>有些设计模式（如代理模式、门面模式和适配器模式）使用了委托，其中包含了一个看似不必要的类。例如，在对象适配器模式中，Adapter类看似只是将客户端请求委托给Adaptee类的相应方法。但是，Adapter类承担了明确而具体的职责：<strong>调整Adaptee类的接口，以满足客户端的需求</strong>。所以，判断抽象是否多余，还要具体情况具体分析。</p>
+<p><img src="http://songwenjie.vip/blog/180506/3KKK089Gi6.png?imageslim" alt="mark" title="对象适配器模式UML图"></p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ol>
+<li><p>包含多余的抽象会增加设计的复杂性，影响整个设计的可理解性。</p>
+</li>
+<li><p>职责独特而明确的抽象有可能得到重用，而当抽象不承担任何职责或承担的职责微不足道时，就不太可能在其它地方重用。</p>
+<p>​</p>
+</li>
+</ol>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/23/不完整的抽象/">不完整的抽象</a>
         
       </h1>

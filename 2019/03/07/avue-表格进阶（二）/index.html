@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="avue 表格进阶（二）">
+
+
+
+
+  <meta name="keywords" content="Vue, avue, CoderFocus">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/07/avue-表格进阶（二）/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
+  
+
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> avue 表格进阶（二） - CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          avue 表格进阶（二）
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-07
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#行操作"><span class="toc-text"># 行操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#行单击"><span class="toc-text">行单击</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#行双击"><span class="toc-text">行双击</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#行单选"><span class="toc-text">行单选</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#合计"><span class="toc-text"># 合计</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#相加-sum"><span class="toc-text">相加 sum</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#平均值-avg"><span class="toc-text">平均值 avg</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#计数-count"><span class="toc-text">计数 count</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#合并行列"><span class="toc-text"># 合并行列</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#合并列"><span class="toc-text">合并列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#合并行"><span class="toc-text">合并行</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <p><strong> 本文主要包含 avue表格 以下内容: </strong></p>
+<ul>
+<li>行操作</li>
+<li>合计</li>
+<li>合并行列</li>
+</ul>
+<a id="more"></a>
+<h3 id="行操作"><a href="#行操作" class="headerlink" title="# 行操作"></a># 行操作</h3><h4 id="行单击"><a href="#行单击" class="headerlink" title="行单击"></a>行单击</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud </span><br><span class="line">:data=<span class="string">"data"</span> </span><br><span class="line">:option=<span class="string">"option"</span> </span><br><span class="line">@row-click=<span class="string">"handleRowClick"</span>&gt;</span><br><span class="line">&lt;<span class="regexp">/avue-crud&gt;</span></span><br></pre></td></tr></table></figure>
+<p>单击回调方法 <code>row-click</code> 同时返回当前行的 <code>row</code>数据,<code>event</code> 当前的操作对象,<code>column</code> 当前列的属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">      handleRowClick(row,event,column)&#123;</span><br><span class="line">        <span class="keyword">this</span>.$message.success(<span class="built_in">JSON</span>.stringify(row))</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190306/RHXoU3eMq7rL.png?imageslim" alt="mark"></p>
+<h4 id="行双击"><a href="#行双击" class="headerlink" title="行双击"></a>行双击</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud </span><br><span class="line">:data=<span class="string">"data"</span> </span><br><span class="line">:option=<span class="string">"option"</span> </span><br><span class="line">@row-dblclick=<span class="string">"handleRowDBLClick"</span>&gt;</span><br><span class="line">&lt;<span class="regexp">/avue-crud&gt;</span></span><br></pre></td></tr></table></figure>
+<p>与行单击一样，行双击回调方法 <code>row-dblclick</code> 同时返回当前行的 <code>row</code>数据,<code>event</code> 当前的操作对象,<code>column</code> 当前列的属性。</p>
+<p><img src="http://songwenjie.vip/blog/20190306/tNNNT4dAG4dx.png?imageslim" alt="mark"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">      handleRowDBLClick(row,event,column)&#123;</span><br><span class="line">        <span class="keyword">this</span>.$message.success(<span class="built_in">JSON</span>.stringify(row))</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="行单选"><a href="#行单选" class="headerlink" title="行单选"></a>行单选</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud </span><br><span class="line">ref=<span class="string">"crud"</span> </span><br><span class="line">:data=<span class="string">"data"</span> </span><br><span class="line">:option=<span class="string">"option0"</span> </span><br><span class="line">@current-row-change=<span class="string">"handleCurrentRowChange"</span>&gt;</span><br><span class="line">&lt;<span class="regexp">/avue-crud&gt;</span></span><br></pre></td></tr></table></figure>
+<p>回调方法 <code>current-row-change</code> ,返回当前行的<code>row</code>数据</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">      handleCurrentRowChange(row)&#123;</span><br><span class="line">        this.$message.success(JSON.stringify(row))</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以通过代码 <code>this.$refs.crud.setCurrentRow(row)</code> 选中某一行，<code>row</code> 为行数据。</p>
+<h3 id="合计"><a href="#合计" class="headerlink" title="# 合计"></a># 合计</h3><p>设置 <code>showSummary</code> 为 <code>true</code> 就会在表格尾部展示合计行</p>
+<p><img src="http://songwenjie.vip/blog/20190307/QOsAuYH2AoaC.png?imageslim" alt="mark"></p>
+<p>可以通过<code>sumText</code> 属性自定义合计行文案</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">showSummary: <span class="literal">true</span>,</span><br><span class="line">sumText: <span class="string">'自定义合计'</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190307/NtOhAV8fLMwv.png?imageslim" alt="mark"></p>
+<p>配置 <code>sumColumnList</code> 数组你要显示的统计的字段，有 <code>name</code> 和 <code>type</code> 两个属性，<code>name</code> 表示要显示统计的字段，<code>type</code> 表示统计的类型， 可以为 sum 相加|avg 平均值|count 计数。</p>
+<p>以书籍价格列为例：</p>
+<h4 id="相加-sum"><a href="#相加-sum" class="headerlink" title="相加 sum"></a>相加 sum</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">showSummary: <span class="literal">true</span>,</span><br><span class="line">sumText: <span class="string">'自定义合计'</span>,</span><br><span class="line">sumColumnList: [</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'price'</span>,</span><br><span class="line">    type: <span class="string">'sum'</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190307/va69GBBLepmp.png?imageslim" alt="mark"></p>
+<h4 id="平均值-avg"><a href="#平均值-avg" class="headerlink" title="平均值 avg"></a>平均值 avg</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">showSummary: <span class="literal">true</span>,</span><br><span class="line">sumText: <span class="string">'自定义合计'</span>,</span><br><span class="line">sumColumnList: [</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'price'</span>,</span><br><span class="line">    type: <span class="string">'avg'</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190307/3WtCPshPRuOi.png?imageslim" alt="mark"></p>
+<h4 id="计数-count"><a href="#计数-count" class="headerlink" title="计数 count"></a>计数 count</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">showSummary: <span class="literal">true</span>,</span><br><span class="line">sumText: <span class="string">'自定义合计'</span>,</span><br><span class="line">sumColumnList: [</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'price'</span>,</span><br><span class="line">    type: <span class="string">'count'</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190307/bubLkEpFR7Gi.png?imageslim" alt="mark"></p>
+<h3 id="合并行列"><a href="#合并行列" class="headerlink" title="# 合并行列"></a># 合并行列</h3><p>通过给传入 <code>span-method</code> 属性绑定的方法可以实现合并行或列，方法的参数是一个对象，里面包含当前行<code>row</code>、当前列 <code>column</code> 、当前行号 <code>rowIndex</code> 、当前列号 <code>columnIndex</code> 四个属性。</p>
+<p>该函数可以返回一个包含两个元素的数组，第一个元素代表 <code>rowspan</code> ，第二个元素代表 <code>colspan</code> ：</p>
+<p><code>[rowspan,colspan]</code>  代表几行几列，例如 [1,2] 表示1行2列，进行了列合并；[2,1] 表示2行1列，进行了行合并； [0,0] 表示0行0列，不显示此行此列。</p>
+<p> 也可以返回一个键名为<code>rowspan</code>和<code>colspan</code>的对象：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    rowspan:<span class="number">1</span>,</span><br><span class="line">    colspan:<span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="合并列"><a href="#合并列" class="headerlink" title="合并列"></a>合并列</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud</span><br><span class="line">  :data=<span class="string">"data1"</span></span><br><span class="line">  :option=<span class="string">"option2"</span></span><br><span class="line">  :span-method=<span class="string">"mergeRow"</span></span><br><span class="line">&gt;<span class="xml"><span class="tag">&lt;/<span class="name">avue-crud</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">  mergeRow(&#123; row, column, rowIndex, columnIndex &#125;)&#123;</span><br><span class="line">    <span class="keyword">if</span>(rowIndex % <span class="number">2</span> === <span class="number">0</span>)&#123; <span class="comment">//如果为偶数行</span></span><br><span class="line">      <span class="keyword">if</span>(columnIndex === <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">1</span>,<span class="number">2</span>] <span class="comment">//如果为第1列，则跨2列</span></span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(columnIndex === <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">0</span>,<span class="number">0</span>] <span class="comment">//如果为第2列，则不显示</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190307/au23BTPO3j2g.png?imageslim" alt="mark"></p>
+<h4 id="合并行"><a href="#合并行" class="headerlink" title="合并行"></a>合并行</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud</span><br><span class="line">  :data=<span class="string">"data1"</span></span><br><span class="line">  :option=<span class="string">"option2"</span></span><br><span class="line">  :span-method=<span class="string">"mergeCol"</span></span><br><span class="line">&gt;<span class="xml"><span class="tag">&lt;/<span class="name">avue-crud</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">  mergeCol(&#123;row,column,rowIndex,columnIndex&#125;)&#123;</span><br><span class="line">    <span class="keyword">if</span>(columnIndex === <span class="number">2</span>)&#123; <span class="comment">//如果为第3列</span></span><br><span class="line">      <span class="keyword">if</span>(rowIndex % <span class="number">2</span> === <span class="number">0</span>)&#123; <span class="comment">//如果为偶数行，则跨2行</span></span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">          rowspan:<span class="number">2</span>,</span><br><span class="line">          colspan:<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">          rowspan:<span class="number">0</span>,</span><br><span class="line">          colspan:<span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190307/5aBU9xcCEM4H.png?imageslim" alt="mark"></p>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/07/avue-表格进阶（二）/">https://songwenjie.coding.me/2019/03/07/avue-表格进阶（二）/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/Vue/">Vue</a>
+            
+              <a href="/tags/avue/">avue</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/03/05/avue-表格进阶/">
+        <span class="next-text nav-default">avue 表格进阶（一）</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
+
+  </body>
+</html>
