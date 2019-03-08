@@ -17,10 +17,12 @@
 
 
 
-  <meta name="description" content="记录生活、技术">
+  <meta name="description" content="avue 字典">
 
 
 
+
+  <meta name="keywords" content="avue, Vue, CoderFocus">
 
 
 
@@ -40,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/">
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/08/avue-字典/">
 
 
 
@@ -88,7 +90,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> CoderFocus </title>
+    <title> avue 字典 - CoderFocus </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -200,15 +202,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/03/08/avue-字典/">avue 字典</a>
+          avue 字典
         
       </h1>
 
@@ -223,15 +221,18 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#字典"><span class="toc-text"># 字典</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#本地字典"><span class="toc-text">本地字典</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#后台接口字典"><span class="toc-text">后台接口字典</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <h3 id="字典"><a href="#字典" class="headerlink" title="# 字典"></a># 字典</h3><p>日常开发中经常会遇到这样的场景，为了减少数据库存储信息的大小，会对业务中的一些概念进行编码后再存储的到数据库。比如电商系统中的评价星数1星到5星，在数据库中存储的是数字1-5；性别男女在数据库中用0和1进行存储。当进行页面展示时，需要进行一次转换，将编码转换为业务概念进行展示。</p>
+        <h3 id="字典"><a href="#字典" class="headerlink" title="# 字典"></a># 字典</h3><p>日常开发中经常会遇到这样的场景，为了减少数据库存储信息的大小，会对业务中的一些概念进行编码后再存储的到数据库。比如电商系统中的评价星数1星到5星，在数据库中存储的是数字1-5；性别男女在数据库中用0和1进行存储。当进行页面展示时，需要进行一次转换，将编码转换为业务概念进行展示。</p>
 <p>对于这种场景，avue 分别支持<strong>本地字典</strong>和<strong>后台接口字典</strong>进行转换。简单的转换可以使用本地字典进行，比如男女，是否。对于复杂的或者可能会发生变化的转化，应该使用后台接口字典的方式。</p>
 <h4 id="本地字典"><a href="#本地字典" class="headerlink" title="本地字典"></a>本地字典</h4><p>本地字典只要设置 <code>column</code> 数组对象中的属性<code>dicData</code>为一个<code>Array</code>数组即可，但是要注意返回的<strong>字典中value类型和数据的类型必须要对应</strong>。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">column:[</span><br><span class="line">    &#123;</span><br><span class="line">    label: <span class="string">'评价'</span>,</span><br><span class="line">    prop: <span class="string">'evaluation'</span>,</span><br><span class="line">    type: <span class="string">'select'</span>,</span><br><span class="line">    dicData: [</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'五星'</span>, <span class="attr">value</span>: <span class="number">5</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'四星'</span>, <span class="attr">value</span>: <span class="number">4</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'三星'</span>, <span class="attr">value</span>: <span class="number">3</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'二星'</span>, <span class="attr">value</span>: <span class="number">2</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'一星'</span>, <span class="attr">value</span>: <span class="number">1</span></span><br><span class="line">      &#125;]</span><br><span class="line">   &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
@@ -265,472 +266,72 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">column:[</span><br><span class="line">    &#123;</span><br><span class="line">    label: <span class="string">'评价'</span>,</span><br><span class="line">    prop: <span class="string">'evaluation'</span>,</span><br><span class="line">    type: <span class="string">'select'</span>,</span><br><span class="line">    dicUrl： <span class="string">'http://127.0.0.1:9998/book/book/getData'</span>,</span><br><span class="line">    props: &#123;</span><br><span class="line">      label: <span class="string">'text'</span>,</span><br><span class="line">      value: <span class="string">'val'</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p>接口返回的数据：</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;<span class="attr">"text"</span>:<span class="string">"五星"</span>,<span class="attr">"val"</span>:<span class="number">5</span>&#125;,&#123;<span class="attr">"text"</span>:<span class="string">"四星"</span>,<span class="attr">"val"</span>:<span class="number">4</span>&#125;,&#123;<span class="attr">"text"</span>:<span class="string">"三星"</span>,<span class="attr">"val"</span>:<span class="number">3</span>&#125;,&#123;<span class="attr">"text"</span>:<span class="string">"二星"</span>,<span class="attr">"val"</span>:<span class="number">2</span>&#125;,&#123;<span class="attr">"text"</span>:<span class="string">"一星"</span>,<span class="attr">"val"</span>:<span class="number">1</span>&#125;]</span><br></pre></td></tr></table></figure>
-        
       
     </div>
 
     
+      
+      
 
-    
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/08/avue-字典/">https://songwenjie.coding.me/2019/03/08/avue-字典/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
 
-  </article>
+
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/07/avue-表格进阶二/">avue 表格进阶（二）</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-07
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
-
-        
-          <p><strong> 本文主要包含 avue表格 以下内容: </strong></p>
-<ul>
-<li>行操作</li>
-<li>合计</li>
-<li>合并行列</li>
-</ul>
-          <div class="read-more">
-            <a href="/2019/03/07/avue-表格进阶二/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
     
 
     
-
-  </article>
-
-      
+      <footer class="post-footer">
         
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue-表格进阶/">avue 表格进阶（一）</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p><strong> 本文主要包含 avue表格  以下内容： </strong></p>
-<ul>
-<li>面板</li>
-<li>分页</li>
-<li>排序</li>
-<li>多选</li>
-<li>筛选</li>
-<li>搜索</li>
-</ul>
-          <div class="read-more">
-            <a href="/2019/03/05/avue-表格进阶/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue-表格基础/">avue 表格基础</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p><strong>avue是一个配置化前端框架，一切基于配置</strong></p>
-<h3 id="表格基本配置"><a href="#表格基本配置" class="headerlink" title="表格基本配置"></a>表格基本配置</h3><p>使用 <code>&lt;avue-crud :data=&quot;data&quot; :option=&quot;option&quot;&gt;&lt;/avue-crud&gt;</code> 构建表格</p>
-<p><code>data</code> 为数据的对象数组，<code>option</code> 为表格要配置的数据列</p>
-<p>因为  <code>option</code>  为表格要配置的数据列,当表格列数比较多的时候，配置项也会急剧膨胀，配置项和业务代码混杂在一起，也不利于项目代码的可读性和可维护性。为了解决这个问题，可以将配置代码和业务代码分离。</p>
-          <div class="read-more">
-            <a href="/2019/03/05/avue-表格基础/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue/">基于avue和SpringBoot的代码生成</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>使用系统管理-代码生成，根据数据库表定义生成相关模板代码，生成目录如下：</p>
-<p><img src="http://songwenjie.vip/blog/20190305/PWYJp4ii2K2y.png?imageslim" alt="mark"></p>
-          <div class="read-more">
-            <a href="/2019/03/05/avue/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/02/28/Spring-Boot-热部署/">Spring Boot 热部署</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-02-28
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>我们知道 Java 是一门编译型语言，在本地开发时，如果我们修改了代码，需要重启一下服务器，并且重新运行代码。热部署可以解决掉这个问题，有了热部署之后，只需要重新 Build 一下就可以看到修改代码后的效果，不需要重启服务器。</p>
-<p>在 Spring Boot 中，我们可以通过 spring-boot-devtools 实现热部署。</p>
-          <div class="read-more">
-            <a href="/2019/02/28/Spring-Boot-热部署/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/11/基于jquery的formHelp插件/">基于jquery的formHelp插件</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-11
-        </span>
-        
-          <span class="post-category">
+          <div class="post-tags">
             
-              <a href="/categories/JavaScript/">JavaScript</a>
+              <a href="/tags/avue/">avue</a>
             
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在日常开发过程中，经常需要获取 form表单的数据和绑定数据到 form表单。记录一个基于jquery的formHelp插件。</p>
-          <div class="read-more">
-            <a href="/2019/01/11/基于jquery的formHelp插件/" class="read-more-link">阅读更多</a>
+              <a href="/tags/Vue/">Vue</a>
+            
           </div>
         
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/02/耳机种草指北/">耳机种草指北</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-02
-        </span>
         
         
-      </div>
-    </header>
-
+  <nav class="post-nav">
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/20190102/3BPFzOv7pvxs.jpg?imageslim" alt="mark"></p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/02/换个角度看表连接/">换个角度看表连接</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-02
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <h2 id="外连接的基础概念"><a href="#外连接的基础概念" class="headerlink" title="外连接的基础概念"></a>外连接的基础概念</h2><p>标准SQL里定义了外连接的三种类型，如下：</p>
-<ul>
-<li>左外连接「LEFT OUTER JOIN」</li>
-<li>右外连接「RIGHT OUTER JOIN」</li>
-<li>全外连接「FULL OUTER JOIN」</li>
-</ul>
-<p>在这三种中，左外连接和右外连接功能上没有什么区别，我们都比较熟悉，全外连接相对来说使用较少。</p>
-          <div class="read-more">
-            <a href="/2019/01/02/换个角度看表连接/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/01/自连接的妙用/">自连接的妙用</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-01
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/SQL/">SQL</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>SQL通常在不同的表或者视图间进行连接运算，但是也可以对相同的表进行“自连接”运算。自连接的处理过程不太容易想象，但是，一旦掌握自连接技术，便能快速解决很多问题。</p>
-<p>一般使用自连接可以解决的问题使用子查询也可以解决，但是与子查询相比，自连接的表达性更强，更加便于理解SQL语句的意义。下面是一些自连接的常用场景。</p>
-          <div class="read-more">
-            <a href="/2019/01/01/自连接的妙用/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-      
-  <nav class="pagination">
-    
-    
-      <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/03/07/avue-表格进阶二/">
+        <span class="next-text nav-default">avue 表格进阶（二）</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
       </main>
@@ -815,6 +416,11 @@
     </div>
 
     
+  
+  
+
+  
+
 
 
     
