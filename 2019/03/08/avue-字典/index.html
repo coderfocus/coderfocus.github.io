@@ -22,7 +22,7 @@
 
 
 
-  <meta name="keywords" content="avue, Vue, CoderFocus">
+  <meta name="keywords" content="Vue, avue, CoderFocus">
 
 
 
@@ -234,6 +234,7 @@
       
         <h3 id="字典"><a href="#字典" class="headerlink" title="# 字典"></a># 字典</h3><p>日常开发中经常会遇到这样的场景，为了减少数据库存储信息的大小，会对业务中的一些概念进行编码后再存储的到数据库。比如电商系统中的评价星数1星到5星，在数据库中存储的是数字1-5；性别男女在数据库中用0和1进行存储。当进行页面展示时，需要进行一次转换，将编码转换为业务概念进行展示。</p>
 <p>对于这种场景，avue 分别支持<strong>本地字典</strong>和<strong>后台接口字典</strong>进行转换。简单的转换可以使用本地字典进行，比如男女，是否。对于复杂的或者可能会发生变化的转化，应该使用后台接口字典的方式。</p>
+<a id="more"></a>
 <h4 id="本地字典"><a href="#本地字典" class="headerlink" title="本地字典"></a>本地字典</h4><p>本地字典只要设置 <code>column</code> 数组对象中的属性<code>dicData</code>为一个<code>Array</code>数组即可，但是要注意返回的<strong>字典中value类型和数据的类型必须要对应</strong>。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">column:[</span><br><span class="line">    &#123;</span><br><span class="line">    label: <span class="string">'评价'</span>,</span><br><span class="line">    prop: <span class="string">'evaluation'</span>,</span><br><span class="line">    type: <span class="string">'select'</span>,</span><br><span class="line">    dicData: [</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'五星'</span>, <span class="attr">value</span>: <span class="number">5</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'四星'</span>, <span class="attr">value</span>: <span class="number">4</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'三星'</span>, <span class="attr">value</span>: <span class="number">3</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'二星'</span>, <span class="attr">value</span>: <span class="number">2</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        label: <span class="string">'一星'</span>, <span class="attr">value</span>: <span class="number">1</span></span><br><span class="line">      &#125;]</span><br><span class="line">   &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p><img src="http://songwenjie.vip/blog/20190306/iBCWFg5I1x4B.png?imageslim" alt="mark"></p>
@@ -300,9 +301,9 @@
         
           <div class="post-tags">
             
-              <a href="/tags/avue/">avue</a>
-            
               <a href="/tags/Vue/">Vue</a>
+            
+              <a href="/tags/avue/">avue</a>
             
           </div>
         
