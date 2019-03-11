@@ -17,7 +17,7 @@
 
 
 
-  <meta name="description" content="记录生活、技术">
+  <meta name="description" content="avue form表单元素">
 
 
 
@@ -40,7 +40,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/">
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/11/avue-form表单元素/">
 
 
 
@@ -88,7 +88,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> CoderFocus </title>
+    <title> avue form表单元素 - CoderFocus </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -200,15 +200,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/03/11/avue-form表单元素/">avue form表单元素</a>
+          avue form表单元素
         
       </h1>
 
@@ -223,15 +219,18 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#form表单元素"><span class="toc-text">form表单元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Radio-单选框"><span class="toc-text">Radio 单选框</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Checkbox-多选框"><span class="toc-text">Checkbox 多选框</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#禁用选项"><span class="toc-text">禁用选项</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Input-输入框"><span class="toc-text">Input 输入框</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#普通输入框"><span class="toc-text">普通输入框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#禁用状态"><span class="toc-text">禁用状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可清空"><span class="toc-text">可清空</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#带-icon-的输入框"><span class="toc-text">带 icon 的输入框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#复合型输入框"><span class="toc-text">复合型输入框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#文本域"><span class="toc-text">文本域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#密码框"><span class="toc-text">密码框</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Select-选择器"><span class="toc-text">Select 选择器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#禁用状态-1"><span class="toc-text">禁用状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#禁用选项-1"><span class="toc-text">禁用选项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多选"><span class="toc-text">多选</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可搜索"><span class="toc-text">可搜索</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cascader-级联选择器"><span class="toc-text">Cascader 级联选择器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#默认选项"><span class="toc-text">默认选项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#禁用选项-2"><span class="toc-text">禁用选项</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#可搜索-1"><span class="toc-text">可搜索</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Switch-开关"><span class="toc-text">Switch 开关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DateTime-日期"><span class="toc-text">DateTime 日期</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#日期"><span class="toc-text">日期</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#日期范围"><span class="toc-text">日期范围</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#时间"><span class="toc-text">时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#时间范围"><span class="toc-text">时间范围</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#时间日期"><span class="toc-text">时间日期</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#时间日期范围"><span class="toc-text">时间日期范围</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#年"><span class="toc-text">年</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#月"><span class="toc-text">月</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#周"><span class="toc-text">周</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#多个日期"><span class="toc-text">多个日期</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多级联动"><span class="toc-text">多级联动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tree-树型"><span class="toc-text">Tree 树型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#多选-1"><span class="toc-text">多选</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#单选"><span class="toc-text">单选</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Number-计数器"><span class="toc-text">Number 计数器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#精度"><span class="toc-text">精度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#最大值、最小值"><span class="toc-text">最大值、最小值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#按钮位置"><span class="toc-text">按钮位置</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <h2 id="form表单元素"><a href="#form表单元素" class="headerlink" title="form表单元素"></a>form表单元素</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-form </span><br><span class="line">ref=<span class="string">"form"</span> </span><br><span class="line">v-model=<span class="string">"formData"</span>  </span><br><span class="line">:option=<span class="string">"formOption"</span> </span><br><span class="line">@reset-change=<span class="string">"emptytChange"</span> </span><br><span class="line">@submit=<span class="string">"submit"</span>&gt;</span><br></pre></td></tr></table></figure>
+        <h2 id="form表单元素"><a href="#form表单元素" class="headerlink" title="form表单元素"></a>form表单元素</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-form </span><br><span class="line">ref=<span class="string">"form"</span> </span><br><span class="line">v-model=<span class="string">"formData"</span>  </span><br><span class="line">:option=<span class="string">"formOption"</span> </span><br><span class="line">@reset-change=<span class="string">"emptytChange"</span> </span><br><span class="line">@submit=<span class="string">"submit"</span>&gt;</span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    name: <span class="string">'form'</span>,</span><br><span class="line">    data() &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123;</span><br><span class="line">        formData:[],</span><br><span class="line">        formOption:&#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  </span><br><span class="line">    methods: &#123;</span><br><span class="line">      <span class="comment">//form</span></span><br><span class="line">      emptytChange()&#123;</span><br><span class="line">        <span class="keyword">this</span>.$message.success(<span class="string">'清空方法回调'</span>);</span><br><span class="line">      &#125;,</span><br><span class="line">      submit () &#123;</span><br><span class="line">        <span class="keyword">this</span>.$message.success(<span class="string">'当前数据'</span>+<span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.formData));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p><img src="http://songwenjie.vip/blog/20190307/DSQS5I7VTvL0.png?imageslim" alt="mark"></p>
 <p><code>reset-change</code> 为清空表单的回调方法，清空表单内容，但是默认值不会被清空。</p>
@@ -358,466 +357,64 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">formOption:&#123;</span><br><span class="line">  column: [&#123;</span><br><span class="line">    label: <span class="string">'计数器'</span>,</span><br><span class="line">	prop: <span class="string">'number'</span>,</span><br><span class="line">	type: <span class="string">'number'</span>,</span><br><span class="line">	controlsPosition: <span class="string">'right'</span></span><br><span class="line">  &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="http://songwenjie.vip/blog/20190311/pSbk4ERxff2e.png?imageslim" alt="mark"></p>
 
-        
       
     </div>
 
     
-
-    
-
-  </article>
-
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/08/avue-字典/">avue 字典</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-08
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
 
-        
-          <h3 id="字典"><a href="#字典" class="headerlink" title="# 字典"></a># 字典</h3><p>日常开发中经常会遇到这样的场景，为了减少数据库存储信息的大小，会对业务中的一些概念进行编码后再存储的到数据库。比如电商系统中的评价星数1星到5星，在数据库中存储的是数字1-5；性别男女在数据库中用0和1进行存储。当进行页面展示时，需要进行一次转换，将编码转换为业务概念进行展示。</p>
-<p>对于这种场景，avue 分别支持<strong>本地字典</strong>和<strong>后台接口字典</strong>进行转换。简单的转换可以使用本地字典进行，比如男女，是否。对于复杂的或者可能会发生变化的转化，应该使用后台接口字典的方式。</p>
-          <div class="read-more">
-            <a href="/2019/03/08/avue-字典/" class="read-more-link">阅读更多</a>
-          </div>
-        
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/11/avue-form表单元素/">https://songwenjie.coding.me/2019/03/11/avue-form表单元素/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
       
-    </div>
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
 
-    
 
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/07/avue-表格进阶二/">avue 表格进阶（二）</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-07
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p><strong> 本文主要包含 avue表格 以下内容: </strong></p>
-<ul>
-<li>行操作</li>
-<li>合计</li>
-<li>合并行列</li>
-</ul>
-          <div class="read-more">
-            <a href="/2019/03/07/avue-表格进阶二/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue-表格进阶/">avue 表格进阶（一）</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p><strong> 本文主要包含 avue表格  以下内容： </strong></p>
-<ul>
-<li>面板</li>
-<li>分页</li>
-<li>排序</li>
-<li>多选</li>
-<li>筛选</li>
-<li>搜索</li>
-</ul>
-          <div class="read-more">
-            <a href="/2019/03/05/avue-表格进阶/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue-表格基础/">avue 表格基础</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p><strong>avue是一个配置化前端框架，一切基于配置</strong></p>
-<h3 id="表格基本配置"><a href="#表格基本配置" class="headerlink" title="表格基本配置"></a>表格基本配置</h3><p>使用 <code>&lt;avue-crud :data=&quot;data&quot; :option=&quot;option&quot;&gt;&lt;/avue-crud&gt;</code> 构建表格</p>
-<p><code>data</code> 为数据的对象数组，<code>option</code> 为表格要配置的数据列</p>
-<p>因为  <code>option</code>  为表格要配置的数据列,当表格列数比较多的时候，配置项也会急剧膨胀，配置项和业务代码混杂在一起，也不利于项目代码的可读性和可维护性。为了解决这个问题，可以将配置代码和业务代码分离。</p>
-          <div class="read-more">
-            <a href="/2019/03/05/avue-表格基础/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/05/avue/">基于avue和SpringBoot的代码生成</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-05
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>使用系统管理-代码生成，根据数据库表定义生成相关模板代码，生成目录如下：</p>
-<p><img src="http://songwenjie.vip/blog/20190305/PWYJp4ii2K2y.png?imageslim" alt="mark"></p>
-          <div class="read-more">
-            <a href="/2019/03/05/avue/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/02/28/Spring-Boot-热部署/">Spring Boot 热部署</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-02-28
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>我们知道 Java 是一门编译型语言，在本地开发时，如果我们修改了代码，需要重启一下服务器，并且重新运行代码。热部署可以解决掉这个问题，有了热部署之后，只需要重新 Build 一下就可以看到修改代码后的效果，不需要重启服务器。</p>
-<p>在 Spring Boot 中，我们可以通过 spring-boot-devtools 实现热部署。</p>
-          <div class="read-more">
-            <a href="/2019/02/28/Spring-Boot-热部署/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/11/基于jquery的formHelp插件/">基于jquery的formHelp插件</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-11
-        </span>
-        
-          <span class="post-category">
-            
-              <a href="/categories/JavaScript/">JavaScript</a>
-            
-          </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在日常开发过程中，经常需要获取 form表单的数据和绑定数据到 form表单。记录一个基于jquery的formHelp插件。</p>
-          <div class="read-more">
-            <a href="/2019/01/11/基于jquery的formHelp插件/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/02/耳机种草指北/">耳机种草指北</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-02
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/20190102/3BPFzOv7pvxs.jpg?imageslim" alt="mark"></p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/01/02/换个角度看表连接/">换个角度看表连接</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-02
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <h2 id="外连接的基础概念"><a href="#外连接的基础概念" class="headerlink" title="外连接的基础概念"></a>外连接的基础概念</h2><p>标准SQL里定义了外连接的三种类型，如下：</p>
-<ul>
-<li>左外连接「LEFT OUTER JOIN」</li>
-<li>右外连接「RIGHT OUTER JOIN」</li>
-<li>全外连接「FULL OUTER JOIN」</li>
-</ul>
-<p>在这三种中，左外连接和右外连接功能上没有什么区别，我们都比较熟悉，全外连接相对来说使用较少。</p>
-          <div class="read-more">
-            <a href="/2019/01/02/换个角度看表连接/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
 
       
       
-  <nav class="pagination">
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
     
     
-      <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/03/08/avue-字典/">
+        <span class="next-text nav-default">avue 字典</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
       </main>
@@ -902,6 +499,11 @@
     </div>
 
     
+  
+  
+
+  
+
 
 
     
