@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="avue form表单验证">
+
+
+
+
+  <meta name="keywords" content="Vue, avue, CoderFocus">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/13/avue-form表单验证/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
+  
+
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> avue form表单验证 - CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          avue form表单验证
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-13
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#必填必选"><span class="toc-text">必填必选</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#必填"><span class="toc-text">必填</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#必选"><span class="toc-text">必选</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#范围"><span class="toc-text">范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#长度"><span class="toc-text">长度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#邮箱"><span class="toc-text">邮箱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#正则表达式"><span class="toc-text">正则表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多规则验证"><span class="toc-text">多规则验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自定义验证"><span class="toc-text">自定义验证</span></a></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <p>对于 web 开发来说，表单验证是永远跨不过去的坎。一般来说，客户端和服务端都需要进行表单验证。客户端验证是为了防止每次验证都发起网络请求，影响用户使用体验；但是也需要在表单提交时进行服务端验证，因为客户端验证是不可靠的，用户可以在浏览器跳过客户端验证直接提交。</p>
+<p>对于客户端表单验证，通常要通过编写大量的重复代码实现。本文研究 <code>avue</code> 框架如何基于配置进行表单验证。<code>avue</code> 是基于 <code>element-ui</code> 做了一层封装，而 <code>element-ui</code>  的表单验证基于 <code>async-validator</code>  <a href="https://github.com/yiminghe/async-validator" target="_blank" rel="noopener">async-validator 项目地址</a> 。</p>
+<a id="more"></a>
+<p><code>async-validator</code> 支持以下验证类型(type)：</p>
+<ul>
+<li><p><code>string</code>：必须是类型<code>string</code>。<code>This is the default type.</code></p>
+</li>
+<li><p><code>number</code>：必须是类型<code>number</code>。</p>
+</li>
+<li><p><code>boolean</code>：必须是类型<code>boolean</code>。</p>
+</li>
+<li><p><code>method</code>：必须是类型<code>function</code>。</p>
+</li>
+<li><p><code>regexp</code>：必须是<code>RegExp</code>创建新项时不生成异常的实例或字符串<code>RegExp</code>。</p>
+</li>
+<li><p><code>integer</code>：必须是类型<code>number</code>和整数。</p>
+</li>
+<li><p><code>float</code>：必须是类型<code>number</code>和浮点数。</p>
+</li>
+<li><p><code>array</code>：必须是由…确定的数组<code>Array.isArray</code>。</p>
+</li>
+<li><p><code>object</code>：必须是类型<code>object</code>而不是<code>Array.isArray</code>。</p>
+</li>
+<li><p><code>enum</code>：价值必须存在于<code>enum</code>。</p>
+</li>
+<li><p><code>date</code>：值必须有效，由确定 <code>Date</code></p>
+</li>
+<li><p><code>url</code>：必须是类型<code>url</code>。</p>
+</li>
+<li><p><code>hex</code>：必须是类型<code>hex</code>。</p>
+</li>
+<li><p><code>email</code>：必须是类型<code>email</code>。</p>
+</li>
+</ul>
+<p>结合 <code>avue</code>、<code>element-ui</code>、<code>async-validator</code> 项目文档， 总结了以下常用的表单验证规则：</p>
+<h3 id="必填必选"><a href="#必填必选" class="headerlink" title="必填必选"></a>必填必选</h3><p>使用 <code>required</code>  属性定义需要。</p>
+<h4 id="必填"><a href="#必填" class="headerlink" title="必填"></a>必填</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rules:[&#123;</span><br><span class="line">  required: <span class="literal">true</span>,</span><br><span class="line">  message: <span class="string">"请输入活动名称"</span>,</span><br><span class="line">  trigger: <span class="string">"blur"</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190313/5lnyTYlGQgkM.png?imageslim" alt="mark"></p>
+<h4 id="必选"><a href="#必选" class="headerlink" title="必选"></a>必选</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rules:[&#123;</span><br><span class="line">  type: <span class="string">'array'</span>,</span><br><span class="line">  required: <span class="literal">true</span>,</span><br><span class="line">  message: <span class="string">"请选择活动性质"</span>,</span><br><span class="line">  trigger: <span class="string">'change'</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190313/tEA7FAJxOzO0.png?imageslim" alt="mark"></p>
+<p><img src="http://songwenjie.vip/blog/20190313/52eUxRA6lLlm.png?imageslim" alt="mark"></p>
+<h3 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h3><p>使用 <code>min</code> 和 <code>max</code> 属性定义范围。</p>
+<p>对于<code>string</code>和<code>array</code>类型进行比较<code>length</code>，对于<code>number</code>类型，数量不得小于<code>min</code>或大于<code>max</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rules: [&#123;</span><br><span class="line">    type: <span class="string">'string'</span>,</span><br><span class="line">    message: <span class="string">'字符串长度必选在5-10位'</span>,</span><br><span class="line">    min: <span class="number">5</span>,</span><br><span class="line">    max: <span class="number">10</span>,</span><br><span class="line">    trigger: <span class="string">'blur'</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190313/IXLR4I8tJVo8.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190313/TU4EIJ83RTSN.png?imageslim" alt="mark"></p>
+<h3 id="长度"><a href="#长度" class="headerlink" title="长度"></a>长度</h3><p>使用 <code>len</code> 属性验证字段的确切长度。</p>
+<p>对于 <code>string</code> 和 <code>array</code> 类型比较<code>length</code>，对于 <code>number</code> 类型，此属性指示完全匹配<code>number</code>，即，它可能仅严格等于<code>len</code>。</p>
+<p>如果 <code>len</code> 属性与 <code>min</code>和<code>max</code>范围属性组合，<code>len</code> 则优先。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rules: [&#123;</span><br><span class="line">  type: <span class="string">'string'</span>,</span><br><span class="line">  message: <span class="string">'字符串长度必须为5位'</span>,</span><br><span class="line">  len: <span class="number">5</span>,</span><br><span class="line">  trigger: <span class="string">'blur'</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190313/yv0GO0POpSRt.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190313/e4Oe0yXpGsea.png?imageslim" alt="mark"></p>
+<h3 id="邮箱"><a href="#邮箱" class="headerlink" title="邮箱"></a>邮箱</h3><p>邮箱 <code>email</code> 是 <code>async-validator</code> 内部支持的验证类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rules: [&#123;</span><br><span class="line">  type: <span class="string">'email'</span>,</span><br><span class="line">  message: <span class="string">'请输入正确的邮箱地址'</span>,</span><br><span class="line">  trigger: <span class="string">'blur'</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190313/Rt367lIRFaB6.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190313/eQTgSyy1YyTS.png?imageslim" alt="mark"></p>
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><p><code>pattern</code> 规则属性指示一个正则表达式的值必须匹配, 才能通过验证。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rules: [&#123;</span><br><span class="line">  required: <span class="literal">true</span>,</span><br><span class="line">  pattern: <span class="regexp">/^1[34578]\d&#123;9&#125;$/</span>,</span><br><span class="line">  message: <span class="string">'请输入正确的手机号'</span>,</span><br><span class="line">  trigger: <span class="string">'blur'</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190313/9EOS0Cdp8Hka.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190313/ftLNEXsU1uIy.png?imageslim" alt="mark"></p>
+<h3 id="多规则验证"><a href="#多规则验证" class="headerlink" title="多规则验证"></a>多规则验证</h3><p>在实际业务中，一个字段经常会有多个验证规则。比如，必填且长度为5.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rules: [&#123;</span><br><span class="line">  required: <span class="literal">true</span>,</span><br><span class="line">  message: <span class="string">'请输入内容'</span>,</span><br><span class="line">  trigger: <span class="string">'blur'</span></span><br><span class="line">&#125;,&#123;</span><br><span class="line">  len: <span class="number">5</span>,</span><br><span class="line">  message: <span class="string">'内容长度必须为5位'</span>,</span><br><span class="line">  trigger: <span class="string">'blur'</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190313/uxkSK3oQGNTN.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190313/KOb7x7ASpLB3.png?imageslim" alt="mark"></p>
+<h3 id="自定义验证"><a href="#自定义验证" class="headerlink" title="自定义验证"></a>自定义验证</h3><p>实际开发中，会有一些需要自定义（定制）的验证。比如密码的再次确认。</p>
+<p>使用 <code>validator</code> 属性指向自定义的验证方法，便可以使用自定义验证。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">      <span class="keyword">var</span> validatePass = <span class="function">(<span class="params">rule, value, callback</span>) =&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (value === <span class="string">''</span>) &#123;</span><br><span class="line">          callback(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'请输入密码'</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          callback();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">var</span> validatePassAgain = <span class="function">(<span class="params">rule, value, callback</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (value === <span class="string">''</span>) &#123;</span><br><span class="line">          callback(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'请再次输入密码'</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value !== <span class="keyword">this</span>.formData.password) &#123;</span><br><span class="line">          callback(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'两次输入密码不一致!'</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          callback();</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">return</span> &#123;</span><br><span class="line">        formData:&#123;</span><br><span class="line">        &#125;,</span><br><span class="line">        formOption:&#123;</span><br><span class="line">          column:[&#123;</span><br><span class="line">            label:<span class="string">'密码'</span>,</span><br><span class="line">            prop:<span class="string">'password'</span>,</span><br><span class="line">            hide:<span class="literal">true</span>,</span><br><span class="line">            rules: [&#123; </span><br><span class="line">                validator: validatePass, </span><br><span class="line">                trigger: <span class="string">'blur'</span> </span><br><span class="line">            &#125;]</span><br><span class="line">          &#125;, &#123;</span><br><span class="line">            label:<span class="string">'确认密码'</span>,</span><br><span class="line">            prop:<span class="string">'confirmPassword'</span>,</span><br><span class="line">            hide:<span class="literal">true</span>,</span><br><span class="line">            rules: [&#123; </span><br><span class="line">                validator: validatePassAgain, </span><br><span class="line">                trigger: <span class="string">'blur'</span> </span><br><span class="line">            &#125;]</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://songwenjie.vip/blog/20190313/FETPC1v156LQ.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190313/qtIidk4pSz9a.png?imageslim" alt="mark"><img src="http://songwenjie.vip/blog/20190313/5gc0kOqToerx.png?imageslim" alt="mark"></p>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/13/avue-form表单验证/">https://songwenjie.coding.me/2019/03/13/avue-form表单验证/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/Vue/">Vue</a>
+            
+              <a href="/tags/avue/">avue</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/03/11/avue-form表单元素/">
+        <span class="next-text nav-default">avue form表单元素</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
+
+  </body>
+</html>
