@@ -17,10 +17,12 @@
 
 
 
-  <meta name="description" content="记录生活、技术">
+  <meta name="description" content="Git提交日志规范">
 
 
 
+
+  <meta name="keywords" content="Git, CoderFocus">
 
 
 
@@ -40,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/archives/page/3/">
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/15/Git提交日志规范/">
 
 
 
@@ -88,11 +90,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title>
-  
-    归档 - CoderFocus
-  
-</title>
+    <title> Git提交日志规范 - CoderFocus </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -204,241 +202,122 @@
           <div id="content" class="content">
             
   
-  
-  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Git提交日志规范
+        
+      </h1>
 
-  <section id="archive" class="archive">
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-15
+        </span>
+        
+        
+      </div>
+    </header>
+
     
+    
+
+
+    <div class="post-content">
+      
+        <p>对于版本控制工具来说，尤为重要的就是每次提交版本到代码库的日志撰写。清晰、规范、格式化的提交日志有助于追踪版本修改，查看历史记录等。 Git 不允许提交日志为空，这里推荐使用目前使用最广泛的 angular 规范。</p>
+<p>angular 规范的 commit message 包括 3 个部分 ，header 、body 和 footer 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt; (&lt;scope&gt;) : &lt;subject&gt;</span><br><span class="line">//空一行</span><br><span class="line">&lt;body&gt;</span><br><span class="line">//空一行</span><br><span class="line">&lt;footer&gt;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li><p>type 用于说明 commit 的类型，只允许使用下面 7 个标识</p>
+<ul>
+<li>feat: 新功能（feature）</li>
+<li>fix: 修补 Bug</li>
+<li>docs: 文档 （documention）</li>
+<li>style: 样式 （不影响代码运行的变动）</li>
+<li>refactor: 重构 （既不是新增功能，也不是修改 Bug 的代码变动）</li>
+<li>test: 增加测试</li>
+<li>chore: 构建过程或辅助工具的变动</li>
+</ul>
+</li>
+<li><p>scope 用于说明 commit 影响的范围，比如数据层、控制层、视图层等，视项目不同而不同</p>
+</li>
+<li>subject 是 commit 目的的简短描述，不超过 50 个字符</li>
+<li>body 部分是对本次 commit 的详细描述，可以分成多行</li>
+<li>footer 部分只用于两种情况<ul>
+<li>不兼容变动时，以 BREAKING CHANGE 开头，后面是对变动的描述以及变动理由和迁移方法</li>
+<li>如果当前 commit 针对某个 issue ，那么可以在 footer 部分关闭这个 issue</li>
+</ul>
+</li>
+</ul>
+<p>参考：</p>
+<p>《Java工程师修炼之道》</p>
+
+      
+    </div>
 
     
       
-        
-        
+      
 
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/15/Git提交日志规范/">https://songwenjie.coding.me/2019/03/15/Git提交日志规范/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
         
-          
-          <div class="collection-title">
-            <h2 class="archive-year">2018</h2>
+          <div class="post-tags">
+            
+              <a href="/tags/Git/">Git</a>
+            
           </div>
         
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            11-12
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/11/12/MySQL——优化嵌套查询和分页查询/" class="archive-post-link">
-            MySQL——优化嵌套查询和分页查询
-          </a>
-        </span>
-      </div>
-    
-      
         
         
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            08-20
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/08/20/MySQL——优化ORDER-BY语句/" class="archive-post-link">
-            MySQL——优化ORDER BY语句
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            08-19
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/08/19/MySQL——索引实现原理/" class="archive-post-link">
-            MySQL——索引实现原理
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            08-18
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/08/18/是什么影响了数据库索引选型？/" class="archive-post-link">
-            是什么影响了数据库索引选型？
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            08-17
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/08/17/数据库索引背后的数据结构/" class="archive-post-link">
-            数据库索引背后的数据结构
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            08-02
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/08/02/MySQL——索引优化实战/" class="archive-post-link">
-            MySQL——索引优化实战
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            08-02
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/08/02/MySQL——索引基础/" class="archive-post-link">
-            MySQL——索引基础
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            08-02
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/" class="archive-post-link">
-            MySQL——通过EXPLAIN分析SQL的执行计划
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            08-01
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/08/01/网络分层的真实含义是什么/" class="archive-post-link">
-            网络分层的真实含义是什么
-          </a>
-        </span>
-      </div>
-    
-      
-        
-        
-
-        
-      
-
-      <div class="archive-post">
-        <span class="archive-post-time">
-          
-            07-29
-          
-        </span>
-        <span class="archive-post-title">
-          <a href="/2018/07/29/MySQL中能够使用索引的场景/" class="archive-post-link">
-            MySQL中能够使用索引的场景
-          </a>
-        </span>
-      </div>
-    
-  </section>
-
-  
-  <nav class="pagination">
-    
-      <a class="prev" href="/archives/page/2/">
-        <i class="iconfont icon-left"></i>
-        <span class="prev-text">上一页</span>
-      </a>
+  <nav class="post-nav">
     
     
-      <a class="next" href="/archives/page/4/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/03/13/avue-form表单验证/">
+        <span class="next-text nav-default">avue form表单验证</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
+    
+
+  </article>
 
 
           </div>
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
       </main>
@@ -523,6 +402,11 @@
     </div>
 
     
+  
+  
+
+  
+
 
 
     
