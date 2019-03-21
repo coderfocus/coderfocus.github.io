@@ -208,6 +208,145 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/08/01/网络分层的真实含义是什么/">网络分层的真实含义是什么</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-08-01
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h2 id="四个问题"><a href="#四个问题" class="headerlink" title="四个问题"></a>四个问题</h2><ol>
+<li><p><strong>TCP 在进行三次握手的时候，IP 层和 MAC 层对应都有什么操作呢？</strong></p>
+<p>TCP 发送每一个消息，都会带着 IP 层和 MAC 层了。因为，TCP 每发送一个消息，IP 层和 MAC 层的所有机制都要运行一遍。而你只看到 TCP 三次握手了，其实，IP 层和 MAC 层为此也忙活好久了。</p>
+</li>
+<li><p><strong>A 知道自己的下一个中转站是 B，那从 A 发出来的包，应该把 B 的 IP 地址放在哪里呢？B 知道自己的下一个中转站是 C，从 B 发出来的包，应该把 C 的 IP 地址放在哪里呢？如果放在 IP 协议中的目标地址，那包到了中转站，怎么知道最终的目的地址是 D 呢？</strong></p>
+</li>
+</ol>
+<ol start="3">
+<li><p><strong>二层设备处理的通常是 MAC 层的东西。那我发送一个 HTTP 的包，是在第七层工作的，那是不是不需要经过二层设备？或者即便经过了，二层设备也不处理呢？或者换一种问法，二层设备处理的包里，有没有 HTTP 层的内容呢？</strong></p>
+<p>二层设备收进去的是整个网络包。这里面 HTTP、TCP、 IP、 MAC 都有。什么叫二层设备，就是只把 MAC 头摘下来，看看到底是丢弃、转发，还是自己留着。</p>
+</li>
+<li><p>从你的电脑，通过 SSH 登录到公有云主机里面，都需要经历哪些过程？或者说你打开一个电商网站，都需要经历哪些过程？说得越详细越好。</p>
+</li>
+</ol>
+<h2 id="网络为什么要分层？"><a href="#网络为什么要分层？" class="headerlink" title="网络为什么要分层？"></a>网络为什么要分层？</h2><p>因为复杂的程序都要分层。所谓的二层设备、三层设备，都是这些设备上跑的程序不同而已。始终想象自己是一个处理网络包的程序，如何拿到网络包、如何根据规则进行处理、如何把包发出去。</p>
+<h2 id="程序是如何工作的？"><a href="#程序是如何工作的？" class="headerlink" title="程序是如何工作的？"></a>程序是如何工作的？</h2><p><img src="http://songwenjie.vip/blog/180731/EJdJIc9Kak.png?imageslim" alt="mark"></p>
+<p>想象自己是一个处理网络包的程序，接收到Buffer时，调用process_layer2(buffer)函数，摘掉二层的头（MAC头），如果MAC地址和自己的相符，则说明包是发送给自己的。继续调用process_layer3(buffer)函数，此时Buffer里已经没有二层的头（MAC头）了。如果IP地址不是自己的，那就应该转发出去；如果IP地址是自己的，就是发送给自己的。摘掉三层的头（IP头），继续交给上一层处理。假设上层是基于TCP，则调用process_tcp(buffer)函数。此时Buffer中已经没有三层的头（IP头），所以需要查看四层的头（TCP头）。看这是发起还是应答，或者是一个普通的数据包。如果是发起或者应答，则接下来可能要发送一个回复包。如果是一个普通数据包，则交由上层处理（process_http(buffer)函数）。或者交由应用程序程序自己去处理，交给哪个应用程序呢？在四层的头（TCP头）里有端口号，不同的程序的监听不同的端口号。我们假设交给浏览器去处理，浏览器解析HTML，展示出页面。</p>
+<p>此时用户点击页面上的按钮，浏览器发起一次新的HTTP请求。首先调用send_tcp(buffer)函数，buffer就是HTTP请求内容，这个函数会给buffer加一个TCP头，记录下源端口号和目标端口号（浏览器会提供）。然后调用send_layer3(buffer)函数，此时buffer中包含了HTTP的请求内容和请求头以及TCP头，在这个函数里加一个IP头，记录下源IP地址和目标IP地址。然后调用send_layer2(buffer)函数，buffer里面已经包含了HTTP的请求内容和请求头、TCP头以及IP头，在这个函数里面加一个MAC头，记录源MAC地址和目标MAC地址，此时目标MAC地址不一定能知道，如果不知道的话，需要通过ARP协议获取MAC地址。MAC地址是必须要有的。</p>
+<h2 id="层与层之间的关系"><a href="#层与层之间的关系" class="headerlink" title="层与层之间的关系"></a>层与层之间的关系</h2><p>层层封装的关系，可以想象为套娃。<strong>只要是在网络上跑的包，都是完整的。可以有下层没上层，但是绝对不可能有上层没下层。</strong></p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/29/MySQL中能够使用索引的场景/">MySQL中能够使用索引的场景</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-29
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h3 id="匹配全值"><a href="#匹配全值" class="headerlink" title="匹配全值"></a>匹配全值</h3><p><strong>对索引中所有列都有指定具体值，即是对索引中的所有列都有等值匹配的条件</strong>。</p>
+<p>rental表的索引情况，其中idx_rental_date是复合索引：</p>
+<p><img src="http://songwenjie.vip/blog/180729/7a3GHJhAG8.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND inventory_id=373 AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/cfG1j75Hkc.png?imageslim" alt="mark"></p>
+<p>优化器选择了复合索引idx_rental_date</p>
+<h3 id="匹配值的范围查询"><a href="#匹配值的范围查询" class="headerlink" title="匹配值的范围查询"></a>匹配值的范围查询</h3><p><strong>对索引的值进行范围查找。</strong></p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE customer_id&gt;373 AND customer_id&lt;400;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/LI0HcJl9f2.png?imageslim" alt="mark"></p>
+<p>优化器选择索引范围查询，使用索引idx_fk_customer_id加速访问。注意Extra列为<code>Using index condition</code>，表明MySQL使用了<strong>ICP</strong>进一步优化查询。关于<strong>ICP</strong>后面会单独介绍。</p>
+<h3 id="匹配最左前缀"><a href="#匹配最左前缀" class="headerlink" title="匹配最左前缀"></a>匹配最左前缀</h3><p><strong>MySQL中B-Tree索引使用的首要原则——最左匹配原则</strong></p>
+<p>对于复合索引而言，MySQL仅仅使用索引的最左列进行查找。比如在col1+col2+col3字段上的联合索引能够被包含col1、（col1+col2)、（col1+col2+col3）的等值查询利用到，但是不能够被col2、col3、（col2+col3）的等值查询利用到。</p>
+<p>如果查询条件中包含了索引的第一列rental_date和第三列customer_id，从key中可以看出优化器使用了复合索引idx_rental_date进行条件过滤：</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/HbIlhCG9C1.png?imageslim" alt="mark"></p>
+<p>如果查询条件中包含了索引的第二列inventory_id和第三列customer_id，从key中可以看出优化器使用了其各自的索引进行条件过滤，但是进行了索引合并优化（type=index_merge）：</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE  inventory_id=373 AND customer_id=343;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/bAJch04gGK.png?imageslim" alt="mark"></p>
+<h3 id="仅仅对索引进行查询"><a href="#仅仅对索引进行查询" class="headerlink" title="仅仅对索引进行查询"></a>仅仅对索引进行查询</h3><p><strong>当查询的列都在索引的字段中时，查询的效率更高。</strong></p>
+<p><code>EXPLAIN SELECT customer_id FROM rental;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/iaifmeLbB1.png?imageslim" alt="mark"></p>
+<p>优化器选择了查询列的索引加速访问，并且Extra为<code>Using index</code>意味着直接访问索引就足够取到所需要的数据，不会再通过索引回表查询。</p>
+<h3 id="匹配列前缀"><a href="#匹配列前缀" class="headerlink" title="匹配列前缀"></a>匹配列前缀</h3><p><strong>使用只包含索引字段开头一部分进行数据查找</strong></p>
+<p>为customer表建立前缀索引：</p>
+<p><img src="http://songwenjie.vip/blog/180729/ile7h05eJG.png?imageslim" alt="mark"></p>
+<p>查看customer表的索引情况：</p>
+<p><img src="http://songwenjie.vip/blog/180729/igk78mI9dA.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT email  FROM customer WHERE email LIKE &#39;MARY%&#39;;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/m5dAfFIh21.png?imageslim" alt="mark"></p>
+<p>可以看到，前缀索引idx_email已经被利用上了，Extra为<code>Using where</code>表明优化器还需要通过索引回表查询数据，因为索引的只是email字段的前5个字符。</p>
+<h3 id="如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）"><a href="#如果列名是索引，那么使用column-name-is-null-就会使用索引（区别于Oracle）" class="headerlink" title="如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）"></a>如果列名是索引，那么使用column_name is null 就会使用索引（区别于Oracle）</h3><p><img src="http://songwenjie.vip/blog/180729/69A8elfdf0.png?imageslim" alt="mark"></p>
+<p><code>EXPLAIN SELECT * FROM payment WHERE rental_id IS NULL;</code></p>
+<p><img src="http://songwenjie.vip/blog/180729/dgAJBA6gH3.png?imageslim" alt="mark"></p>
+<h3 id="ICP优化"><a href="#ICP优化" class="headerlink" title="ICP优化"></a>ICP优化</h3><p>MySQL5.6引入了Index Condition Pushdown（ICP）的特性，进一步优化了查询。Pushdown表示操作下放，某些情况下的条件过滤操作下放到存储引擎。</p>
+<p><code>EXPLAIN SELECT * FROM rental WHERE rental_date=&#39;2005-05-25&#39; AND customer_id&gt;=300 AND customer_id&lt;=400;</code></p>
+<p>在5.6版本之前：</p>
+<p>优化器首先使用复合索引idx_rental_date过滤出符合条件<code>rental_date=&#39;2005-05-25&#39;</code>的记录，然后根据复合索引idx_rental_date回表获取记录，最终根据条件<code>customer_id&gt;=300 AND customer_id&lt;=400</code>过滤出最后的查询结果（在服务层完成）。</p>
+<p>在5.6版本之后：</p>
+<p>MySQL使用了ICP来进一步优化查询，在检索的时候，把条件<code>customer_id&gt;=300 AND customer_id&lt;=400</code>也推到存储引擎层完成过滤，这样能够降低不必要的IO访问。Extra为<code>Using index condition</code>就表示使用了ICP优化。</p>
+<p><img src="http://songwenjie.vip/blog/180729/FDGC3F3EJ1.png?imageslim" alt="mark"></p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/29/MySQL主从复制——主库已有数据的解决方案/">MySQL主从复制——主库已有数据的解决方案</a>
         
       </h1>
@@ -722,295 +861,6 @@
 </blockquote>
 <h2 id="要怀有感恩之心。"><a href="#要怀有感恩之心。" class="headerlink" title="要怀有感恩之心。"></a>要怀有感恩之心。</h2><p>人要懂得感恩。人的一生可能会在一些关键的节点上遇到对你帮助很大的人们，要对他们怀有一颗感恩之心。以我个人举例，我感恩的人比较多。首先要感谢文宾哥，当初我选择走程序员这条路，也是因为他给我问题的回答让我无比坚定。我问他，程序员真的是青春饭吗？他说，不是。然后要感谢领我入门的德进哥，一直忘不了您的谆谆教诲，文杰啊，你要努力！还有您鼓励我的那500块钱工资。还要感谢我在公司的第一个师傅潇哥，感谢你没有嫌弃那么菜的我，还给我在书上画重点，让我重点学习哪一块技术。感谢我的老组长峰哥，现在不在一个项目组了，还给我的分享用心提出了整整两屏幕半的建议，每一条都非常诚恳，说实话我当时很意外很感动，以后的分享要注意这些建议的地方。感谢我的领导东哥，一年半前的那次谈话改变了我，也感谢你对我的信任和鼓励。感谢我的同事和好朋友法师，一位优秀的有追求的程序员，我在公司和法师的交流是最多的，在他身上学习到了不少东西。在他们身上我感受到了无数的正能量。我现在想尽最大能力帮助你们提升的原因，一是因为大家都比较年轻，刚进公司的你们或者现在的你们，很像那时候的我，懵懂无知，但是却苛求进步。二是因为正能量是可以“传染”的，他们“传染“给我，我”传染“给你们，你们可能要”传染“给将来的新人。最后应该感恩的是我的家人和我的女朋友。我的父母都是农民，但是他们在教育这件事上一点都不马虎，当年我的父亲想尽一切办法让我去了市里数一数二的初中高中读书，我从13岁到现在在外地上班就没怎么在家住过。直到现在他们还在为我操劳着，我亏欠父母的确实太多了。我的姐姐从7岁开始带我，以至于现在叫自己孩子名字都经常叫成我的名字。我的女朋友和我相恋5年了，这5年来无论我做什么决定，她都在背后默默支持。开始工作到现在，我的时间都分给了工作和研究技术，她从来没有和我抱怨过，虽然我陪她的时间少的过分。你轻松的生活工作背后一定有人在替你负重前行，对于我来说就是我的家人和我的女朋友。可能这个主题我跟你们讲不太合适，但是这个真的很重要。在你比较困难的时候，只要想起他们，你的心中就会充满了正能量。毕竟他们是希望你好的人，不能让他们失望。常怀感恩之心，你会走的更远。<br><br></p>
 <p>写了四个小时，该结束了。本篇文章纯属有感而发，写给我的组员们（和曾经的组员们）。希望你们看过之后有收获。</p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/23/HTTP首部扫盲/">HTTP首部扫盲</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-23
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <h1 id="HTTP首部扫盲"><a href="#HTTP首部扫盲" class="headerlink" title="HTTP首部扫盲"></a>HTTP首部扫盲</h1><p> 之前在做web开发时使用到HTTP首部的时候遇到不熟悉的都是现用现查，时间一长印象就不深刻了。最近在重读《图解HTTP》，其中有一章是专门讲解HTTP首部的，讲解的HTTP首部很多，在这里总结了一些平常使用比较多的首部。</p>
-<h1 id="1-HTTP报文首部"><a href="#1-HTTP报文首部" class="headerlink" title="1. HTTP报文首部"></a>1. HTTP报文首部</h1><p><strong>HTTP的请求和响应报文必定包含HTTP首部</strong>。首部内容为客户端和服务器分别处理请求和响应提供所需要的信息。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/4JdHjHhIFA.png?imageslim" alt="mark"></p>
-<p>##1.1 HTTP请求报文</p>
-<p><strong>HTTP请求报文由方法、URI、HTTP版本、HTTP首部字段等部分构成</strong>。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/8Jm11291mH.png?imageslim" alt="mark">我们可以自己通过浏览器查看请求首部信息，浏览器F12控制台选择Network,下面是我访问图灵社区网站的请求头部信息：</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Request URL: http://www.ituring.com.cn/</span><br><span class="line">Request Method: GET</span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</span><br><span class="line"><span class="attribute">Accept-Encoding</span>: gzip, deflate</span><br><span class="line"><span class="attribute">Accept-Language</span>: zh-CN,zh;q=0.9</span><br><span class="line"><span class="attribute">Cache-Control</span>: max-age=0</span><br><span class="line"><span class="attribute">Connection</span>: keep-alive</span><br><span class="line"><span class="attribute">Host</span>: www.ituring.com.cn</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span>: 1</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36</span><br></pre></td></tr></table></figure>
-<h2 id="1-2-HTTP响应报文"><a href="#1-2-HTTP响应报文" class="headerlink" title="1.2 HTTP响应报文"></a>1.2 HTTP响应报文</h2><p><strong>HTTP响应报文由HTTP版本、状态码、HTTP首部字段3部分构成</strong>。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/dI0755de1j.png?imageslim" alt="mark">访问图灵社区网站的响应头部信息：</p>
-<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Status Code: 200 OK</span><br><span class="line"><span class="attribute">Cache-Control</span>: private</span><br><span class="line"><span class="attribute">Content-Encoding</span>: gzip</span><br><span class="line"><span class="attribute">Content-Length</span>: 25620</span><br><span class="line"><span class="attribute">Content-Type</span>: text/html; charset=utf-8</span><br><span class="line"><span class="attribute">Date</span>: Sat, 14 Apr 2018 15:07:28 GMT</span><br><span class="line"><span class="attribute">Server</span>: Microsoft-IIS/8.5</span><br><span class="line"><span class="attribute">Vary</span>: Accept-Encoding</span><br><span class="line"><span class="attribute">X-AspNet-Version</span>: 4.0.30319</span><br><span class="line"><span class="attribute">X-AspNetMvc-Version</span>: 5.2</span><br><span class="line"><span class="attribute">X-Powered-By</span>: ASP.NET</span><br></pre></td></tr></table></figure>
-<h1 id="2-四种HTTP首部字段类型"><a href="#2-四种HTTP首部字段类型" class="headerlink" title="2. 四种HTTP首部字段类型"></a>2. 四种HTTP首部字段类型</h1><h2 id="2-1-通用首部字段"><a href="#2-1-通用首部字段" class="headerlink" title="2.1 通用首部字段"></a>2.1 通用首部字段</h2><p><strong>请求报文和响应报文两方都会使用的首部</strong>。</p>
-<h3 id="2-1-1-Connection"><a href="#2-1-1-Connection" class="headerlink" title="2.1.1 Connection"></a>2.1.1 Connection</h3><p>Connection首部字段具备如下两个作用：</p>
-<ul>
-<li><p>控制不再转发给代理的首部字段</p>
-<p>请求报文和响应报文可以通过<code>Connection:不再转发的首部字段名</code>控制不再转发的首部字段</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/ifdcgLA2L1.png?imageslim" alt="mark"></p>
-</li>
-<li><p>管理持久连接</p>
-<p>HTTP/1.1版本的默认连接都是持久连接，客户端会在持久连接上连续发送请求。当服务器想要断开连接时则指定Connection值为Close。HTTP/1.1版本之前的HTTP版本的默认连接都是非持久连接，因此如果想要在旧版本的HTTP协议上维持持久连接，则需要显式指定Connection首部字段值为keep-alive。</p>
-<p>Connection:keep-alive</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/CBgJ25hgEE.png?imageslim" alt="mark"></p>
-<p>Connection:Close</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/9D11B3lCGh.png?imageslim" alt="mark"></p>
-</li>
-</ul>
-<h3 id="2-1-2-Upgrade"><a href="#2-1-2-Upgrade" class="headerlink" title="2.1.2 Upgrade"></a>2.1.2 Upgrade</h3><p>Upgrade字段用于检测HTTP协议以及其他协议是否可使用更高的版本进行通信，或者是否可以切换到其他协议进行通信。Upgrade字段产生作用的Upgrade对象仅限于客户端和邻接服务器之间，因此使用首部字段Upgrade时，需要额外指定Connection:Upgrade，此时Connection起到的作用就是前面提到的“控制不再转发给代理的首部字段”。对于附有首部字段Upgrade的请求，服务器可用101状态码作为响应返回。</p>
-<p>  <img src="http://p66d6e5qt.bkt.clouddn.com/blog/180414/dc119bD9hH.png?imageslim" alt="mark"></p>
-<p>关于Upgrade字段，最常用的场景就是由HTTP协议升级为Websock协议时，之前我还对这个过程进行了抓包分析，感兴趣的同学或者对Websock协议不是很了解的同学可以移步我之前的一篇博客<a href="http://www.cnblogs.com/songwenjie/p/8575579.html" target="_blank" rel="noopener">原来你是这样的Websocket–抓包分析</a>。</p>
-<h2 id="2-2-请求首部字段"><a href="#2-2-请求首部字段" class="headerlink" title="2.2 请求首部字段"></a>2.2 请求首部字段</h2><p><strong>从客户端向服务器发送请求报文时使用的首部</strong>。</p>
-<h3 id="2-2-1-Accept"><a href="#2-2-1-Accept" class="headerlink" title="2.2.1 Accept"></a>2.2.1 Accept</h3><p>Accept首部字段可通知服务器，用户代理能够处理的媒体类型及媒体类型的相对优先级。可以使用type/subtype这种形式，一次指定多种媒体类型。若想要给媒体类型显式增加优先级，则使用q=来额外表示权重值，用（；）进行分隔。权重范围为0~1，默认权重为q=1.0。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/igDjF4F0eD.png?imageslim" alt="mark"></p>
-<p>###2.2.2 Authorization</p>
-<p>首部字段Authorization是用来告知服务器，用户代理的认证信息（证书值）。通常在需要认证的网络资源中，没有附加Authorization字段或Authorization字段值错误的请求，会被认为是非法请求，响应状态码为401。在Token认证方式下，客户端就是通过Authorization字段将Token值告知服务器的。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/L24l2ED670.png?imageslim" alt="mark"></p>
-<h3 id="2-2-3-Host"><a href="#2-2-3-Host" class="headerlink" title="2.2.3 Host"></a>2.2.3 Host</h3><p>首部字段Host会告知服务器，请求的资源所处的互联网主机名和端口号。<strong>Host首部字段在HTTP/1.1规范内是唯一一个必须被包含在请求内的首部字段</strong>。首部字段Host和单台服务器分配多个域名的虚拟主机的工作机制有很密切的联系，这是首部字段Host必须存在的意义。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/iD12iFB2dk.png?imageslim" alt="mark"></p>
-<h3 id="2-2-4-Referer"><a href="#2-2-4-Referer" class="headerlink" title="2.2.4 Referer"></a>2.2.4 Referer</h3><p>首部字段Referer会告知服务器请求的原始资源的URI。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/amcFDGmJhI.png?imageslim" alt="mark"></p>
-<h3 id="2-2-5-User-Agent"><a href="#2-2-5-User-Agent" class="headerlink" title="2.2.5 User-Agent"></a>2.2.5 User-Agent</h3><p>首部字段User-Agent会将创建请求的浏览器和用户代理名称等信息传达给服务器。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/1jlBmbJDAb.png?imageslim" alt="mark"></p>
-<h2 id="2-3-响应首部字段"><a href="#2-3-响应首部字段" class="headerlink" title="2.3 响应首部字段"></a>2.3 响应首部字段</h2><p><strong>从服务器向客户端返回响应报文时使用的首部</strong>。</p>
-<h3 id="2-3-1-Location"><a href="#2-3-1-Location" class="headerlink" title="2.3.1 Location"></a>2.3.1 Location</h3><p>使用首部字段Location可以将响应接收方引导至某个与请求URI位置不同的资源。该字段会配合3XX:Redirection的响应，提供重定向的URI。几乎所有的浏览器接收到包含首部字段Location的响应后，都会强制性的尝试对已提示的重定向资源的访问。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/1gK39AFF4E.png?imageslim" alt="mark"></p>
-<h3 id="2-3-2-Server"><a href="#2-3-2-Server" class="headerlink" title="2.3.2 Server"></a>2.3.2 Server</h3><p>首部字段告知客户端当前服务器上安装的HTTP服务器应用程序的信息。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/Ggf07lHbi8.png?imageslim" alt="mark"></p>
-<p>###2.3.3 WWW-Authenticate</p>
-<p>首部字段WWW-Authenticate用于HTTP的访问认证。它会告知客户端用于访问请求的URI所指定资源的认证方案（Basic或Digest）和带参数提示的质询。<strong>状态码401 Unauthorized响应中，肯定带有首部字段WWW-Authenticate</strong>。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/4kKKCAG7hF.png?imageslim" alt="mark"></p>
-<h2 id="2-4-实体首部字段"><a href="#2-4-实体首部字段" class="headerlink" title="2.4 实体首部字段"></a>2.4 实体首部字段</h2><p><strong>请求报文和响应报文的实体部分使用的首部</strong>。</p>
-<h3 id="2-4-1-Allow"><a href="#2-4-1-Allow" class="headerlink" title="2.4.1 Allow"></a>2.4.1 Allow</h3><p>首部字段Allow用于通知客户端能够支持Request-URI指定资源的所有HTTP方法。当服务器收到不支持的HTTP方法时，会以状态码405 Method Not Allowed 作为响应返回。与此同时，还会把所有能支持的HTTP方法写入首部字段Allow后返回。</p>
-<p> <img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/hGHAJkjf5c.png?imageslim" alt="mark"></p>
-<h3 id="2-4-2-Content-Length"><a href="#2-4-2-Content-Length" class="headerlink" title="2.4.2 Content-Length"></a>2.4.2 Content-Length</h3><p>首部字段Content-Length表明了实体主体部分的大小（单位是字节）。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/jab0G9GI9e.png?imageslim" alt="mark"></p>
-<h3 id="2-4-3-Content-Location"><a href="#2-4-3-Content-Location" class="headerlink" title="2.4.3 Content-Location"></a>2.4.3 Content-Location</h3><p>首部字段Content-Location给出与报文主体部分相对应的URI。和首部字段Location不同，Content-Location表示的是报文主体返回资源对应的URI。目的是为了当返回的页面内容和实际请求的对象不同时，Content-Location内会写明URI。</p>
-<h3 id="2-4-3-Content-Type"><a href="#2-4-3-Content-Type" class="headerlink" title="2.4.3 Content-Type"></a>2.4.3 Content-Type</h3><p>首部字段Content-Type说明了实体主体内对象的媒体类型。字段值采用type/subtype形式赋值。</p>
-<p>这个字段我们实际接触是比较多的，当使用网络接口调试工具调试接口时就需要选择Content-Type，例如指定使用json媒体格式<code>Content-Type:Application/json;charset=UTF-8</code>。</p>
-<p><img src="http://p66d6e5qt.bkt.clouddn.com/blog/180415/G0kem3IE1K.png?imageslim" alt="mark"></p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/23/CSharp集合类型大揭秘/">C#集合类型大揭秘</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-23
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <h1 id="C-集合类型大揭秘"><a href="#C-集合类型大揭秘" class="headerlink" title="C#集合类型大揭秘"></a>C#集合类型大揭秘</h1><p>集合是.NET FCL(Framework Class Library)的重要组成部分，我们平常撸C#代码时免不了和集合打交道，FCL提供了丰富易用的集合类型，给我们撸码提供了极大的便利。正是因为这种与生俱来的便利性，使得我们对集合既熟悉又陌生。很多同学可能一直还是停留在使用的层面上，那么今天我们一起来深入学习一下C#语言中的各种集合。</p>
-<p>首先我们看一下 FCL 给我们提供的集合接口：</p>
-<p><img src="http://songwenjie.vip/blog/180612/d7khhhKg0C.png?imageslim" alt="mark"></p>
-<p>FCL提供了<strong>泛型</strong>和<strong>非泛型</strong>两大类集合类型。因为<strong>非泛型</strong>集合装箱和拆箱带来的性能开销问题，和<strong>泛型</strong>集合相比，已经变得越来越鸡肋。所以我们也侧重于<strong>泛型集合</strong>的分析，但是两者差别不大。</p>
-<h2 id="IEnumerable和IEnumerator"><a href="#IEnumerable和IEnumerator" class="headerlink" title="IEnumerable和IEnumerator"></a>IEnumerable和IEnumerator</h2><p><img src="http://songwenjie.vip/blog/180612/1CiFbkmDg6.png?imageslim" alt="mark"></p>
-<p><strong>IEnumerable</strong>接口是所有集合类型的祖宗接口，其作用相当于<strong>Object</strong>类型之于其它类型。如果某个类型实现了<strong>IEnumerable</strong>接口，就意味着它可以被迭代访问，也就可以称之为集合类型（可枚举）。<strong>IEnumerable</strong>接口定义非常简单，只有一个GetEnumerator()方法用于获取<strong>IEnumerator</strong>类型的迭代器。</p>
-<p><img src="http://songwenjie.vip/blog/180612/6ALfLDkdjf.png?imageslim" alt="mark"></p>
-<p>我们可以将迭代器想象成数据库的游标，即序列（集合）中的某个位置，迭代器只能在序列（集合）中向前移动。每调用一次MoveNext()，如果序列（集合）中还有下一个元素，则迭代器移动到下一个元素；Current用于获取序列（集合）中的当前元素；因为迭代器调用一次代码只需要获取一个元素，这意味着我们需要确定访问到了序列（集合）中的哪个位置。Reset()用于重置这种状态，但是基本上不会使用Reset()重置状态。</p>
-<p><strong>同一个序列（集合）可能同时存在多个迭代器操作，相当于同时对一个集合进行多个遍历。这种情况下可能会出现迭代彼此交错。那么如何解决呢？</strong></p>
-<p>集合类不直接支持 <strong>IEnumerator<t></t></strong> 和<br><strong>IEnumerator</strong> 接口。而是直接支持 <strong>IEnumerable<t></t></strong>接口，其唯一方法是 <strong>GetEnumerator</strong>，此方法用于返回支持 <strong>IEnumerator<t></t></strong> 的对象。<strong>每次调用GetEnumerator()方法时都需要创建一个新的对象，同时迭代器必须保存自身的状态，记录此时已经迭代到哪一个元素</strong>。这样枚举器就像是序列中的游标。可以有多个游标，移动其中任何一个都可以枚举集合，与其他枚举器互不影响。</p>
-<h3 id="foreach是怎么实现的？"><a href="#foreach是怎么实现的？" class="headerlink" title="foreach是怎么实现的？"></a>foreach是怎么实现的？</h3><p><strong>for</strong>依赖对 Length 属性和索引运算符 ([]) 的支持。借助 Length 属性，C# 编译器可以使用 <strong>for</strong> 语句迭代数组中的每个元素。<strong>for</strong>适用于长度固定且始终支持索引运算符的数组，但并不是所有类型集合的元素数量都是已知的。此外，许多集合类（包括 Stack<t>、Queue<t> 和 Dictionary<tkey ,tvalue="">）都不支持按索引检索元素。因此，需要使用一种更为通用的方法来迭代元素集合。假设可以确定第一个、第二个和最后一个元素，那么就没有必要知道元素数量，也没有必要支持按索引检索元素。<strong>foreach</strong>在这种背景下应运而生。实际上，<strong>foreach</strong>内部使用迭代器的MoveNext和Current完成元素的遍历。</tkey></t></t></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">List&lt;int&gt; list = new List&lt;int&gt;();</span><br><span class="line">List&lt;int&gt;.Enumerator enumerator = list.GetEnumerator();</span><br><span class="line">try</span><br><span class="line">&#123;</span><br><span class="line">    int number;</span><br><span class="line">    while (enumerator.MoveNext())</span><br><span class="line">    &#123;</span><br><span class="line">        number = enumerator.Current;</span><br><span class="line">        Console.WriteLine(number);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">finally</span><br><span class="line">&#123;</span><br><span class="line">    enumerator.Dispose();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="实现自定义集合"><a href="#实现自定义集合" class="headerlink" title="实现自定义集合"></a>实现自定义集合</h3><p>我们可以自己实现IEnumerable接口和IEnumerator接口实现自定义集合。</p>
-<p><strong>实现自定义可枚举类型：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class MySet : IEnumerable</span><br><span class="line">&#123;</span><br><span class="line">    internal object[] values;</span><br><span class="line"></span><br><span class="line">    public MySet(object[] values)</span><br><span class="line">    &#123;</span><br><span class="line">        this.values = values;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public IEnumerator GetEnumerator()</span><br><span class="line">    &#123;</span><br><span class="line">        return new MySetIterator(this);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>手写实现自定义迭代器：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public class MySetIterator : IEnumerator</span><br><span class="line">&#123;</span><br><span class="line">    MySet set;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 保存迭代到的位置</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    int position;</span><br><span class="line">    internal MySetIterator(MySet set)</span><br><span class="line">    &#123;</span><br><span class="line">        this.set = set;</span><br><span class="line">        position = -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public object Current</span><br><span class="line">    &#123;</span><br><span class="line">        get</span><br><span class="line">        &#123;           		</span><br><span class="line">        	if(position==-1||position==set.values.Length)</span><br><span class="line">       		&#123;</span><br><span class="line">             	throw new 	InvalidOperationException();</span><br><span class="line">             &#125;</span><br><span class="line">             int index = position;</span><br><span class="line">             return set.values[index];</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	public bool MoveNext()</span><br><span class="line">	&#123;</span><br><span class="line">	    if(position!=set.values.Length)</span><br><span class="line">	    &#123;</span><br><span class="line">	        position++;</span><br><span class="line">	    &#125;</span><br><span class="line">	    return position &lt; set.values.Length;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void Reset()</span><br><span class="line">	&#123;</span><br><span class="line">    	position = -1;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>测试程序：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">object[] values = &#123; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot; &#125;;</span><br><span class="line">MySet mySet = new MySet(values);</span><br><span class="line">foreach (var item in mySet)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个例子也证明了foreach内部使用迭代器的MoveNext和Current完成遍历。</p>
-<p>上面的例子中手写实现迭代器是十分麻烦的，在c#1.0中这是唯一的方式。在c#2.0中，我们可以使用<strong>yield</strong>语法糖简化迭代器。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public IEnumerator GetEnumerator()</span><br><span class="line">&#123;</span><br><span class="line">    for (int i = 0; i &lt; values.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        yield return values[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>IEnumerable</strong>和<strong>IEnumerator</strong>虽然实现简单，只有简单的几个成员，但是却支撑起了C#语言中<strong>集合</strong>这座高楼大厦。</p>
-<h2 id="ICollection和ICollection"><a href="#ICollection和ICollection" class="headerlink" title="ICollection和ICollection"></a>ICollection<t>和ICollection</t></h2><p>从第一张图中，我们可以得知<strong>ICollection<t></t></strong>继承于<strong>IEnumerable<t></t></strong>接口，并且扩展了<strong>IEnumerable<t></t></strong>接口。</p>
-<p><img src="http://songwenjie.vip/blog/180612/GIGiHI4iBe.png?imageslim" alt="mark"></p>
-<p>主要扩展的功能有：</p>
-<ol>
-<li>新增了属性Count,用于记录集合元素个数</li>
-<li>支持添加元素和移除元素</li>
-<li>支持是否包含某元素</li>
-<li>支持清空集合等等</li>
-</ol>
-<p>对于任何实现了<strong>ICollection<t></t></strong>接口的集合，我们都可以通过第1条Count属性获取当前集合的元素数，所以这些集合也被称为计数集合。</p>
-<h2 id="IList和IList"><a href="#IList和IList" class="headerlink" title="IList和IList"></a>IList<t>和IList</t></h2><p><img src="http://songwenjie.vip/blog/180612/1kDaJAbffG.png?imageslim" alt="mark"></p>
-<p><strong>IList<t></t></strong>接口直接继承于<strong>ICollection<t></t></strong>接口和<strong>IEnumerable<t></t></strong>接口，并且扩展了通过<strong>索引</strong>操作集合的功能。</p>
-<p>主要扩展的功能有：</p>
-<ol>
-<li>通过索引获取集合中某个元素</li>
-<li>通过元素获取元素在集合中的索引值</li>
-<li>通过索引插入元素到集合指定位置</li>
-<li>移除集合指定索引处的元素</li>
-</ol>
-<p>##IDictionary&lt;TKey, TValue&gt;和IDictionary</p>
-<p><img src="http://songwenjie.vip/blog/180612/ikDGE6JcmF.png?imageslim" alt="mark"></p>
-<p><strong>IDictionary<t></t></strong>接口直接继承于<strong>ICollection<t></t></strong>接口和<strong>IEnumerable<t></t></strong>接口，存储的元素是键值对，扩展了通过<strong>键</strong>操作键值对集合的功能。</p>
-<p>主要扩展的功能有：</p>
-<ol>
-<li>通过键KEY获取值VALUE</li>
-<li>插入新的键值对{KEY:VALUE}</li>
-<li>是否包含KEY</li>
-<li>通过KEY移除键值对元素</li>
-</ol>
-<p>主要的集合的接口介绍完了，下面我们来看一下具体的集合类型。</p>
-<h1 id="关联性泛型集合类"><a href="#关联性泛型集合类" class="headerlink" title="关联性泛型集合类"></a>关联性泛型集合类</h1><h2 id="1-Dictionary-lt-TKey-TValue-gt"><a href="#1-Dictionary-lt-TKey-TValue-gt" class="headerlink" title="1.Dictionary&lt;TKey,TValue&gt;"></a>1.Dictionary&lt;TKey,TValue&gt;</h2><p><strong>Dictionary&lt;TKey,TValue&gt;</strong>的查询数据所花费的时间是所有集合类里面最快的，因为其内部使用了散列函数加双数组来实现，所以其查询数据操作的时间复杂度可以认为是O（1）。<strong>Dictionary&lt;TKey,TValue&gt;</strong>的实现是一种典型的<strong>牺牲空间换取时间</strong>（双数组）的做法。</p>
-<p><img src="http://songwenjie.vip/blog/180614/H8c6kFHcd0.png?imageslim" alt="mark"></p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;添加新元素的实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/B7f0Ga1Hc7.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180613/f1GBGe5FI2.png?imageslim" alt="mark"></p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>内部有两个数组，一个数组名为<strong>buckets</strong>，用于存放由多个同义词组成的静态链表头指针（链表的第一个元素在数组中的索引号，当它的值为-1时表示此哈希地址不存在元素）；另一个数组为<strong>entries</strong>，它用于存放哈希表中的实际数据，同时这些数据通过next指针构成多个单链表。<strong>entries</strong>数组中所存放的是Entry结构体，Entry结构体由4个部分组成，如下所示：</p>
-<p><img src="http://songwenjie.vip/blog/180613/iHcd30m90c.png?imageslim" alt="mark"></p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>计算key的哈希值使用的是取余法，这种方式可能会产生冲突，所以进行冲突解决。<strong>Dictionary&lt;TKey,TValue&gt;</strong>解决冲突的方式是链接法。</p>
-<p><img src="http://songwenjie.vip/blog/180613/fGj4c7dg8I.png?imageslim" alt="mark"></p>
-<p>我们可以根据源码来模拟推导一下这个过程：</p>
-<p>当添加第一个元素时，此时会分配哈希表<strong>buckets</strong>数组和<strong>entries</strong>数组的空间和初始大小，默认为3，关于初始数组的大小有大学问。对key=1进行哈希求值，假设第一个元素的哈希值=9，然后targetBucket = 9%buckets.Length(3)的值为0，所以第一个元素应该放在<strong>entries</strong>数组的第一位。最后对哈希表<strong>buckets</strong>数组赋值，数组索引为0，值为0。此时内部结构如图所示：</p>
-<p><img src="http://songwenjie.vip/blog/180613/dgclB002G0.png?imageslim" alt="mark"></p>
-<p>然后插入第二个元素，对key=2进行哈希求值，假设第二个元素的哈希值=3，然后targetBucket = 3%buckets.Length(3)的值为0，所以第二个元素应该放在<strong>entries</strong>数组的第一位。但是<strong>entries</strong>数组的第一位已经存在元素了，这就发生了冲突。<strong>Dictionary&lt;TKey,TValue&gt;</strong>解决冲突的方式是链接法，把发生冲突的元素链接之前元素的后面，通过next属性来指定冲突关系，最后更新哈希表<strong>buckets</strong>数组。此时内部结构如图所示：</p>
-<p><img src="http://songwenjie.vip/blog/180613/EB5B4ECAdI.png?imageslim" alt="mark"></p>
-<p>我们可以通过<strong>Dictionary&lt;TKey,TValue&gt;</strong>查找元素的实现来证明我们上面的分析是正确的。</p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;查找元素的实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/aH4lLfaad8.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180613/192DmFLe28.png?imageslim" alt="mark"></p>
-<p><strong>Dictionary&lt;TKey,TValue&gt;</strong>之所以能实现快速查找元素，其内部使用哈希表来存储元素对应的位置，我们可以通过哈希值快速地从哈希表中定位元素所在的位置索引，从而快速获取到key对应的Value值。物极必反，<strong>Dictionary&lt;TKey,TValue&gt;</strong>的缺点也很明显，就是里面的数据是无序排列的，所以按照一定顺序遍历查找数据效率是非常低的。</p>
-<h2 id="2-SortedDictionary-lt-TKey-TValue-gt"><a href="#2-SortedDictionary-lt-TKey-TValue-gt" class="headerlink" title="2.SortedDictionary&lt;TKey,TValue&gt;"></a>2.SortedDictionary&lt;TKey,TValue&gt;</h2><p><strong>SortedDictionary&lt;TKey,TValue&gt;</strong>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>类似，至于区别我们从名称上就可以看出来，<strong>Dictionary&lt;TKey,TValue&gt;</strong>是无序的，<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>则是有序的。key要保证唯一，而且还要有序排列，这让我们很自然的就想到了搜索二叉树。<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>使用一种平衡搜索二叉树——红黑树，作为存储结构。因为基于二分查找，所以添加、查找、删除元素的时间复杂度是O(log n)。相对于下面提到的<strong>SortedList&lt;TKey,TValue&gt;</strong>来说，<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>在添加和删除元素时更快一些。如果想要快速查询的同时又能很好的支持排序的话，并且添加和删除元素也比较频繁，可以使用<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>。</p>
-<p><strong>SortedDictionary&lt;TKey,TValue&gt;添加新元素的实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180614/2Jgfm57dD0.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180614/bCeAC1dEgc.png?imageslim" alt="mark"></p>
-<h2 id="3-SortedList-lt-TKey-TValue-gt"><a href="#3-SortedList-lt-TKey-TValue-gt" class="headerlink" title="3.SortedList&lt;TKey,TValue&gt;"></a>3.SortedList&lt;TKey,TValue&gt;</h2><p>在既需要快速查找又需要顺序排列的场景下，<strong>Dictionary&lt;TKey,TValue&gt;</strong>就无能为力了，因为<strong>Dictionary&lt;TKey,TValue&gt;</strong>使用了散列函数，并不支持线性排序。我们可以使用<strong>SortedList&lt;TKey,TValue&gt;</strong>集合类来应对这种场景。</p>
-<p><strong>SortedList&lt;TKey,TValue&gt;</strong>集合内部是使用数组实现的，添加和删除元素的时间复杂度是O(n)，查找元素利用了二分查找，所以查找元素的时间复杂度是O(log n)。所以<strong>SortedList&lt;TKey,TValue&gt;</strong>虽然支持了有序排列，但是却是以牺牲查找效率为代价的。</p>
-<p><strong>SortedList&lt;TKey,TValue&gt;</strong>和<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>同时支持快速查询和排序，<strong>SortedList&lt;TKey,TValue&gt;</strong> 优势在于使用的内存比 <strong>SortedDictionary&lt;TKey,TValue&gt;</strong> 少；但是<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>可对未排序的数据执行更快的插入和移除操作：它的时间复杂度为 O(log n)，而 <strong>SortedList&lt;TKey,TValue&gt;</strong> 为 O(n)。所以<strong>SortedList&lt;TKey,TValue&gt;</strong>适用于既需要快速查找又需要顺序排列但是添加和删除元素较少的场景。</p>
-<p><strong>内部实现结构：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/H659I0Ki3d.png?imageslim" alt="mark"></p>
-<p><strong>根据Key获取Value的实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/Bmfkm3BIhH.png?imageslim" alt="mark"></p>
-<p><strong>IndexOfKey实现：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/Fhcejc99ce.png?imageslim" alt="mark"></p>
-<p><strong>添加新元素：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/ja7bHhAKEJ.png?imageslim" alt="mark"></p>
-<p><strong>添加操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180613/9lIe5L2mfL.png?imageslim" alt="mark"></p>
-<p>#非关联性泛型集合类</p>
-<h2 id="1-List"><a href="#1-List" class="headerlink" title="1.List"></a>1.List<t></t></h2><p>泛型的List 类提供了不限制长度的集合类型，List内部实现使用数据结构是数组。我们都知道数组是长度固定的，那么List不限制长度必定需要维护这个数组。实际上List维护了一定长度的数组（默认为4），当插入元素的个数超过4或初始长度时，会去重新创建一个新的数组,这个新数组的长度是初始长度的2倍，然后将原来的数组赋值到新的数组中。</p>
-<p>我们可以通过ILSpy看一下List<t>源码证明我们上面所说的：</t></p>
-<p><strong>List<t>内部重要变量：</t></strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/Km0fDlC87C.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180612/ciEdc7Jhf5.png?imageslim" alt="mark"></p>
-<p><strong>新增元素操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/dKkcLLF21k.png?imageslim" alt="mark"></p>
-<p><strong>新增元素确认数组容量：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/mEIG0G1ACg.png?imageslim" alt="mark"></p>
-<p><strong>真正的数组扩容操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/38ceHBHcKk.png?imageslim" alt="mark"></p>
-<p>数组扩容的场景涉及到对象的创建和赋值，是比较消耗性能的。所以如果能指定一个合适的初始长度，能避免频繁的对象创建和赋值。再者，因为内部的数据结构是数组，插入和删除操作需要移动元素位置，所以不适合频繁的进行插入和删除操作；但是可以通过数组下标查找元素。所以List<t>适合<strong>读多写少</strong>的场景。</t></p>
-<h2 id="2-LinkedList"><a href="#2-LinkedList" class="headerlink" title="2.LinkedList"></a>2.LinkedList<t></t></h2><p>上面我们提到List<t>适合<strong>读多写少</strong>的场景，那么必定有一个List<t>适合<strong>写多读少</strong>的场景，就是这货了——<strong>LinkedList<t></t></strong>。至于为什么适合<strong>写多读少</strong>，熟悉数据结构的同学应该已经猜到了。因为<strong>LinkedList<t></t></strong>的内部实现使用的是链表结构，而且还是双向链表。直接看源码：</t></t></p>
-<p><img src="http://songwenjie.vip/blog/180612/jBIeI76jH7.png?imageslim" alt="mark"></p>
-<p>因为内部实现结构是链表，所以可以在某一个节点前或节点后插入新的元素。</p>
-<p>链表节点定义：</p>
-<p><img src="http://songwenjie.vip/blog/180612/0emaCGgk0J.png?imageslim" alt="mark"></p>
-<p>我们以在某个节点前插入新元素为例：</p>
-<p><img src="http://songwenjie.vip/blog/180612/JhLlhIeHCC.png?imageslim" alt="mark"></p>
-<p>具体的插入操作，注意操作步骤不能颠倒：</p>
-<p><img src="http://songwenjie.vip/blog/180612/Ag1ggleAlD.png?imageslim" alt="mark"></p>
-<p>##3.HashSet<t></t></p>
-<p><strong>HashSet<t></t></strong>是一个无序的能够保持唯一性的集合。我们可以将<strong>HashSet<t></t></strong>看作是简化的<strong>Dictionary&lt;TKey,TValue&gt;</strong>，只不过<strong>Dictionary&lt;TKey,TValue&gt;</strong>存储的键值对对象，而<strong>HashSet<t></t></strong>存储的是普通对象。其内部实现也和<strong>Dictionary&lt;TKey,TValue&gt;</strong>基本一致，也是散列函数加双数组实现的,区别是存储的<strong>Slot</strong>结构体不再有key。</p>
-<p><strong>内部实现数据结构：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180614/4LjC671Gk5.png?imageslim" alt="mark"></p>
-<p><strong>m_slots</strong>中所存放的是<strong>Slot</strong>结构体，<strong>Slot</strong>结构体由3个部分组成，如下所示：</p>
-<p><img src="http://songwenjie.vip/blog/180614/gdGEgdcE0j.png?imageslim" alt="mark"></p>
-<p><strong>添加新元素的具体实现：</strong></p>
-<p>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>添加新元素的实现基本一致。</p>
-<p><img src="http://songwenjie.vip/blog/180614/CcIc1kFj21.png?imageslim" alt="mark"></p>
-<p>##4.SortedSet<t></t></p>
-<p><strong>SortedSet<t></t></strong>和<strong>HashSet<t></t></strong>,就像<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>和<strong>Dictionary&lt;TKey,TValue&gt;</strong>一样。<strong>SortedSet<t></t></strong>支持元素按顺序排列，内部实现也是红黑树，并且<strong>SortedSet<t></t></strong>对于红黑树的操作方法和<strong>SortedDictionary&lt;TKey,TValue&gt;</strong>完全相同。所以不再做过多的分析。</p>
-<p>##5.Stack<t></t></p>
-<p>栈是一种后进先出的结构，C#的栈是借助数组实现的，考虑到栈后进先出的特性，使用数组来实现貌似是水到渠成的事。</p>
-<p><img src="http://songwenjie.vip/blog/180612/kKhkc5kC4i.png?imageslim" alt="mark"></p>
-<p><strong>入栈操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/cHK1hKA9G9.png?imageslim" alt="mark"></p>
-<p><strong>弹栈操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/hbDecBcCEF.png?imageslim" alt="mark"></p>
-<p>##6.Queue<t></t></p>
-<p>队列是一种先进先出的结构，C#的队列也是借助数组实现的，有了前面的经验，借助数组实现必然会有数组扩容。C#的队列实现其实是循环队列的方式，可以简单的理解为将队列的头尾相接。至于为什么要这么做？为了节省存储空间和减少元素的移动。因为元素出队列时后面的元素跟着前移是非常消耗性能的，但是不跟着向前移动的话，前面就会一直存在空闲的空间浪费内存。所以使用循环队列来解决这种问题。</p>
-<p><img src="http://songwenjie.vip/blog/180612/2geF2Gd9jb.png?imageslim" alt="mark"></p>
-<p><strong>入队操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/C87bh2Fle6.png?imageslim" alt="mark"></p>
-<p><img src="http://songwenjie.vip/blog/180612/m86FgiL6Cg.png?imageslim" alt="mark"></p>
-<p><strong>出队操作：</strong></p>
-<p><img src="http://songwenjie.vip/blog/180612/lCimmDJ4G6.png?imageslim" alt="mark"></p>
-<p>#线程安全的集合类</p>
-<p>需要我们注意的是，上面我们所介绍的集合并不是线程安全的，在多线程环境下，可能会出现线程安全问题。在多线程读的情况下，我们使用普通集合即可。在多线程添加/更新/删除时，我们可以采用手动锁定的方式确保线程安全，但是应该注意加锁的范围和粒度，加锁不当可能会导致程序性能低下甚至产生死锁。</p>
-<p>更好的选择的是使用的C#提供的线程安全集合（命名空间：System.Collections.Concurrent）。线程安全集合使用几种算法来最小化线程阻塞。</p>
-<p><img src="http://songwenjie.vip/blog/180613/l7I0Fhlh8b.png?imageslim" alt="mark"></p>
-<ol>
-<li><strong>ConcurrentQueue</strong>： 线程安全版本的Queue</li>
-<li><strong>ConcurrentStack</strong>：线程安全版本的Stack</li>
-<li><strong>ConcurrentBag</strong>：线程安全的对象集合</li>
-<li><strong>ConcurrentDictionary</strong>：线程安全的Dictionary</li>
-</ol>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>写着写着突然发现跑到数据结构上来了。程序=数据结构+算法。上面提到的集合类型，我们需要在不同的场景进行合适的选择，其实本质上就是选择合适的数据结构。</p>
-<h1 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h1><p><a href="https://www.cnblogs.com/jesse2013/p/CollectionsInCSharp.html" target="_blank" rel="noopener">https://www.cnblogs.com/jesse2013/p/CollectionsInCSharp.html</a></p>
-<p><a href="https://www.c-sharpcorner.com/article/concurrent-collections-in-net-concurrentdictionary-part-one/" target="_blank" rel="noopener">https://www.c-sharpcorner.com/article/concurrent-collections-in-net-concurrentdictionary-part-one/</a></p>
-<p><a href="http://www.cnblogs.com/jeffwongishandsome/archive/2012/09/09/2677293.html" target="_blank" rel="noopener">http://www.cnblogs.com/jeffwongishandsome/archive/2012/09/09/2677293.html</a></p>
-<p><a href="http://www.cnblogs.com/edisonchou/p/4706253.html" target="_blank" rel="noopener">http://www.cnblogs.com/edisonchou/p/4706253.html</a></p>
 
         
       

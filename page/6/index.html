@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="记录生活、技术">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/page/6/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
+  
+
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <section id="posts" class="posts">
+    
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/23/缓存使用的正确姿势/">缓存使用的正确姿势</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <p>缓存是现在系统中必不可少的模块，并且已经成为了高并发高性能架构的一个关键组件。这篇博客我们来分析一下使用缓存的正确姿势。</p>
+<h2 id="缓存能解决的问题"><a href="#缓存能解决的问题" class="headerlink" title="缓存能解决的问题"></a>缓存能解决的问题</h2><ul>
+<li><p>提升性能</p>
+<p>绝大多数情况下，select 是出现性能问题最大的地方。一方面，select 会有很多像 join、group、order、like 等这样丰富的语义，而这些语义是非常耗性能的；另一方面，大多数应用都是读多写少，所以加剧了慢查询的问题。</p>
+<p>分布式系统中远程调用也会耗很多性能，因为有网络开销，会导致整体的响应时间下降。为了挽救这样的性能开销，在业务允许的情况（不需要太实时的数据）下，使用缓存是非常必要的事情。</p>
+</li>
+<li><p>缓解数据库压力</p>
+<p>当用户请求增多时，数据库的压力将大大增加，通过缓存能够大大降低数据库的压力。</p>
+<p>​</p>
+</li>
+</ul>
+<h2 id="缓存的适用场景"><a href="#缓存的适用场景" class="headerlink" title="缓存的适用场景"></a>缓存的适用场景</h2><ul>
+<li><p>对于数据实时性要求不高</p>
+<p>对于一些经常访问但是很少改变的数据，读明显多于写，适用缓存就很有必要。比如一些网站配置项。</p>
+</li>
+<li><p>对于性能要求高</p>
+<p>比如一些秒杀活动场景。</p>
+<p>​</p>
+</li>
+</ul>
+<h2 id="缓存三种模式"><a href="#缓存三种模式" class="headerlink" title="缓存三种模式"></a>缓存三种模式</h2><p>一般来说，缓存有以下三种模式：</p>
+<ul>
+<li><p>Cache Aside 更新模式</p>
+</li>
+<li><p>Read/Write Through 更新模式</p>
+</li>
+<li><p>Write Behind Caching 更新模式</p>
+</li>
+</ul>
+<p>通俗一点来讲就是，同时更新缓存和数据库（Cache Aside 更新模式）；先更新缓存，缓存负责同步更新数据库（Read/Write Through 更新模式）；先更新缓存，缓存定时异步更新数据库（Write Behind Caching 更新模式）。这三种模式各有优劣，可以根据业务场景选择使用。</p>
+<h3 id="Cache-Aside-更新模式"><a href="#Cache-Aside-更新模式" class="headerlink" title="Cache Aside 更新模式"></a>Cache Aside 更新模式</h3><p>这是最常用的缓存模式了，具体的流程是：</p>
+<ul>
+<li><strong>失效</strong>：应用程序先从 cache 取数据，没有得到，则从数据库中取数据，成功后，放到缓存中。</li>
+<li><strong>命中</strong>：应用程序从 cache 中取数据，取到后返回。</li>
+<li><strong>更新</strong>：先把数据存到数据库中，成功后，再让缓存<strong>失效</strong>。</li>
+</ul>
+<p><img src="http://songwenjie.vip/blog/180511/8AjC2hDbKk.png?imageslim" alt="mark" title="Cache Aside 更新模式流程图"></p>
+<p>注意我们上面所提到的，缓存更新时先更新数据库，然后在让缓存失效。那么为什么不是直接更新缓存呢？这里有一些缓存更新的坑，我们需要避免入坑。</p>
+<h4 id="避坑指南一"><a href="#避坑指南一" class="headerlink" title="避坑指南一"></a>避坑指南一</h4><p><strong>先更新数据库，再更新缓存。</strong>这种做法最大的问题就是<strong>两个并发的写操作导致脏数据</strong>。如下图（以Redis和Mysql为例），两个并发更新操作，数据库先更新的反而后更新缓存，数据库后更新的反而先更新缓存。这样就会造成数据库和缓存中的数据不一致，应用程序中读取的都是脏数据。</p>
+<p><img src="http://songwenjie.vip/blog/180511/b8EAiJHeAL.png?imageslim" alt="mark" title="两个并发的写操作导致脏数据"></p>
+<h4 id="避坑指南二"><a href="#避坑指南二" class="headerlink" title="避坑指南二"></a>避坑指南二</h4><p><strong>先删除缓存，再更新数据库。</strong>这个逻辑是错误的，因为<strong>两个并发的读和写操作导致脏数据</strong>。如下图（以Redis和Mysql为例）。假设更新操作先删除了缓存，此时正好有一个并发的读操作，没有命中缓存后从数据库中取出老数据并且更新回缓存，这个时候更新操作也完成了数据库更新。此时，数据库和缓存中的数据不一致，应用程序中读取的都是原来的数据（脏数据）。</p>
+<p><img src="http://songwenjie.vip/blog/180511/e3A7c3L176.png?imageslim" alt="mark" title="两个并发的读和写操作导致脏数据"></p>
+<h4 id="避坑指南三"><a href="#避坑指南三" class="headerlink" title="避坑指南三"></a>避坑指南三</h4><p><strong>先更新数据库，再删除缓存。</strong>这种做法其实不能算是坑，在实际的系统中也推荐使用这种方式。但是这种方式理论上还是可能存在问题。如下图（以Redis和Mysql为例），查询操作没有命中缓存，然后查询出数据库的老数据。此时有一个并发的更新操作，更新操作在读操作之后更新了数据库中的数据并且删除了缓存中的数据。然而读操作将从数据库中读取出的老数据更新回了缓存。这样就会造成数据库和缓存中的数据不一致，应用程序中读取的都是原来的数据（脏数据）。</p>
+<p><img src="http://songwenjie.vip/blog/180511/06kCb330cg.png?imageslim" alt="mark"></p>
+<p>但是，仔细想一想，这种并发的概率极低。因为这个条件需要发生在读缓存时缓存失效，而且有一个并发的写操作。实际上数据库的写操作会比读操作慢得多，而且还要加锁，而读操作必需在写操作前进入数据库操作，又要晚于写操作更新缓存，所有这些条件都具备的概率并不大。但是为了避免这种极端情况造成脏数据所产生的影响，我们还是要为缓存设置过期时间。</p>
+<h2 id="Read-Write-Through-更新模式"><a href="#Read-Write-Through-更新模式" class="headerlink" title="Read/Write Through 更新模式"></a>Read/Write Through 更新模式</h2><p>在上面的 Cache Aside 更新模式中，应用代码需要维护两个数据存储，一个是缓存（Cache），一个是数据库（Repository）。而在Read/Write Through 更新模式中，应用程序只需要维护缓存，数据库的维护工作由缓存代理了。</p>
+<p><img src="http://songwenjie.vip/blog/180511/FC3blLI8Da.png?imageslim" alt="mark"></p>
+<p>###Read Through</p>
+<p>Read Through 模式就是在查询操作中更新缓存，也就是说，当缓存失效的时候，Cache Aside 模式是由调用方负责把数据加载入缓存，而 Read Through 则用缓存服务自己来加载。</p>
+<p>###Write Through</p>
+<p>Write Through 模式和 Read Through 相仿，不过是在更新数据时发生。当有数据更新的时候，如果没有命中缓存，直接更新数据库，然后返回。如果命中了缓存，则更新缓存，然后由缓存自己更新数据库（这是一个同步操作）。</p>
+<h2 id="Write-Behind-Caching-更新模式"><a href="#Write-Behind-Caching-更新模式" class="headerlink" title="Write Behind Caching 更新模式"></a>Write Behind Caching 更新模式</h2><p>Write Behind Caching 更新模式就是在更新数据的时候，只更新缓存，不更新数据库，而我们的缓存会异步地批量更新数据库。这个设计的好处就是直接操作内存速度快。因为异步，Write Behind Caching 更新模式还可以合并对同一个数据的多次操作到数据库，所以性能的提高是相当可观的。</p>
+<p>但其带来的问题是，数据不是强一致性的，而且可能会丢失。另外，Write Behind Caching 更新模式实现逻辑比较复杂，因为它需要确认有哪些数据是被更新了的，哪些数据需要刷到持久层上。只有在缓存需要失效的时候，才会把它真正持久起来。</p>
+<p><img src="http://songwenjie.vip/blog/180511/fhHjieAaGb.png?imageslim" alt="mark" title="Write Behind Caching 更新模式"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>三种缓存模式的优缺点：</p>
+<p>Cache Aside 更新模式实现起来比较简单，但是需要维护两个数据存储，一个是缓存（Cache），一个是数据库（Repository）。</p>
+<p>Read/Write Through 更新模式只需要维护一个数据存储（缓存），但是实现起来要复杂一些。</p>
+<p>Write Behind Caching 更新模式和Read/Write Through 更新模式类似，区别是Write Behind Caching 更新模式的数据持久化操作是异步的，但是Read/Write Through 更新模式的数据持久化操作是同步的。优点是直接操作内存速度快，多次操作可以合并持久化到数据库。缺点是数据可能会丢失，例如系统断电等。</p>
+<p>缓存是通过牺牲强一致性来提高性能的。所以使用缓存提升性能，就是会有数据更新的延迟。这需要我们在设计时结合业务仔细思考是否适合用缓存。然后缓存一定要设置过期时间，这个时间太短太长都不好，太短的话请求可能会比较多的落到数据库上，这也意味着失去了缓存的优势。太长的话缓存中的脏数据会使系统长时间处于一个延迟的状态，而且系统中长时间没有人访问的数据一直存在内存中不过期，浪费内存。</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/20/拆散的模块化/">拆散的模块化</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-20
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <blockquote>
+<p>模块化原则倡导利用集中和分解等手法创建高内聚、低耦合的抽象。</p>
+</blockquote>
+<p><img src="http://songwenjie.vip/blog/180508/4G6DL2kfB5.png?imageslim" alt="mark" title="没有章节的书"></p>
+<p>为了理解模块化的含义及其很重要的原因，来看看一本书的极端情况。假设一本书像讲一个长故事一样阐述其中的内容，中间没有任何停顿，也没有章节。试问面对这样的图书，读者将作何反应呢？我估计心中一定有千万只草泥马在崩腾吧。如果这本书根据内容分为不同的章节（模块）进行讲述，情况是不是就完全不一样了呢？同样，设计软件时，遵循模块化原则也很重要。需要指出的是模块化通常是一个系统级考虑因素，指的是如何将抽象组织成逻辑模块。但是我们这里的<strong>术语模块指的是类级抽象：具体类、抽象类和接口</strong>。模块化的目标是创建高内聚、低耦合的抽象。</p>
+<h2 id="应用模块化原则的实现手法"><a href="#应用模块化原则的实现手法" class="headerlink" title="应用模块化原则的实现手法"></a>应用模块化原则的实现手法</h2><p><img src="http://songwenjie.vip/blog/180508/D1bLjilGdk.png?imageslim" alt="mark" title="模块化原则的实现手法"></p>
+<ul>
+<li>将相关的数据和方法集中在一起：每个抽象都必须是内聚的，即抽象应<strong>将相关的数据和操作它们的方法集中在一起</strong>。</li>
+<li>将抽象分解为易于管理的规模：<strong>将大抽象分解为规模适中（既不太大也不太小）的小抽象</strong>。大类不仅难以理解，而且难以修改，因为这种类实现的职责可能交织在一起。</li>
+<li>创建非循环依赖：<strong>抽象之间不应该存在循环依赖</strong>。否则修改一个抽象可能引起连锁反应，波及整个设计。</li>
+<li>限制依赖关系数：创建扇入和扇出低的抽象。<strong>扇入指的是有多少个抽象依赖于当前的抽象</strong>，因此修改扇入高的抽象时，可能需要修改大量依赖于它的抽象。<strong>扇出指的是当前抽象依赖于多少个其它的抽象</strong>，高扇出意味着修改很多抽象时都可能影响当前抽象。为避免潜在的修改引发连锁反应，减少设计中抽象之间的依赖关系数很重要。</li>
+</ul>
+<p>##违反模块化原则导致的坏味</p>
+<p><img src="http://songwenjie.vip/blog/180508/eL68G2HJ4E.png?imageslim" alt="mark" title="模块化坏味"></p>
+<p>我们这篇博客主要讲解分析<strong>拆散的模块化</strong>坏味，对于其它模块化坏味将在后面的博客讲解分析。</p>
+<h1 id="拆散的模块化"><a href="#拆散的模块化" class="headerlink" title="拆散的模块化"></a>拆散的模块化</h1><p>应集中放在一个抽象中的数据和方法分散在多个抽象中，将导致这种坏味。</p>
+<p>常见表现形式如下：</p>
+<ul>
+<li><p>类被用作数据容器，其中没有任何操作这些数据的方法</p>
+</li>
+<li><p>类的方法更多的被其它类成员调用</p>
+<p>​</p>
+</li>
+</ul>
+<h2 id="为什么不能有拆散的模块化？"><a href="#为什么不能有拆散的模块化？" class="headerlink" title="为什么不能有拆散的模块化？"></a>为什么不能有拆散的模块化？</h2><p>如果抽象只包含数据成员，而操作这些数据成员的方法分散在多个抽象中时，原本应属于一个抽象的成员分散在多个抽象中时，将<strong>导致这些抽象之间紧密耦合</strong>。违反了模块化原则。</p>
+<h2 id="拆散的模块化潜在原因"><a href="#拆散的模块化潜在原因" class="headerlink" title="拆散的模块化潜在原因"></a>拆散的模块化潜在原因</h2><h3 id="以过程型思维使用面向对象语言"><a href="#以过程型思维使用面向对象语言" class="headerlink" title="以过程型思维使用面向对象语言"></a>以过程型思维使用面向对象语言</h3><p>过程型语言倾向于将数据和操作它的函数分开，从而导致这种坏味。</p>
+<h3 id="不熟悉既有设计"><a href="#不熟悉既有设计" class="headerlink" title="不熟悉既有设计"></a>不熟悉既有设计</h3><p>大型的项目设计很复杂。在这样的项目中，每位开发人员通常只负责系统中很小的一部分，不了解设计的其它部分。这可能导致成员被放置到错误的类中。</p>
+<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><p>来看一个设备管理应用程序。在这个应用程序中，与设备相关的数据存储在DeviceData类中，而处理这些设备数据的方法由Device类提供。DeviceData类只有公共数据成员，没有任何方法。而Device类包含一个类型为DeviceData的对象，并提供了访问和操作该数据成员的方法。</p>
+<p><img src="http://songwenjie.vip/blog/180508/ci9Ghja8Bd.png?imageslim" alt="mark" title="设备管理应用程序的类图"></p>
+<p>这些数据和方法原本应该集中放在一个类中，却分散在了Device和DeviceData类中，显然存在”拆散的模块化”坏味。</p>
+<p><strong>代码实现：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class DeviceData</span><br><span class="line">&#123;</span><br><span class="line">    //设备ID   </span><br><span class="line">    public string DeviceID &#123; get; set; &#125;</span><br><span class="line">	</span><br><span class="line">    //设备位置</span><br><span class="line">    public string DevicePath &#123; get; set; &#125;</span><br><span class="line">	</span><br><span class="line">    //是否可用</span><br><span class="line">    public bool Enabled &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public class Device</span><br><span class="line">&#123;</span><br><span class="line">    private DeviceData deviceData = new DeviceData();</span><br><span class="line">    </span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 获取设备ID</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">    public string GetDeviceID()</span><br><span class="line">    &#123;</span><br><span class="line">        return deviceData.DeviceID;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 设置设备ID</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;deviceID&quot;&gt;设备ID&lt;/param&gt;</span><br><span class="line">    /// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">    public bool SetDeviceID(string deviceID)</span><br><span class="line">    &#123;</span><br><span class="line">        deviceData.DeviceID = deviceID;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 是否可用</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">    public bool IsEnabled()</span><br><span class="line">    &#123;</span><br><span class="line">        return deviceData.Enabled;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="重构”拆散的模块化”"><a href="#重构”拆散的模块化”" class="headerlink" title="重构”拆散的模块化”"></a>重构”拆散的模块化”</h3><ul>
+<li>如果一个方法更多地被另一个类（Target类）而不是定义它的类（Source类）调用，就采用“移动方法”，将这个方法从Source类移到Target类中。</li>
+</ul>
+<ul>
+<li>如果一个字段更多地被另一个类（Target类）而不是定义它的类（Source类）使用，就采用“移动字段”，将这个方法从Source类移到Target类中。</li>
+</ul>
+<p><img src="http://songwenjie.vip/blog/180510/hALJC84cLF.png?imageslim" alt="mark" title="移动方法和移动字段"></p>
+<p><img src="http://songwenjie.vip/blog/180510/mD872KdEBL.png?imageslim" alt="mark" title="设备管理应用程序的重构后类图"></p>
+<p><strong>重构后的代码实现：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">public class Device</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 设备ID</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private string DeviceID &#123; get; set; &#125;</span><br><span class="line">	</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 设备位置</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private string DevicePath &#123; get; set; &#125;</span><br><span class="line">	</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 是否可用</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private bool Enabled &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 获取设备ID</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">    public string GetDeviceID()</span><br><span class="line">    &#123;</span><br><span class="line">        return DeviceID;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 设置设备ID</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;deviceID&quot;&gt;设备ID&lt;/param&gt;</span><br><span class="line">    /// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">    public bool SetDeviceID(string deviceID)</span><br><span class="line">    &#123;</span><br><span class="line">        DeviceID = deviceID;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 是否可用</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;returns&gt;&lt;/returns&gt;</span><br><span class="line">    public bool IsEnabled()</span><br><span class="line">    &#123;</span><br><span class="line">        return Enabled;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><h3 id="数据传输对象"><a href="#数据传输对象" class="headerlink" title="数据传输对象"></a>数据传输对象</h3><p>在使用远程接口的情况下，常常使用数据传输对象（DTO）在进程之间传输数据，以减少远程调用数。DTO聚合数据但不包含行为。这是有意为之，为了方便数据同步。</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+      
+  <nav class="pagination">
+    
+      <a class="prev" href="/page/5/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text">上一页</span>
+      </a>
+    
+    
+  </nav>
+
+
+    
+  </section>
+
+          </div>
+          
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
+
+  </body>
+</html>
