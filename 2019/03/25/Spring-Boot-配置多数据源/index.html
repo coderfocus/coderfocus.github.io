@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="Spring Boot 配置多数据源">
+
+
+
+
+  <meta name="keywords" content="Spring Boot, Spring, CoderFocus">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/25/Spring-Boot-配置多数据源/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
+  
+
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> Spring Boot 配置多数据源 - CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Spring Boot 配置多数据源
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-25
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#如何配置多数据源"><span class="toc-text">如何配置多数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境依赖"><span class="toc-text">环境依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据源"><span class="toc-text">数据源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义配置类"><span class="toc-text">自定义配置类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单元测试"><span class="toc-text">单元测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源代码"><span class="toc-text">源代码</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <h1 id="如何配置多数据源"><a href="#如何配置多数据源" class="headerlink" title="如何配置多数据源"></a>如何配置多数据源</h1><p>在某些场景下，可能会需要在一个应用程序中连接访问多个数据库。常见的场景有：</p>
+<ul>
+<li>系统需要访问完全不同的数据库</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552871939218-ae8a5495-42ed-4521-9c20-4c2cafa8051c.png#align=left&amp;display=inline&amp;height=165&amp;name=image.png&amp;originHeight=181&amp;originWidth=233&amp;size=18331&amp;status=done&amp;width=212" alt="image.png"></p>
+<ul>
+<li>系统需要访问同一个数据库的主库和备库</li>
+</ul>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552872206509-49d6240f-ad7c-42ef-893b-170f4bf81398.png#align=left&amp;display=inline&amp;height=167&amp;name=image.png&amp;originHeight=184&amp;originWidth=273&amp;size=29237&amp;status=done&amp;width=248" alt="image.png"></p>
+<ul>
+<li>系统需要访问一组做了分库分表的数据库</li>
+</ul>
+<p><a name="641cf522"></a></p>
+<a id="more"></a>
+<h2 id="环境依赖"><a href="#环境依赖" class="headerlink" title="环境依赖"></a>环境依赖</h2><p>修改 pom 文件，引入相关依赖。<br>引入 jdbc 依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-jdbc&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>引入 MySQL 依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">    &lt;scope&gt;runtime&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p><a name="c11322c9"></a></p>
+<h2 id="数据源"><a href="#数据源" class="headerlink" title="数据源"></a>数据源</h2><p>在 <strong>src/main/resources/application.properties</strong> 中配置数据源信息，此处配置两个数据源信息。<br>foo 数据源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.foo.datasource.driverClassName=com.mysql.cj.jdbc.Driver</span><br><span class="line">spring.foo.datasource.jdbcUrl=jdbc:mysql://localhost:3306/foo?serverTimezone=GMT</span><br><span class="line">spring.foo.datasource.username=root</span><br><span class="line">spring.foo.datasource.password=123456</span><br></pre></td></tr></table></figure></p>
+<p>bar 数据源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.bar.datasource.driverClassName=com.mysql.cj.jdbc.Driver</span><br><span class="line">spring.bar.datasource.jdbcUrl=jdbc:mysql://localhost:3306/bar?serverTimezone=GMT</span><br><span class="line">spring.bar.datasource.username=root</span><br><span class="line">spring.bar.datasource.password=123456</span><br></pre></td></tr></table></figure></p>
+<p><a name="6c14a68f"></a></p>
+<h2 id="自定义配置类"><a href="#自定义配置类" class="headerlink" title="自定义配置类"></a>自定义配置类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataSourceConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Qualifier</span>(value = <span class="string">"fooDataSource"</span>)</span><br><span class="line">    <span class="meta">@ConfigurationProperties</span>(value = <span class="string">"spring.foo.datasource"</span>)<span class="comment">//对应foo 数据源配置</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">fooDataSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DataSourceBuilder.create().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Qualifier</span>(value = <span class="string">"barDataSource"</span>)</span><br><span class="line">    <span class="meta">@ConfigurationProperties</span>(value = <span class="string">"spring.bar.datasource"</span>)<span class="comment">//对应bar 数据源配置</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">barDataSource</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> DataSourceBuilder.create().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JdbcTemplate <span class="title">fooJdbcTemplate</span><span class="params">(@Qualifier(<span class="string">"fooDataSource"</span>)</span>DataSource fooDataSource)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JdbcTemplate(fooDataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JdbcTemplate <span class="title">barJdbcTemplate</span><span class="params">(@Qualifier(<span class="string">"barDataSource"</span>)</span>DataSource barDataSource)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> JdbcTemplate(barDataSource);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="93b824b5"></a></p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>此处应该注意，测试类中注入依赖应该使用 @Resource 注解。@Resource的作用相当于@Autowired，只不过@Autowired 按byType自动注入，而@Resource 默认按 byName自动注入。当 Spring 容器中存在多个同类型的 Bean,应该按照 byName 注入匹配的 Bean。虽然Spring Boot 本身也会按照 byName 注入，但是建议养成良好的编码习惯，使用@Resource 消除歧义。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MultiDataSourceTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> JdbcTemplate fooJdbcTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> JdbcTemplate barJdbcTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">        fooJdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">        barJdbcTemplate.update(<span class="string">"insert into test (name) values ('bar')"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a name="d17a0f0b"></a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>geektime - 玩转 Spring 全家桶<br><a href="http://blog.720ui.com/columns/springboot_all/" target="_blank" rel="noopener">Spring Boot 揭秘与实战系列</a></p>
+<p><a name="81cb1f5d"></a></p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><p><strong>示例源代码</strong> <a href="https://github.com/SongWenJie/Spring-family.git" target="_blank" rel="noopener">Spring-family </a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/25/Spring-Boot-配置多数据源/">https://songwenjie.coding.me/2019/03/25/Spring-Boot-配置多数据源/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/Spring-Boot/">Spring Boot</a>
+            
+              <a href="/tags/Spring/">Spring</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/03/21/如何使用-JdbcTemplate-操作数据库/">
+        <span class="next-text nav-default">Spring Boot - 使用 JdbcTemplate 操作数据库</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
+
+  </body>
+</html>

@@ -208,6 +208,65 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/11/12/编码最佳实践——Liskov替换原则/">编码最佳实践——Liskov替换原则</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-11-12
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/编码最佳实践/">编码最佳实践</a>
+            
+          </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180904/dJBa3fF2li.jpg?imageslim" alt="mark"></p>
+<p>Liskov替换原则（Liskov Substitution Principle）是一组用于创建<strong>继承层次结构</strong>的指导原则。按照Liskov替换原则创建的继承层次结构中，客户端代码能够放心的使用它的任意类或子类而不担心所期望的行为。</p>
+<h2 id="Liskov替换原则定义"><a href="#Liskov替换原则定义" class="headerlink" title="Liskov替换原则定义"></a>Liskov替换原则定义</h2><blockquote>
+<p>如果S是T的子类型，那么所有的T类型的对象都可以在不破坏程序的情况下被S类型的对象替换。</p>
+</blockquote>
+<ul>
+<li>基类型：客户端引用的类型（T）。子类型可以重写（或部分定制）客户端所调用的基类的任意方法。</li>
+<li>子类型：继承自基类型（T）的一组类（S）中的任意一个。客户端不应该，也不需要知道它们实际调用哪个具体的子类型。无论使用的是哪个子类型实例，客户端代码所表现的行为都是一样的。</li>
+</ul>
+          <div class="read-more">
+            <a href="/2018/11/12/编码最佳实践——Liskov替换原则/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/11/12/编码最佳实践——开放封闭原则/">编码最佳实践——开放封闭原则</a>
         
       </h1>
@@ -638,51 +697,6 @@
           <p>本篇文章，我们将从索引基础开始，介绍什么是索引以及索引的几种类型，然后学习如何创建索引以及索引设计的基本原则。</p>
           <div class="read-more">
             <a href="/2018/08/02/MySQL——索引基础/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/">MySQL——通过EXPLAIN分析SQL的执行计划</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-08-02
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/180802/30IeblBc39.png?imageslim" alt="mark">在MySQL中，我们可以通过<strong>EXPLAIN</strong>命令获取MySQL如何执行SELECT语句的信息，包括在SELECT语句执行过程中表如何连接和连接的顺序。</p>
-          <div class="read-more">
-            <a href="/2018/08/02/MySQL——通过EXPLAIN分析SQL的执行计划/" class="read-more-link">阅读更多</a>
           </div>
         
       
