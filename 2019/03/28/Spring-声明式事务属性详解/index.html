@@ -22,6 +22,8 @@
 
 
 
+  <meta name="keywords" content="Spring Boot, Spring, CoderFocus">
+
 
 
 
@@ -236,10 +238,10 @@
 <h2 id="Transactional"><a href="#Transactional" class="headerlink" title="@Transactional"></a>@Transactional</h2><p>@Transactional 这个注解是一些（和事务相关的）元数据，在运行时被事务基础设施读取消费，并使用这些元数据来配置bean的事务行为。大致来说具有两方面功能，一是表明该方法要参与事务，二是配置相关属性来定制事务的参与方式和运行行为。<br><br><br><a name="transactionalManager"></a></p>
 <h3 id="transactionalManager"><a href="#transactionalManager" class="headerlink" title="transactionalManager"></a>transactionalManager</h3><p><strong>事务的管理方式，</strong>使用默认的 dataSourceManager 即可</p>
 <p><a name="propagation"></a></p>
-<h3 id="propagation"><a href="#propagation" class="headerlink" title="propagation"></a>propagation</h3><p><strong>事务传播特性，有 7 种方式。</strong>默认值是PROPAGATION_REQUIRED,当前有事务就用当前的，没有就用新的。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552902265650-b7edb3a9-a730-4f16-a1fc-f39c12e9d3af.png#align=left&amp;display=inline&amp;height=502&amp;name=image.png&amp;originHeight=552&amp;originWidth=827&amp;size=153866&amp;status=done&amp;width=752" alt="image.png"><br><br><a name="d41d8cd9"></a></p>
-<p>###<br><a name="Isolation"></a></p>
-<h3 id="Isolation"><a href="#Isolation" class="headerlink" title="Isolation"></a>Isolation</h3><p><strong>事务隔离性，对应数据库的隔离级别。</strong>默认值是 DEFAULT(-1) ，意味着使用数据库本身设置的全局隔离级别。如果我们不适用默认值，而是在程序中设置下面的隔离性，便会在此次事务操作中使用会话级别的相应的隔离级别。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552876583067-3012ad47-3023-4dae-8dda-3105162ffa10.png#align=left&amp;display=inline&amp;height=336&amp;originHeight=620&amp;originWidth=1375&amp;status=done&amp;width=746" alt=""><br><a name="d41d8cd9-1"></a></p>
-<p>###<br><a name="timeout"></a></p>
+<h3 id="propagation"><a href="#propagation" class="headerlink" title="propagation"></a>propagation</h3><p><strong>事务传播特性，有 7 种方式。</strong>默认值是PROPAGATION_REQUIRED,当前有事务就用当前的，没有就用新的。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552902265650-b7edb3a9-a730-4f16-a1fc-f39c12e9d3af.png#align=left&amp;display=inline&amp;height=502&amp;name=image.png&amp;originHeight=552&amp;originWidth=827&amp;size=153866&amp;status=done&amp;width=752" alt="image.png"><br></p>
+<p><a name="Isolation"></a></p>
+<h3 id="Isolation"><a href="#Isolation" class="headerlink" title="Isolation"></a>Isolation</h3><p><strong>事务隔离性，对应数据库的隔离级别。</strong>默认值是 DEFAULT(-1) ，意味着使用数据库本身设置的全局隔离级别。如果我们不适用默认值，而是在程序中设置下面的隔离性，便会在此次事务操作中使用会话级别的相应的隔离级别。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552876583067-3012ad47-3023-4dae-8dda-3105162ffa10.png#align=left&amp;display=inline&amp;height=336&amp;originHeight=620&amp;originWidth=1375&amp;status=done&amp;width=746" alt=""></p>
+<p><a name="timeout"></a></p>
 <h3 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a>timeout</h3><p><strong>超时时间，单位为秒，默认值是 -1 ，表示不限制超时时间。</strong>设置 timeout 后，当事务执行时间超过设置的超时时间，便会进行事务回滚，关闭事务。</p>
 <p>我们继续使用上一篇文章中的示例，测试一下 timeout 属性设置带来的影响。<br>我们先设置超时时间 timeout = 1，然后让事务操作休眠 3 秒。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(timeout = <span class="number">1</span> )</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">timeout</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    jdbcTemplate.execute(<span class="string">"select sleep(3)"</span>);</span><br><span class="line">    jdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>单元测试<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">timeout</span><span class="params">()</span>  </span>&#123;</span><br><span class="line">        log.info(<span class="string">"before timeout: &#123;&#125;"</span>,jdbcTemplate.queryForObject(<span class="string">"select count(*) from test"</span>,Long.class));</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            testService.timeout();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            log.info(<span class="string">"after timeout: &#123;&#125;"</span>,jdbcTemplate.queryForObject(<span class="string">"select count(*) from test"</span>,Long.class));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
@@ -301,6 +303,14 @@
 
     
       <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/Spring-Boot/">Spring Boot</a>
+            
+              <a href="/tags/Spring/">Spring</a>
+            
+          </div>
         
         
         
