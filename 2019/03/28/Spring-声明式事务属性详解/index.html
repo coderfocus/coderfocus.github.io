@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="Spring 声明式事务属性详解">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/2019/03/28/Spring-声明式事务属性详解/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
+  
+
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> Spring 声明式事务属性详解 - CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Spring 声明式事务属性详解
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-03-28
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Transactional"><span class="toc-text">@Transactional</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#transactionalManager"><span class="toc-text">transactionalManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#propagation"><span class="toc-text">propagation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Isolation"><span class="toc-text">Isolation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#timeout"><span class="toc-text">timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#readOnly"><span class="toc-text">readOnly</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如何判断回滚"><span class="toc-text">如何判断回滚</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源代码"><span class="toc-text">源代码</span></a></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <p>在上文中，我们介绍了如何在 Spring Boot 中使用声明式事务进行事务管理。现在我们来看一下与声明式事务注解相关属性的配置。</p>
+<a id="more"></a>
+<p><a name="d35b05cf"></a></p>
+<h2 id="Transactional"><a href="#Transactional" class="headerlink" title="@Transactional"></a>@Transactional</h2><p>@Transactional 这个注解是一些（和事务相关的）元数据，在运行时被事务基础设施读取消费，并使用这些元数据来配置bean的事务行为。大致来说具有两方面功能，一是表明该方法要参与事务，二是配置相关属性来定制事务的参与方式和运行行为。<br><br><br><a name="transactionalManager"></a></p>
+<h3 id="transactionalManager"><a href="#transactionalManager" class="headerlink" title="transactionalManager"></a>transactionalManager</h3><p><strong>事务的管理方式，</strong>使用默认的 dataSourceManager 即可</p>
+<p><a name="propagation"></a></p>
+<h3 id="propagation"><a href="#propagation" class="headerlink" title="propagation"></a>propagation</h3><p><strong>事务传播特性，有 7 种方式。</strong>默认值是PROPAGATION_REQUIRED,当前有事务就用当前的，没有就用新的。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552902265650-b7edb3a9-a730-4f16-a1fc-f39c12e9d3af.png#align=left&amp;display=inline&amp;height=502&amp;name=image.png&amp;originHeight=552&amp;originWidth=827&amp;size=153866&amp;status=done&amp;width=752" alt="image.png"><br><br><a name="d41d8cd9"></a></p>
+<p>###<br><a name="Isolation"></a></p>
+<h3 id="Isolation"><a href="#Isolation" class="headerlink" title="Isolation"></a>Isolation</h3><p><strong>事务隔离性，对应数据库的隔离级别。</strong>默认值是 DEFAULT(-1) ，意味着使用数据库本身设置的全局隔离级别。如果我们不适用默认值，而是在程序中设置下面的隔离性，便会在此次事务操作中使用会话级别的相应的隔离级别。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552876583067-3012ad47-3023-4dae-8dda-3105162ffa10.png#align=left&amp;display=inline&amp;height=336&amp;originHeight=620&amp;originWidth=1375&amp;status=done&amp;width=746" alt=""><br><a name="d41d8cd9-1"></a></p>
+<p>###<br><a name="timeout"></a></p>
+<h3 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a>timeout</h3><p><strong>超时时间，单位为秒，默认值是 -1 ，表示不限制超时时间。</strong>设置 timeout 后，当事务执行时间超过设置的超时时间，便会进行事务回滚，关闭事务。</p>
+<p>我们继续使用上一篇文章中的示例，测试一下 timeout 属性设置带来的影响。<br>我们先设置超时时间 timeout = 1，然后让事务操作休眠 3 秒。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(timeout = <span class="number">1</span> )</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">timeout</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    jdbcTemplate.execute(<span class="string">"select sleep(3)"</span>);</span><br><span class="line">    jdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>单元测试<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">timeout</span><span class="params">()</span>  </span>&#123;</span><br><span class="line">        log.info(<span class="string">"before timeout: &#123;&#125;"</span>,jdbcTemplate.queryForObject(<span class="string">"select count(*) from test"</span>,Long.class));</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            testService.timeout();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            log.info(<span class="string">"after timeout: &#123;&#125;"</span>,jdbcTemplate.queryForObject(<span class="string">"select count(*) from test"</span>,Long.class));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552897136574-06bdf697-4ff8-4a74-8651-1acf0b66349b.png#align=left&amp;display=inline&amp;height=45&amp;name=image.png&amp;originHeight=49&amp;originWidth=1351&amp;size=16289&amp;status=done&amp;width=1228" alt="image.png"></p>
+<p>从结果中可以看到，触发了超时异常，事务进行了回滚操作。</p>
+<p>再来看一下，设置超时时间，但是不触发限制的情况。事务操作依然休眠 3 秒，修改超时时间 timeout = 5。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(timeout = <span class="number">5</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">timeout</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    jdbcTemplate.execute(<span class="string">"select sleep(3)"</span>);</span><br><span class="line">    jdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552897593382-bb1b78a7-2a05-4972-8e70-850b64ac5819.png#align=left&amp;display=inline&amp;height=29&amp;name=image.png&amp;originHeight=32&amp;originWidth=1330&amp;size=8828&amp;status=done&amp;width=1209" alt="image.png"></p>
+<p>没有触发超时异常，事务正产提交。</p>
+<p><a name="readOnly"></a></p>
+<h3 id="readOnly"><a href="#readOnly" class="headerlink" title="readOnly"></a>readOnly</h3><p><strong>只读属性，默认值是 false。</strong>设置 readOnly = true 表示开启只读事务，事务中只能执行读操作，不能执行写操作。</p>
+<p>设置只读属性 readOnly = true，并且在事务中执行写操作语句。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(readOnly = <span class="keyword">true</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readOnly</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    jdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>单元测试<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readOnly</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        testService.readOnly();</span><br><span class="line">    &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">        log.info(<span class="string">"Exception: &#123;&#125;"</span>,e.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552899484789-110ef97e-e9e6-4c3c-8056-51a419a6c52a.png#align=left&amp;display=inline&amp;height=90&amp;name=image.png&amp;originHeight=99&amp;originWidth=1408&amp;size=32473&amp;status=done&amp;width=1280" alt="image.png"></p>
+<p>从打印的异常信息中可以看到，触发了只读异常，不允许进行数据写操作。</p>
+<p><a name="f04059f0"></a></p>
+<h3 id="如何判断回滚"><a href="#如何判断回滚" class="headerlink" title="如何判断回滚"></a>如何判断回滚</h3><p>rollbackFor 属性可以指定需要进行事务回滚的异常类型；noRollbackFor 属性可以指定即使发生此类异常，也不要进行事务回滚的异常类型。默认的回滚规则是只把runtime, unchecked exceptions标记为回滚，即RuntimeException及其子类，Error默认也导致回滚。Checked exceptions默认不导致回滚。</p>
+<p>我们在事务执行中抛出 Exception 异常类型，但是指定rollbackFor属性为我们自定义的 RollbackException 异常类型。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span>(rollbackFor = &#123;RollbackException.class&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rollbackForException</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    jdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> Exception();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>单元测试<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rollbackForException</span><span class="params">()</span></span>&#123;</span><br><span class="line">    log.info(<span class="string">"before rollbackForException: &#123;&#125;"</span>,jdbcTemplate.queryForObject(<span class="string">"select count(*) from test"</span>,Long.class));</span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        testService.rollbackForException();</span><br><span class="line">    &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">        log.info(<span class="string">"after rollbackForException: &#123;&#125;"</span>,jdbcTemplate.queryForObject(<span class="string">"select count(*) from test"</span>,Long.class));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552900835684-597b746e-e673-4fdc-974a-87d6c241dc6a.png#align=left&amp;display=inline&amp;height=85&amp;name=image.png&amp;originHeight=94&amp;originWidth=1434&amp;size=21705&amp;status=done&amp;width=1304" alt="image.png"></p>
+<p>从结果中可以看到，虽然事务执行过程中抛出了异常，但是并没有进行事务回滚操作。这是因为抛出的异常类型和rollbackFor 属性指定的要进行事务回滚的异常类型不匹配。解决的方式有两种：</p>
+<p>第一种是修改 rollbackFor 属性的异常类型与抛出的异常类型相同<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="meta">@Transactional</span>(rollbackFor = &#123;Exception.class&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rollbackForException</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    jdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> Exception();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552901313335-71d0fc3a-c6ef-4cec-a358-89392809998a.png#align=left&amp;display=inline&amp;height=40&amp;originHeight=77&amp;originWidth=1438&amp;status=done&amp;width=746" alt=""></p>
+<p>第二种是可以指定多个 rollbackFor 异常类型，添加一个 Exception 类型的实例<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = &#123;RollbackException.class,Exception.class&#125;)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rollbackForException</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    jdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> Exception();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552901576135-20c23e7a-cc18-4be0-8521-9dee786c6222.png#align=left&amp;display=inline&amp;height=85&amp;name=image.png&amp;originHeight=93&amp;originWidth=1426&amp;size=21247&amp;status=done&amp;width=1296" alt="image.png"><br></p>
+<p><a name="d17a0f0b"></a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>geektime - 玩转 Spring 全家桶<br><a href="http://blog.720ui.com/columns/springboot_all/" target="_blank" rel="noopener">Spring Boot 揭秘与实战系列</a></p>
+<p><a name="81cb1f5d"></a></p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><p><strong>示例源代码</strong> <a href="https://github.com/SongWenJie/Spring-family.git" target="_blank" rel="noopener">Spring-family </a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/03/28/Spring-声明式事务属性详解/">https://songwenjie.coding.me/2019/03/28/Spring-声明式事务属性详解/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2019/03/27/Spring-声明式事务/">
+        <span class="next-text nav-default">Spring 声明式事务</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
+
+  </body>
+</html>

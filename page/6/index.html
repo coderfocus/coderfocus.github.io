@@ -208,6 +208,133 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/07/23/不完整的抽象/">不完整的抽象</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180501/J93f1aEF2g.png?imageslim" alt="mark" title="抽象型坏味"></p>
+<h1 id="不完整的抽象"><a href="#不完整的抽象" class="headerlink" title="不完整的抽象"></a>不完整的抽象</h1><p>抽象未支持所有互补或相关的方法时，将导致这种坏味。</p>
+<h2 id="为什么要有完整的抽象？"><a href="#为什么要有完整的抽象？" class="headerlink" title="为什么要有完整的抽象？"></a>为什么要有完整的抽象？</h2><p>一种重要的抽象实现手法是创建内聚而完整的抽象。抽象未支持相关的方法时，可能会影响抽象的内聚性和完整性。如果抽象只支持部分相关的方法，其使用者就可能不得不自己去实现其他的功能。客户程序可能尝试直接访问抽象的内部实现细节，此时带来的副作用是违反封装原则。</p>
+<h2 id="一些常见的互补方法对"><a href="#一些常见的互补方法对" class="headerlink" title="一些常见的互补方法对"></a>一些常见的互补方法对</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Min/Max</th>
+<th style="text-align:center">Open/Close</th>
+<th style="text-align:center">Create/Destroy</th>
+<th>Get/Set</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>Read/Write</strong></td>
+<td style="text-align:center"><strong>Print/Scan</strong></td>
+<td style="text-align:center"><strong>First/Last</strong></td>
+<td><strong>Begin/End</strong></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Start/Stop</strong></td>
+<td style="text-align:center"><strong>Lock/Unlock</strong></td>
+<td style="text-align:center"><strong>Show/Hide</strong></td>
+<td><strong>Up/Down</strong></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Source/Target</strong></td>
+<td style="text-align:center"><strong>Insert/Delete</strong></td>
+<td style="text-align:center"><strong>First/Last</strong></td>
+<td><strong>Push/Pull</strong></td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>Enable/Disable</strong></td>
+<td style="text-align:center"><strong>Acquire/Release</strong></td>
+<td style="text-align:center"><strong>Left/Right</strong></td>
+<td><strong>On/Off</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><p>###禁止特定行为</p>
+<p>设计人员可能有意识地做出不提供堆成或配套方法的设计决策。例如在只读集合中，包含Add()方法，而不包含Remove()方法。</p>
+<h3 id="使用单个方法而不是成对的方法"><a href="#使用单个方法而不是成对的方法" class="headerlink" title="使用单个方法而不是成对的方法"></a>使用单个方法而不是成对的方法</h3><p>例如用SetEnabled(bool)替换Enable()和Disable(),传入true代表启用，fasle代表禁用。</p>
+<h1 id="多方面抽象"><a href="#多方面抽象" class="headerlink" title="多方面抽象"></a>多方面抽象</h1><p>抽象被赋予不止一项职责时，将导致这种坏味。</p>
+<p>##为什么不可以有多方面抽象？</p>
+<p>单一职责原则指出，抽象必须承担单一而明确的职责，且必须完全封装该职责。抽象承担了多种职责时，意味着它将受多种原因的影响而需要修改，设计的修改频率与其缺陷数之间存在很强的正相关关系。这意味着多方面抽象存在的缺陷可能更多。</p>
+<h2 id="多方面抽象的潜在原因"><a href="#多方面抽象的潜在原因" class="headerlink" title="多方面抽象的潜在原因"></a>多方面抽象的潜在原因</h2><h3 id="通用抽象"><a href="#通用抽象" class="headerlink" title="通用抽象"></a>通用抽象</h3><p>引入使用通用名（如Item,Order,Product，Image）的抽象时，它常常会成为占位符，用于提供所有相关（但未必属于它）的功能。抽象的命名代表了这个抽象的职责，命名太通用，随着系统的迭代，抽象会慢慢承担多种职责。感同身受！！！</p>
+<h3 id="未定期重构"><a href="#未定期重构" class="headerlink" title="未定期重构"></a>未定期重构</h3><p>对类进行了大量修改而没有定期重构，长此以往，可能就会在类中引入了额外的职责。</p>
+<h3 id="混合关注点"><a href="#混合关注点" class="headerlink" title="混合关注点"></a>混合关注点</h3><p>没有对关注点分离给予足够的重视。</p>
+<h2 id="重构建议"><a href="#重构建议" class="headerlink" title="重构建议"></a>重构建议</h2><p>类承担了多种职责时，就不是内聚的。可以使用“提取类”来进行重构。</p>
+<p><img src="http://songwenjie.vip/blog/180501/fLeL7kkKD5.png?imageslim" alt="mark" title="使用提取类重构多方面抽象"></p>
+<h1 id="未用的抽象"><a href="#未用的抽象" class="headerlink" title="未用的抽象"></a>未用的抽象</h1><p>创建的抽象未用（未被直接使用或继承）时，将导致这种坏味。有以下两种表现形式：</p>
+<ul>
+<li>未引用的抽象：未用的具体类</li>
+<li>鳏寡抽象：没有任何派生抽象的接口/抽象类</li>
+</ul>
+<h2 id="为什么不可以有未用的抽象？"><a href="#为什么不可以有未用的抽象？" class="headerlink" title="为什么不可以有未用的抽象？"></a>为什么不可以有未用的抽象？</h2><p>设计中的抽象未被使用，就没有发挥任何作用，因此违反了抽象原则。未实现的抽象类和接口时多余的或凭空想象出来的概括，因此是不需要的。</p>
+<h2 id="未用的抽象潜在原因"><a href="#未用的抽象潜在原因" class="headerlink" title="未用的抽象潜在原因"></a>未用的抽象潜在原因</h2><h3 id="凭空想象的设计"><a href="#凭空想象的设计" class="headerlink" title="凭空想象的设计"></a>凭空想象的设计</h3><p>试图设计”永不过时”的系统或在其中包含”未来可能用得着”的抽象时，将导致这种坏味。</p>
+<h3 id="不断变化的需求"><a href="#不断变化的需求" class="headerlink" title="不断变化的需求"></a>不断变化的需求</h3><p>需求不断变化，为满足早期需求而创建的抽象可能已经不再需要。如果将其留在设计中，它将变成未用的抽象。</p>
+<h3 id="维护过程中留下的垃圾"><a href="#维护过程中留下的垃圾" class="headerlink" title="维护过程中留下的垃圾"></a>维护过程中留下的垃圾</h3><p>维护或重构时，如果不清理旧的抽象，可能留下未引用的抽象。这点深有体会，所以一直要求组员在重构的过程中，一定要把旧代码删除。如果不这样做，过期的和未用的代码将导致代码库急剧膨胀，重构的代码和未重构的代码纠缠在一起，代码的可理解性、阅读体验极差。而且如果你重构的旧代码你不负责删除，其他人就更不知道如何下手了，久而久之这些旧代码就会变成BUG的温床。注释掉旧代码也不是一个好的选择，太影响阅读体验。其次，现在的代码版本控制工具功能强大，即使删除错了代码，也可以通过版本控制工具找回。所以旧代码必须死。</p>
+<h3 id="担心破坏既有代码"><a href="#担心破坏既有代码" class="headerlink" title="担心破坏既有代码"></a>担心破坏既有代码</h3><p>不确定是否还有其他代码在使用想要删除的旧代码。</p>
+<h2 id="重构建议-1"><a href="#重构建议-1" class="headerlink" title="重构建议"></a>重构建议</h2><p>将未用的抽象从设计中删除。对于可能还有客户程序在使用的API，直接删除不可行，可将这些抽象标记为’’过期的’’或”已摒弃”,明确地指出在新开发的客户程序中不得使用它们。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[Obsolete]</span><br><span class="line">public class Report</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑-1"><a href="#现实考虑-1" class="headerlink" title="现实考虑"></a>现实考虑</h2><p>类库和框架通常以抽象类或接口的方式提供扩展点，这些抽象类可能在库或框架中未被使用，但它们是供客户程序使用的扩展点，因此不属于未用的抽象。</p>
+<h1 id="重复的抽象"><a href="#重复的抽象" class="headerlink" title="重复的抽象"></a>重复的抽象</h1><p>两个抽象的名称、实现或两者相同时，将导致这种坏味。</p>
+<ul>
+<li><p>名称相同</p>
+<p>两个不同的抽象重名将影响可理解性。</p>
+</li>
+<li><p>实现相同</p>
+<p>多个抽象的成员定义在语义上相同，但在设计上没有捕获并使用这些实现中相同的元素。在继承层析结构中，如果多个兄弟抽象的实现相同，可能意味着存在的是”未归并的层次结构”坏味。</p>
+</li>
+<li><p>名称实现都相同</p>
+</li>
+</ul>
+<h2 id="为什么不可以有重复的抽象？"><a href="#为什么不可以有重复的抽象？" class="headerlink" title="为什么不可以有重复的抽象？"></a>为什么不可以有重复的抽象？</h2><p>重复代码是软件万恶之首。所以我们要极力避免重复。</p>
+<p>如果多个抽象的名称相同，将影响设计的可理解性：客户代码开发人员将不知道使用哪个抽象。</p>
+<p>如果多个抽象的实现相同（代码相同），将难以维护：修改其中一个抽象的实现时，常常需要修改其它所有重复抽象的实现。这不仅增加了修改负担，还可能引入难以发现的微小BUG。为缩小修改范围，必须尽可能避免重复。</p>
+<h2 id="重复的抽象潜在原因"><a href="#重复的抽象潜在原因" class="headerlink" title="重复的抽象潜在原因"></a>重复的抽象潜在原因</h2><h3 id="复制粘贴编程手法"><a href="#复制粘贴编程手法" class="headerlink" title="复制粘贴编程手法"></a>复制粘贴编程手法</h3><p>CV程序员复制并粘贴代码，而不应用合适的抽象。</p>
+<h3 id="即兴维护"><a href="#即兴维护" class="headerlink" title="即兴维护"></a>即兴维护</h3><p>经过多年的修复或改进后，软件将包含”残留”，其中有大量重复的代码。</p>
+<h3 id="交流不畅"><a href="#交流不畅" class="headerlink" title="交流不畅"></a>交流不畅</h3><p>不同时期通常由不同的人员负责维护软件，他们对软件的了解不彻底，编写了原来就有的类或方法，导致软件包含重复的代码。</p>
+<h3 id="类被声明为不可扩展的"><a href="#类被声明为不可扩展的" class="headerlink" title="类被声明为不可扩展的"></a>类被声明为不可扩展的</h3><p>类被声明为不可扩展的，无法重用代码，只能复制代码，创建修订版本。</p>
+<h2 id="重构建议-2"><a href="#重构建议-2" class="headerlink" title="重构建议"></a>重构建议</h2><p>对于名称相同的重复抽象，可以将其中一个抽象改为不同的名称。</p>
+<p>对于实现相同的重复抽象，如果实现完全相同，可将其中一个抽象删除。如果实现稍有差异，可将相同的实现归并到另一个类中：这可以是层次结构中的基类，也可以是重复的抽象可引用或使用的既有类或新类。</p>
+<h2 id="现实考虑-2"><a href="#现实考虑-2" class="headerlink" title="现实考虑"></a>现实考虑</h2><h3 id="适应变化"><a href="#适应变化" class="headerlink" title="适应变化"></a>适应变化</h3><p>导致重复抽象的一个原因是，要同时支持同步和非同步变种。</p>
+<h3 id="在不同的上下文中使用相同的类型名"><a href="#在不同的上下文中使用相同的类型名" class="headerlink" title="在不同的上下文中使用相同的类型名"></a>在不同的上下文中使用相同的类型名</h3><p>对于大型系统，建立完全统一的领域模型要么不可行要么不划算。领域驱动设计提供的一种解决方案是，将大型系统分成多个”界限上下文”。采用这种方式，不同上下文中的模型可能包含同名的类型，但是这是可以接受的。</p>
+<h3 id="语言未提供重复避免支持"><a href="#语言未提供重复避免支持" class="headerlink" title="语言未提供重复避免支持"></a>语言未提供重复避免支持</h3><p>在JDK中，有很多的重复的方法和类，这是因为没有对基本类型提供泛型支持。但是在.Net中就不会有这么多重复的方法和类，因为C#对基本类型提供了泛型支持。</p>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/23/命令式抽象/">命令式抽象</a>
         
       </h1>
