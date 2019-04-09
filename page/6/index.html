@@ -208,6 +208,154 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/07/23/不充分的封装/">不充分的封装</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <blockquote>
+<p>封装原则倡导通过<strong>隐藏抽象的实现细节</strong>和<strong>隐藏变化</strong>等来实现关注点分离和信息隐藏。</p>
+</blockquote>
+<p>以汽车为例，我们并不需要了解发动机的原理就可以开车。这准确描绘了封装原则的作用：用户无需知道抽象（汽车）的细节，此外，封装原则还让抽象能够隐藏实现细节的变化。发动机是汽油发动机还是柴油发动机并不会对我们开车造成影响。</p>
+<h2 id="封装原则的实现手法"><a href="#封装原则的实现手法" class="headerlink" title="封装原则的实现手法"></a>封装原则的实现手法</h2><p><img src="http://songwenjie.vip/blog/180430/iei06clLej.png?imageslim" alt="mark"></p>
+<ul>
+<li><p><strong>隐藏实现细节</strong></p>
+<p>抽象向客户端程序只暴露其提供的功能，而将实现方式隐藏起来。实现方式（即实现细节）包含抽象的内部表示（如抽象使用的数据成员和数据结构）以及有关方法是如何实现的细节（如方法使用的算法）。</p>
+</li>
+<li><p><strong>隐藏变化</strong></p>
+<p>隐藏类型或实现结构的实现变化。通过隐藏变化，更容易在不给客户端程序带来太大影响的情况下修改抽象的实现。</p>
+</li>
+</ul>
+<h2 id="违反封装原则导致的坏味"><a href="#违反封装原则导致的坏味" class="headerlink" title="违反封装原则导致的坏味"></a>违反封装原则导致的坏味</h2><p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
+<p>我们这篇博客主要讲解分析<strong>不充分的封装</strong>坏味，对于其它封装坏味将在后面的博客讲解分析。</p>
+<h1 id="不充分的封装"><a href="#不充分的封装" class="headerlink" title="不充分的封装"></a>不充分的封装</h1><p>对于抽象的一个或多个成员，声明的访问权限超过了实际需求时，将导致这种坏味。这种坏味的极端表现形式是，存在一些用全局变量、全局数据结构等表示的全局状态，整个软件系统的所有抽象都可以访问它们。</p>
+<h2 id="为什么要有充分的封装？"><a href="#为什么要有充分的封装？" class="headerlink" title="为什么要有充分的封装？"></a>为什么要有充分的封装？</h2><p>封装的主要意图是将接口和实现分离，以便能够几乎独立地修改它们。这种关注点分离让客户端程序只依赖于抽象的接口，从而能够对它们隐藏实现细节。如果暴露了实现细节，将导致抽象和客户端紧密耦合。这是不可取的，每当修改抽象的实现细节时，都将影响客户端程序。提供超过需要的访问权限可能向客户端程序暴露实现细节，这违反了“隐藏原则”。</p>
+<h2 id="不充分的封装的潜在原因"><a href="#不充分的封装的潜在原因" class="headerlink" title="不充分的封装的潜在原因"></a>不充分的封装的潜在原因</h2><h3 id="为方便测试"><a href="#为方便测试" class="headerlink" title="为方便测试"></a>为方便测试</h3><p>为了方便测试，开发人员常常将抽象的私有方法改成公有的。由于私有方法涉及抽象的实现细节，将其改为公有将破坏抽象的封装。</p>
+<p>我们都知道代码的可测试性是衡量代码质量的一个重要指标。如果编写的代码无法进行单元测试，代码的质量就无法得到保证。在有些情况下，代码无法编写测试是可以进行代码修改的，我们称之为重构。但是因为访问权限修改代码不在这些情况下，这样做反而会破坏代码的封装。可以借助反射实现低访问权限成员的测试。</p>
+<h3 id="在面向对象编程中采用过程型思维"><a href="#在面向对象编程中采用过程型思维" class="headerlink" title="在面向对象编程中采用过程型思维"></a>在面向对象编程中采用过程型思维</h3><p>以全局变量的方式暴露多个抽象需要使用的数据，从而导致这种坏味。</p>
+<h2 id="示例分析"><a href="#示例分析" class="headerlink" title="示例分析"></a>示例分析</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 消息发布类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Publisher</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 频道号 范围1-100</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public int channel;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 创建一个特定频道的发布者对象</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;channel&quot;&gt;频道号 范围1-100&lt;/param&gt;</span><br><span class="line">    public Publisher(int channel)</span><br><span class="line">    &#123;</span><br><span class="line">        this.channel =  channel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public vois Publish(string message)</span><br><span class="line">    &#123;</span><br><span class="line">        //向频道channel发布消息message</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码示例就是不充分的封装的典型，频道号变量channel被设置为public是不合适的，因为创建消息发布对象时就已经指定发布的频道号，channel被设置为public，频道号在客户端使用的时候就可以随意的被访问修改，这样客户端就会了解消息发布类的内部实现，造成了直接依赖，违反了“高内聚，低耦合”原则。这样每当修改内部实现时都会对客户端造成影响。更重要的一点是频道号变量channel是有范围限定的（1-100）,客户端使用的时候随意的修改channel,可能会造成channel越界的错误。所以正确的做法是将channel变量设置为私有的，并且为其提供合适的存取器方法。</p>
+<p><strong>重构后的代码实现：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 消息发布类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Publisher</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 频道号 范围1-100</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private int channel;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// channel赋值，支持范围限定</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;channel&quot;&gt;频道号 范围1-100&lt;/param&gt;</span><br><span class="line">    public void SetChannel(int channel)</span><br><span class="line">    &#123;</span><br><span class="line">        if(channel &lt; 1 || channel &gt; 100)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new ArgumentOutOfRangeException(&quot;超出频道号 范围1-100&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        this.channel = channel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 创建一个特定频道的发布者对象</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;channel&quot;&gt;频道号 范围1-100&lt;/param&gt;</span><br><span class="line">    public Publisher(int channel)</span><br><span class="line">    &#123;</span><br><span class="line">        SetChannel(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public vois Publish(string message)</span><br><span class="line">    &#123;</span><br><span class="line">        //向频道channel发布消息message</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一种极端表现形式：全局变量。对于全局变量，存在两种不同的情形。</p>
+<ul>
+<li>将一个或多个成员设置为全局可见的，但是只有少量类会访问它们。</li>
+<li>将一个或多个成员设置为全局可见的，有大量的类会访问它们。</li>
+</ul>
+<p>对于第一种情形，要进行重构，可以通过参数传递必要的变量。</p>
+<p>对于第二种情形，要进行重构，可以根据其承担的责任创建合适的抽象，并在这些抽象中封装原来的全局变量，这样客户端就会使用这些抽象，而不是直接使用全局变量。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li><p>存在不充分的封装坏味时，会使代码的可重用性大打折扣，因为客户程序直接依赖大家都可以访问的状态，导致难以在其它地方重用客户程序。</p>
+</li>
+<li><p>抽象允许直接访问其数据成员时，确保数据和整个抽象完整性的职责由抽象转移到了各个客户程序。增加了代码运行阶段发生问题的可能性。</p>
+</li>
+<li><p>相对于使用存取器方法控制对变量访问修改带来的好处，使用存取器方法带来的性能开销可以忽略不计。</p>
+<p>​</p>
+</li>
+</ol>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/23/不必要的抽象/">不必要的抽象</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-23
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <p><img src="http://songwenjie.vip/blog/180501/J93f1aEF2g.png?imageslim" alt="mark" title="抽象型坏味"></p>
+<h1 id="不必要的抽象"><a href="#不必要的抽象" class="headerlink" title="不必要的抽象"></a>不必要的抽象</h1><p>在软件设计中引入实际上不需要的抽象时，将导致这种坏味。</p>
+<p>##为什么不可以有不必要的抽象？</p>
+<p>抽象实体应该具有<strong>单一而重要</strong>的职责。如果创建的没必要或是只是为了方便，它们承担的职责微不足道，甚至没有承担任何职责，这违反了抽象原则。</p>
+<p>##不必要的抽象的潜在原因</p>
+<h3 id="使用的是面向对象语言，思维却是过程型编程思维"><a href="#使用的是面向对象语言，思维却是过程型编程思维" class="headerlink" title="使用的是面向对象语言，思维却是过程型编程思维"></a>使用的是面向对象语言，思维却是过程型编程思维</h3><p>过程型思维常常会创建执行功能而不是表示事物的类。这种类通常只有一两个方法，而这些方法操作的数据位于独立地“数据类”中。</p>
+<h3 id="使用不合适的语言功能"><a href="#使用不合适的语言功能" class="headerlink" title="使用不合适的语言功能"></a>使用不合适的语言功能</h3><p>例如，使用”常量类”而不是枚举。这增加了不必要的类。</p>
+<h3 id="过度设计"><a href="#过度设计" class="headerlink" title="过度设计"></a>过度设计</h3><p>例如，为了表示与Customer对象相关联的客户ID,创建一个名为CustomerID的类。更好的设计是：在Customer对象中使用一个字符串来存储客户ID。</p>
+<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class FormattableFlags</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 禁止显式实例化这个类</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    private FormattableFlags()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出左对齐</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public  const int LEFT_JUSTIFY = 1;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出转换为大写</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public const int UPPERCASE = 2;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 要求输出使用替换类型</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public const int ALTERNATE = 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们上面分析过，使用”常量类”而不是枚举，增加了不必要的类。可以使用枚举替换掉”常量类”，消灭掉不必要的类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public enum FormattableFlagsEnum</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出左对齐</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    LEFT_JUSTIFY = 1,</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 将输出转换为大写</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    UPPERCASE = 2,</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 要求输出使用替换类型</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    ALTERNATE = 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>一个电子商务应用程序，其中包含两个类：BestSellerBook和Book。每当客户程序要创建畅销书时，都创建一个BestSellerBook实例。在BestSellerBook内部只是将所有方法都委托给Book类，别的什么都不做。显然抽象BestSellerBook是多余的，因为其行为和抽象Book完全相同。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Book</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public decimal Price &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;&lt;/param&gt;</span><br><span class="line">    public Book(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 畅销图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public  class BestSellerBook</span><br><span class="line">&#123;</span><br><span class="line">    private Book book = null;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;&lt;/param&gt;</span><br><span class="line">    public BestSellerBook(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        book = new Book(price);</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        book.ModifyPrice(price);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于功能有限，不值得创建的类，应将其删除。</p>
+<p>我们可以将BestSellerBook类删除，并且在Book类中添加属性IsBestSeller。这样在客户程序创建Book实例时需要指出图书是否为畅销书，可设置属性IsBestSeller，而不用像以前那样创建BestSellerBook类的实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">/// &lt;summary&gt;</span><br><span class="line">/// 图书类</span><br><span class="line">/// &lt;/summary&gt;</span><br><span class="line">public class Book</span><br><span class="line">&#123;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public decimal Price &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 是否畅销书</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    public bool IsBestSeller &#123; get; private set; &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 构造函数</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;价格&lt;/param&gt;</span><br><span class="line">    /// &lt;param name=&quot;isBestSeller&quot;&gt;是否畅销书&lt;/param&gt;</span><br><span class="line">    public Book(decimal price, bool isBestSeller)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">        this.IsBestSeller = isBestSeller;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    /// 修改图书价格</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;price&quot;&gt;图书价格&lt;/param&gt;</span><br><span class="line">    public void ModifyPrice(decimal price)</span><br><span class="line">    &#123;</span><br><span class="line">        this.Price = price;</span><br><span class="line">    &#125;</span><br><span class="line">    /// &lt;summary&gt;</span><br><span class="line">    ///  修改是否畅销书</span><br><span class="line">    /// &lt;/summary&gt;</span><br><span class="line">    /// &lt;param name=&quot;isBestSeller&quot;&gt;是否畅销书&lt;/param&gt;</span><br><span class="line">    public void ModifyIsBestSeller(bool isBestSeller)</span><br><span class="line">    &#123;</span><br><span class="line">        this.IsBestSeller = isBestSeller;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="现实考虑"><a href="#现实考虑" class="headerlink" title="现实考虑"></a>现实考虑</h2><p>###设计模式中的委托抽象</p>
+<p>有些设计模式（如代理模式、门面模式和适配器模式）使用了委托，其中包含了一个看似不必要的类。例如，在对象适配器模式中，Adapter类看似只是将客户端请求委托给Adaptee类的相应方法。但是，Adapter类承担了明确而具体的职责：<strong>调整Adaptee类的接口，以满足客户端的需求</strong>。所以，判断抽象是否多余，还要具体情况具体分析。</p>
+<p><img src="http://songwenjie.vip/blog/180506/3KKK089Gi6.png?imageslim" alt="mark" title="对象适配器模式UML图"></p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><ol>
+<li><p>包含多余的抽象会增加设计的复杂性，影响整个设计的可理解性。</p>
+</li>
+<li><p>职责独特而明确的抽象有可能得到重用，而当抽象不承担任何职责或承担的职责微不足道时，就不太可能在其它地方重用。</p>
+<p>​</p>
+</li>
+</ol>
+<p>参考：《软件设计重构》</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/23/不完整的抽象/">不完整的抽象</a>
         
       </h1>

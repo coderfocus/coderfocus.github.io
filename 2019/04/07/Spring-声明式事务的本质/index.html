@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="">
+  <head><meta name="generator" content="Hexo 3.8.0">
+    
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+<meta name="theme-color" content="#f8f5ec">
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+
+  <meta name="description" content="Spring 声明式事务的本质">
+
+
+
+
+  <meta name="keywords" content="Spring, Spring Boot, CoderFocus">
+
+
+
+
+
+
+
+
+
+
+  <link rel="alternate" href="/default" title="CoderFocus">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2.10.1">
+
+
+
+<link rel="canonical" href="https://songwenjie.coding.me/2019/04/07/Spring-声明式事务的本质/">
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/fancybox/jquery.fancybox.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/lib/nprogress/nprogress.min.css">
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=2.10.1">
+
+
+
+  
+
+
+
+  <script id="baidu_push">
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
+</script>
+
+    <title> Spring 声明式事务的本质 - CoderFocus </title>
+  </head>
+
+  <body><div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/." class="logo">CoderFocus</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    
+      <a href="/">
+        <li class="mobile-menu-item">
+          
+          
+            首页
+          
+        </li>
+      </a>
+    
+      <a href="/archives/">
+        <li class="mobile-menu-item">
+          
+          
+            归档
+          
+        </li>
+      </a>
+    
+      <a href="/tags">
+        <li class="mobile-menu-item">
+          
+          
+            标签
+          
+        </li>
+      </a>
+    
+      <a href="/about">
+        <li class="mobile-menu-item">
+          
+          
+            关于
+          
+        </li>
+      </a>
+    
+  </ul>
+</nav>
+
+    <div class="container" id="mobile-panel">
+      <header id="header" class="header"><div class="logo-wrapper">
+  <a href="/." class="logo">CoderFocus</a>
+</div>
+
+<nav class="site-navbar">
+  
+    <ul id="menu" class="menu">
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/">
+            
+            
+              首页
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/archives/">
+            
+            
+              归档
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/tags">
+            
+            
+              标签
+            
+          </a>
+        </li>
+      
+        <li class="menu-item">
+          <a class="menu-item-link" href="/about">
+            
+            
+              关于
+            
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+
+      </header>
+
+      <main id="main" class="main">
+        <div class="content-wrapper">
+          <div id="content" class="content">
+            
+  
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Spring 声明式事务的本质
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-04-07
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-事务失效"><span class="toc-text">Spring 事务失效</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Service-相关"><span class="toc-text">Service 相关</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#单元测试"><span class="toc-text">单元测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#声明式事务原理解析"><span class="toc-text">声明式事务原理解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Spring-事务失效的解决方法"><span class="toc-text">Spring 事务失效的解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注入自己的实例"><span class="toc-text">注入自己的实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#获取当前代理"><span class="toc-text">获取当前代理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#再加一层事务"><span class="toc-text">再加一层事务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源代码"><span class="toc-text">源代码</span></a></li></ol>
+    </div>
+  </div>
+
+
+
+    <div class="post-content">
+      
+        <p>话接上文，我们在前文中介绍了 Spring 声明式事务的使用及属性详解，在 Spring 中使用声明式事务进行事务管理s虽说简单又方便，但是却有一个小小的”坑”。假设有这么一个场景，有个接口，它包含两个方法 a 和 b，然后有一个类实现了该接口。在该实现类里 a方法上使用事务注解、b方法上不使用事务注解，然后 b方法里调用a方法，此时调用b方法，会有事务吗？答案是不会。<br><br></p>
+<a id="more"></a>
+<h2 id="Spring-事务失效"><a href="#Spring-事务失效" class="headerlink" title="Spring 事务失效"></a>Spring 事务失效</h2><p>我们继续使用上文中的实例代码<br><a name="4a3276c3"></a></p>
+<h3 id="Service-相关"><a href="#Service-相关" class="headerlink" title="Service 相关"></a>Service 相关</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TestService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">a</span><span class="params">()</span> <span class="keyword">throws</span> RollbackException</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">b</span><span class="params">()</span> <span class="keyword">throws</span> RollbackException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServiceImpl</span> <span class="keyword">implements</span> <span class="title">TestService</span></span>&#123; </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> JdbcTemplate jdbcTemplate;</span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="meta">@Transactional</span>(rollbackFor = RollbackException.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">()</span> <span class="keyword">throws</span> RollbackException </span>&#123;</span><br><span class="line">        jdbcTemplate.update(<span class="string">"insert into test (name) values ('foo')"</span>);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RollbackException();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">b</span><span class="params">()</span> <span class="keyword">throws</span> RollbackException </span>&#123;</span><br><span class="line">        a();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a name="93b824b5"></a></p>
+<h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><p>在调用方法 b 之前和之后分别打印表中的记录数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServiceImplTest</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">b</span><span class="params">()</span></span>&#123;</span><br><span class="line">      log.info(<span class="string">"before invoke method b: &#123;&#125;"</span>,jdbcTemplate.queryForObject(<span class="string">"select count(*) from test"</span>,Long.class));</span><br><span class="line">      <span class="keyword">try</span>&#123;</span><br><span class="line">          testService.b();</span><br><span class="line">      &#125;<span class="keyword">catch</span> (RollbackException e)&#123;</span><br><span class="line">          log.info(<span class="string">"after invoke method b: &#123;&#125;"</span>,jdbcTemplate.queryForObject(<span class="string">"select count(*) from test"</span>,Long.class));</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552979214566-8f99d509-1f36-4a6a-8627-67acec7cc771.png#align=left&amp;display=inline&amp;height=46&amp;name=image.png&amp;originHeight=51&amp;originWidth=1429&amp;size=17164&amp;status=done&amp;width=1299" alt="image.png"></p>
+<p>从结果中可以验证我们的结论，事务并没有生效。</p>
+<p><a name="711c8694"></a></p>
+<h2 id="声明式事务原理解析"><a href="#声明式事务原理解析" class="headerlink" title="声明式事务原理解析"></a>声明式事务原理解析</h2><p><strong>Spring 的声明式事务本质上是通过 AOP 增强了类的功能，而 Spring 的 AOP 本质上就是为类做了一个代理，我们看似调用的是自己写的类，实际上调用的是增强后的代理类。所以事务是由代理加进去的，所以关键就是代理如何生成。在 Spring 中有两种生成代理的方式，JDK动态代理和CGLIB。JDK 动态代理只能用于实现了接口的类，CGLIB则是否实现接口都可以</strong>。<br><br><br>对于没有实现接口的类，CGLIB 只能通过继承重写的方式生成代理类。所以对于方法的访问范围是有要求的。private 方法不能被继承，final 方法不能被重写，static 方法和继承不相干，所以使用它们修饰的方法事务失效。public 方法，protected 方法可以被重写以添加事务代码，对于 package 方法来说，如果生成的子类位于同一个包里，就可以被重写以添加事务代码。所以它们本质上都可以支持事务，但是 Spring 选择让 protected 方法和package 方法不支持事务，所以只有public方法支持事务。<br><br><br>所以，<strong>只要是以代理方式实现的声明式事务，无论是JDK动态代理，还是CGLIB直接写字节码生成代理，都只有public 方法上的事务注解才起作用。而且必须在代理类外部调用才行，如果直接在目标类里面调用，事务照样不起作用</strong>。<br><br><br><a name="10e8aeb9"></a></p>
+<h2 id="Spring-事务失效的解决方法"><a href="#Spring-事务失效的解决方法" class="headerlink" title="Spring 事务失效的解决方法"></a>Spring 事务失效的解决方法</h2><p>了解了 Spring 事务的本质后，Spring 事务失效的问题就很好解决了。通过访问增强后的代理类的方法，而不是直接访问自身的方法。具体可以采用下面的方式：<br><a name="6e56ee98"></a></p>
+<h3 id="注入自己的实例"><a href="#注入自己的实例" class="headerlink" title="注入自己的实例"></a>注入自己的实例</h3><p>注入自己的实例，这种方式比较容易理解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServiceImpl</span> <span class="keyword">implements</span> <span class="title">TestService</span></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> TestService testService; </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">b</span><span class="params">()</span> <span class="keyword">throws</span> RollbackException </span>&#123;</span><br><span class="line">        testService.a();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552985176542-abf9dcf0-7ad0-4f01-96f9-2509945ae1d2.png#align=left&amp;display=inline&amp;height=45&amp;name=image.png&amp;originHeight=49&amp;originWidth=1412&amp;size=17543&amp;status=done&amp;width=1284" alt="image.png"></p>
+<p><a name="6607b84e"></a></p>
+<h3 id="获取当前代理"><a href="#获取当前代理" class="headerlink" title="获取当前代理"></a>获取当前代理</h3><p>获取当前代理，这样写避免了自己调用自己的实例。使用这种方式必须引入 spring-boot-starter-aop 依赖，并且在启动类设置 exposeProxy = true。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableAspectJAutoProxy</span>(exposeProxy = <span class="keyword">true</span>)</span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DeclarativeTransactionDemoApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(DeclarativeTransactionDemoApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServiceImpl</span> <span class="keyword">implements</span> <span class="title">TestService</span></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> TestService testService; </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">b</span><span class="params">()</span> <span class="keyword">throws</span> RollbackException </span>&#123;</span><br><span class="line">        ((TestService) (AopContext.currentProxy())).a();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552985549987-6529de9a-f469-4e87-bcec-f4aaea3f719b.png#align=left&amp;display=inline&amp;height=46&amp;name=image.png&amp;originHeight=51&amp;originWidth=1418&amp;size=17439&amp;status=done&amp;width=1289" alt="image.png"><br><a name="d41d8cd9"></a></p>
+<p>###<br><a name="62076986"></a></p>
+<h3 id="再加一层事务"><a href="#再加一层事务" class="headerlink" title="再加一层事务"></a>再加一层事务</h3><p>在方法 b 上添加 与方法 a 相同的 @Transactional 注解开启事务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestServiceImpl</span> <span class="keyword">implements</span> <span class="title">TestService</span></span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> TestService testService; </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="meta">@Transactional</span>(rollbackFor = RollbackException.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">b</span><span class="params">()</span> <span class="keyword">throws</span> RollbackException </span>&#123;</span><br><span class="line">        a();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552985889930-42ba7f15-f2d0-420a-9622-2405a14ff12b.png#align=left&amp;display=inline&amp;height=46&amp;name=image.png&amp;originHeight=51&amp;originWidth=1409&amp;size=17221&amp;status=done&amp;width=1281" alt="image.png"></p>
+<p><a name="d17a0f0b"></a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>geektime - 玩转 Spring 全家桶<br><a href="http://blog.720ui.com/columns/springboot_all/" target="_blank" rel="noopener">Spring Boot 揭秘与实战系列</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzU1NzY1Nzc1OQ==&amp;mid=2247484017&amp;idx=1&amp;sn=a2055640b142fc4cfa5a9901d22ec57f&amp;chksm=fc333981cb44b09782c196da25dc613b38a9ede52de073bfaaaef6214a9deb294b6527091892&amp;scene=21#wechat_redirect" target="_blank" rel="noopener">我是如何在面试别人Spring事务时“套路”对方的</a></p>
+<p><a name="81cb1f5d"></a></p>
+<h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><p><strong>示例源代码</strong> <a href="https://github.com/SongWenJie/Spring-family.git" target="_blank" rel="noopener">Spring-family </a></p>
+
+      
+    </div>
+
+    
+      
+      
+
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2019/04/07/Spring-声明式事务的本质/">https://songwenjie.coding.me/2019/04/07/Spring-声明式事务的本质/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
+
+
+
+      
+      
+    
+
+    
+      <footer class="post-footer">
+        
+          <div class="post-tags">
+            
+              <a href="/tags/Spring/">Spring</a>
+            
+              <a href="/tags/Spring-Boot/">Spring Boot</a>
+            
+          </div>
+        
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/2019/04/09/Spring-Boot-数据存储-JPA集成/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Spring Boot 数据存储 - JPA集成</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
+    
+    
+      <a class="next" href="/2019/03/28/Spring-声明式事务属性详解/">
+        <span class="next-text nav-default">Spring 声明式事务属性详解</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+
+      </footer>
+    
+
+  </article>
+
+
+          </div>
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+      </main>
+
+      <footer id="footer" class="footer">
+
+  <div class="social-links">
+    
+      
+        
+          <a href="mailto:songwenjie830@gmail.com" class="iconfont icon-email" title="email"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+        
+          <a href="https://github.com/songwenjie" class="iconfont icon-github" title="github"></a>
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+
+    
+      
+      <a href="/atom.xml" class="iconfont icon-rss" title="rss"></a>
+    
+  </div>
+
+
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/ahonn/hexo-theme-even">Even</a>
+  </span>
+
+  <span class="copyright-year">
+    
+    &copy; 
+     
+      2017 - 
+    
+    2019
+
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">宋文杰</span>
+  </span>
+</div>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+
+    
+  
+  
+
+  
+
+
+
+    
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/slideout/slideout.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/fancybox/jquery.fancybox.pack.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/pjax/jquery.pjax.min.js"></script>
+  
+
+  
+    <script type="text/javascript" src="/lib/nprogress/nprogress.min.js"></script>
+  
+
+
+    <script type="text/javascript" src="/js/src/even.js?v=2.10.1"></script>
+
+  </body>
+</html>
