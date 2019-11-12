@@ -208,6 +208,52 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/2018/07/26/Docker问题-一-：bash-vi-command-not-found/">Docker问题(一)：bash: vi: command not found</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-26
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h2 id="Docker问题-一-：bash-vi-command-not-found"><a href="#Docker问题-一-：bash-vi-command-not-found" class="headerlink" title="Docker问题(一)：bash: vi: command not found"></a>Docker问题(一)：bash: vi: command not found</h2><p>在使用docker时，有时候我们需要编辑配置文件，需要使用vim或者vi命令,但是会发现：</p>
+<p><code>bash: vi: command not found</code></p>
+<p>因为vim没有安装，这个时候需要我们使用<code>apt-get install vim</code>命令安装vim</p>
+<p>会出现如下问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br><span class="line">E: Unable to locate package vim</span><br></pre></td></tr></table></figure>
+<p>此时执行<code>apt-get update</code>，然后再次执行<code>apt-get install vim</code>即可成功安装vim。</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/2018/07/26/vim常用命令/">vim常用命令</a>
         
       </h1>
@@ -984,77 +1030,6 @@
 </ol>
 <ol start="2">
 <li>对业务中可能的变化点，要给予扩展点，保证开闭原则（OCP），对扩展开放，对修改关闭。</li>
-</ol>
-<p>参考：《软件设计重构》</p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/07/23/泄露的封装/">泄露的封装</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-07-23
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p><img src="http://songwenjie.vip/blog/180430/hlFKAlhh5F.png?imageslim" alt="mark"></p>
-<h1 id="泄露的封装"><a href="#泄露的封装" class="headerlink" title="泄露的封装"></a>泄露的封装</h1><p>抽象通过公有接口（方法）暴露或泄露实现细节时，将导致这种坏味。需要注意的是，即使抽象不存在“<a href="http://www.cnblogs.com/songwenjie/p/8974296.html" target="_blank" rel="noopener">不充分的封装</a>”坏味，其公有接口也有可能泄露实现细节。</p>
-<h2 id="为什么不能泄露封装？"><a href="#为什么不能泄露封装？" class="headerlink" title="为什么不能泄露封装？"></a>为什么不能泄露封装？</h2><p>为实现有效封装，必须将抽象的接口（即抽象的内容）和实现（即抽象的方式）分离。为遵循隐藏原则，必须对客户程序隐藏抽象的实现方面。</p>
-<p>如果通过公有接口暴露了实现细节（违反了隐藏原则）可能会造成:</p>
-<ul>
-<li>对实现进行修改时，可能会影响客户程序</li>
-<li>暴露的实现细节可能会让客户程序能够通过公有接口访问内部数据结构，进而有意或无意地损坏抽象的内部状态。</li>
-</ul>
-<h2 id="泄露的封装的潜在原因"><a href="#泄露的封装的潜在原因" class="headerlink" title="泄露的封装的潜在原因"></a>泄露的封装的潜在原因</h2><h3 id="不知道该隐藏哪些东西"><a href="#不知道该隐藏哪些东西" class="headerlink" title="不知道该隐藏哪些东西"></a>不知道该隐藏哪些东西</h3><p>开发人员通常会在无意之间泄露实现细节。</p>
-<h3 id="使用细粒度接口"><a href="#使用细粒度接口" class="headerlink" title="使用细粒度接口"></a>使用细粒度接口</h3><p>类的公有接口直接提供了细粒度的方法，这些细粒度的方法通常会向客户程序暴露不必要的实现细节。更好的做法是在类的公有接口提供粗粒度的方法，在粗粒度方法内部使用细粒度的私有方法。</p>
-<h2 id="示例分析一"><a href="#示例分析一" class="headerlink" title="示例分析一"></a>示例分析一</h2><p>我们用程序来维护一个待办事项列表。在ToDoList类中，公有方法GetListEntries()返回对象存储的待办事项列表。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ToDoList</span><br><span class="line">&#123;</span><br><span class="line">    private List&lt;string&gt; listEntries = new List&lt;string&gt;();</span><br><span class="line"></span><br><span class="line">    public List&lt;string&gt; GetListEntries()</span><br><span class="line">    &#123;</span><br><span class="line">        return listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void AddListEntry(string entry)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>问题出在方法的返回类型上，它暴露了一个内部细节，ToDoList内部使用List<string>来存储待办事项列表。</string></p>
-<p>现在问题来了，如果待办事项列表程序主要执行插入和删除操作，那么选择使用List<string>没啥问题；但是后来发现查找频率比修改频率高，那么使用HashTable可能更合适。然而GetListEntries()的返回类型是List<string>，如果修改这个方法的返回类型，可能破坏依赖于这个方法的客户程序。如果要支持未来数据结构的变更，方法返回类型可以使用IEnumerable（C#中的集合类型都实现的接口类型），这样可以做到在不改变方法签名的条件下(里氏替换原则)，替换存储待办事项列表的数据结构。</string></string></p>
-<p><strong>重构后的代码实现：</strong></p>
-<p>使用List数据结构：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ToDoList</span><br><span class="line">&#123;</span><br><span class="line">    private List&lt;string&gt; listEntries = new List&lt;string&gt;();</span><br><span class="line"></span><br><span class="line">    public IEnumerable GetListEntries()</span><br><span class="line">    &#123;</span><br><span class="line">        return listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void AddListEntry(string entry)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用Hashtable数据结构：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class ToDoList</span><br><span class="line">&#123;</span><br><span class="line">    private Hashtable listEntries = new Hashtable();</span><br><span class="line"></span><br><span class="line">    public IEnumerable GetListEntries()</span><br><span class="line">    &#123;</span><br><span class="line">        return listEntries;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void AddListEntry(string entry)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>方法GetListEntries()存在另一个严重的问题是，它返回一个指向内部数据结构的引用，通过这个引用，客户程序可以绕过AddListEntry()方法直接修改数据结构。当然如果使用IEnumerable这个问题也就迎刃而解了，因为IEnumerable接口没有相应的针对于某一种数据集合的操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public interface IEnumerable</span><br><span class="line">&#123;</span><br><span class="line">    //</span><br><span class="line">    // 摘要:</span><br><span class="line">    //     返回循环访问集合的枚举数。</span><br><span class="line">    //</span><br><span class="line">    // 返回结果:</span><br><span class="line">    //     一个可用于循环访问集合的 System.Collections.IEnumerator 对象。</span><br><span class="line">    [DispId(-4)]</span><br><span class="line">    IEnumerator GetEnumerator();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="示例分析二"><a href="#示例分析二" class="headerlink" title="示例分析二"></a>示例分析二</h2><p>假设显式图像包含4个步骤，这些步骤必须按照特定顺序执行，图形才可以正常显式。</p>
-<p>现在在Image类中提供4个公有方法Load(),Process(),Validate(),Show()供客户程序使用，但是这样有一个很麻烦的问题是写客户程序的开发人员不一定会按照正确顺序调用方法使用（永远不要给客户选择的权利）。而且客户程序只是想要显式图像，我们为什么要向它们暴露4个内部步骤呢？这就是泄露的封装的潜在原因——使用细粒度接口。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class Image</span><br><span class="line">&#123;</span><br><span class="line">    public void Load()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public void Process()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public void Validate()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    public void Show()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要解决这个问题，可以让Image类只向客户程序暴露一个方法Display()，然后在这个方法内部按照特定顺序调用4个步骤方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class Image</span><br><span class="line">&#123;</span><br><span class="line">    private void Load()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    private void Process()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    private void Validate()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    private void Show()</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void Display()</span><br><span class="line">    &#123;</span><br><span class="line">        Load();</span><br><span class="line">        Process();</span><br><span class="line">        Validate();</span><br><span class="line">        Show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>抽象通过公有接口暴露或泄露了实现细节时，客户程序可能直接依赖于实现细节吗，这种直接依赖性使得难以在不破坏既有客户代码的情况下对设计进行修改或扩展。</li>
-<li>抽象泄露了内部数据结构时，抽象的完整性遭到了破坏。增加了代码运行阶段发生问题的可能性。</li>
 </ol>
 <p>参考：《软件设计重构》</p>
 
