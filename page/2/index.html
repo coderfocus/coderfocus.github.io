@@ -208,56 +208,6 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2019/03/11/avue-form表单元素/">avue form表单元素</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-11
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <h2 id="form表单元素"><a href="#form表单元素" class="headerlink" title="form表单元素"></a>form表单元素</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-form </span><br><span class="line">ref=<span class="string">"form"</span> </span><br><span class="line">v-model=<span class="string">"formData"</span>  </span><br><span class="line">:option=<span class="string">"formOption"</span> </span><br><span class="line">@reset-change=<span class="string">"emptytChange"</span> </span><br><span class="line">@submit=<span class="string">"submit"</span>&gt;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    name: <span class="string">'form'</span>,</span><br><span class="line">    data() &#123;</span><br><span class="line">      <span class="keyword">return</span> &#123;</span><br><span class="line">        formData:[],</span><br><span class="line">        formOption:&#123;&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  </span><br><span class="line">    methods: &#123;</span><br><span class="line">      <span class="comment">//form</span></span><br><span class="line">      emptytChange()&#123;</span><br><span class="line">        <span class="keyword">this</span>.$message.success(<span class="string">'清空方法回调'</span>);</span><br><span class="line">      &#125;,</span><br><span class="line">      submit () &#123;</span><br><span class="line">        <span class="keyword">this</span>.$message.success(<span class="string">'当前数据'</span>+<span class="built_in">JSON</span>.stringify(<span class="keyword">this</span>.formData));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-<p><img src="http://songwenjie.vip/blog/20190307/DSQS5I7VTvL0.png?imageslim" alt="mark"></p>
-<p><code>reset-change</code> 为清空表单的回调方法，清空表单内容，但是默认值不会被清空。</p>
-<p><code>v-model</code> 绑定属性 <code>formData</code> 存放表单数据</p>
-<p><code>submit</code> 为表单提交的回调方法，用以持久化表单数据等</p>
-          <div class="read-more">
-            <a href="/2019/03/11/avue-form表单元素/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
           <a class="post-link" href="/2019/03/08/avue-字典/">avue 字典</a>
         
       </h1>
@@ -673,6 +623,58 @@
 <p>在这三种中，左外连接和右外连接功能上没有什么区别，我们都比较熟悉，全外连接相对来说使用较少。</p>
           <div class="read-more">
             <a href="/2019/01/02/换个角度看表连接/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2019/01/01/自连接的妙用/">自连接的妙用</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-01-01
+        </span>
+        
+          <span class="post-category">
+            
+              <a href="/categories/SQL/">SQL</a>
+            
+          </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <p>SQL通常在不同的表或者视图间进行连接运算，但是也可以对相同的表进行“自连接”运算。自连接的处理过程不太容易想象，但是，一旦掌握自连接技术，便能快速解决很多问题。</p>
+<p>一般使用自连接可以解决的问题使用子查询也可以解决，但是与子查询相比，自连接的表达性更强，更加便于理解SQL语句的意义。下面是一些自连接的常用场景。</p>
+          <div class="read-more">
+            <a href="/2019/01/01/自连接的妙用/" class="read-more-link">阅读更多</a>
           </div>
         
       
