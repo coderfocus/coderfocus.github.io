@@ -17,10 +17,12 @@
 
 
 
-  <meta name="description" content="记录生活、技术">
+  <meta name="description" content="Spring Boot 数据存储 - MyBatis 集成">
 
 
 
+
+  <meta name="keywords" content="Spring, Spring Boot, CoderFocus">
 
 
 
@@ -40,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/">
+<link rel="canonical" href="https://songwenjie.coding.me/2020/01/08/Spring-Boot-数据存储-MyBatis-集成/">
 
 
 
@@ -88,7 +90,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> CoderFocus </title>
+    <title> Spring Boot 数据存储 - MyBatis 集成 - CoderFocus </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -200,15 +202,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2020/01/08/Spring-Boot-数据存储-MyBatis-集成/">Spring Boot 数据存储 - MyBatis 集成</a>
+          Spring Boot 数据存储 - MyBatis 集成
         
       </h1>
 
@@ -223,15 +221,18 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Boot-数据存储-MyBatis-集成"><span class="toc-text">Spring Boot 数据存储 - MyBatis 集成</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境依赖"><span class="toc-text">环境依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库脚本初始化"><span class="toc-text">数据库脚本初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据源配置"><span class="toc-text">数据源配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定义实体"><span class="toc-text">定义实体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#定义映射"><span class="toc-text">定义映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注解方式"><span class="toc-text">注解方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#XML-方式"><span class="toc-text">XML 方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源代码"><span class="toc-text">源代码</span></a></li></ol></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <h1 id="Spring-Boot-数据存储-MyBatis-集成"><a href="#Spring-Boot-数据存储-MyBatis-集成" class="headerlink" title="Spring Boot 数据存储 - MyBatis 集成"></a>Spring Boot 数据存储 - MyBatis 集成</h1><p>在上文中，我们讲解了如何在 Spring Boot 中集成 JPA，本文我们继续学习如何在 Spring Boot 中集成另外一款优秀的持久层框架——MyBatis，MyBatis 的特点是支持定制化 SQL、存储过程和高级映射。我们可以根据项目的复杂程度选择不同的持久层框架，如果项目数据库映射关系比较简单，我们可以选择 JPA / Hibernate 来替我们屏蔽掉 SQL 层的操作，简化开发；如果映射关系比较复杂，可以选择 MyBatis 定制化 SQL、存储过程和高级映射，这样也可以对我们所写的 SQL 有更强的把控程度。 </p>
+        <h1 id="Spring-Boot-数据存储-MyBatis-集成"><a href="#Spring-Boot-数据存储-MyBatis-集成" class="headerlink" title="Spring Boot 数据存储 - MyBatis 集成"></a>Spring Boot 数据存储 - MyBatis 集成</h1><p>在上文中，我们讲解了如何在 Spring Boot 中集成 JPA，本文我们继续学习如何在 Spring Boot 中集成另外一款优秀的持久层框架——MyBatis，MyBatis 的特点是支持定制化 SQL、存储过程和高级映射。我们可以根据项目的复杂程度选择不同的持久层框架，如果项目数据库映射关系比较简单，我们可以选择 JPA / Hibernate 来替我们屏蔽掉 SQL 层的操作，简化开发；如果映射关系比较复杂，可以选择 MyBatis 定制化 SQL、存储过程和高级映射，这样也可以对我们所写的 SQL 有更强的把控程度。 </p>
 <p><a name="641cf522"></a></p>
 <h2 id="环境依赖"><a href="#环境依赖" class="headerlink" title="环境依赖"></a>环境依赖</h2><p>在 Spring Boot 中使用 MyBatis，需要引入 mybatis-spring-boot-starter 依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.0.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
 <p>使用 MySQL 数据库，引入 mysql-connector-java 依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">    &lt;scope&gt;runtime&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
@@ -267,456 +268,72 @@
 <p><a name="81cb1f5d"></a></p>
 <h2 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h2><p><strong>示例源代码</strong> <a href="https://github.com/SongWenJie/Spring-family.git" target="_blank" rel="noopener">Spring-family </a></p>
 
-        
       
     </div>
 
     
+      
+      
 
-    
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://songwenjie.coding.me">宋文杰</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://songwenjie.coding.me/2020/01/08/Spring-Boot-数据存储-MyBatis-集成/">https://songwenjie.coding.me/2020/01/08/Spring-Boot-数据存储-MyBatis-集成/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
+      
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
 
-  </article>
+
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/04/09/Spring-Boot-数据存储-JPA集成/">Spring Boot 数据存储 - JPA集成</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-04-09
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
-          
-        
+    
 
+    
+      <footer class="post-footer">
         
-          <h2 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h2><p>在开始讲解 Spring Data JPA 之前，我们先来了解一下 ORM(Object Relational Mapping)，ORM 的出现是为了解决面向对象编程和关系型数据库之间的 O/R阻抗失衡 (O/R Impedance Mismatch)，通过 ORM 就能使用面向对象编程，来操作关系型数据库。<br><br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1553050134265-33fa6ee1-be99-4c98-a9b2-f92e97a719a9.png#align=left&amp;display=inline&amp;height=359&amp;originHeight=359&amp;originWidth=700&amp;size=0&amp;status=done&amp;width=700" alt=""><br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1553046753681-f17543b9-2029-405f-addf-710ae0bbccf1.png#align=left&amp;display=inline&amp;height=407&amp;originHeight=407&amp;originWidth=523&amp;status=done&amp;width=523" alt=""></p>
-<p><strong>数据库与对象之间的映射：</strong><br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1553050334703-0848b3b1-c0ac-40c8-8767-c6a8522864a3.png#align=left&amp;display=inline&amp;height=257&amp;originHeight=257&amp;originWidth=429&amp;size=0&amp;status=done&amp;width=429" alt=""></p>
-          <div class="read-more">
-            <a href="/2019/04/09/Spring-Boot-数据存储-JPA集成/" class="read-more-link">阅读更多</a>
+          <div class="post-tags">
+            
+              <a href="/tags/Spring/">Spring</a>
+            
+              <a href="/tags/Spring-Boot/">Spring Boot</a>
+            
           </div>
         
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/04/07/Spring-声明式事务的本质/">Spring 声明式事务的本质</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-04-07
-        </span>
         
         
-      </div>
-    </header>
-
+  <nav class="post-nav">
     
     
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>话接上文，我们在前文中介绍了 Spring 声明式事务的使用及属性详解，在 Spring 中使用声明式事务进行事务管理s虽说简单又方便，但是却有一个小小的”坑”。假设有这么一个场景，有个接口，它包含两个方法 a 和 b，然后有一个类实现了该接口。在该实现类里 a方法上使用事务注解、b方法上不使用事务注解，然后 b方法里调用a方法，此时调用b方法，会有事务吗？答案是不会。<br><br></p>
-          <div class="read-more">
-            <a href="/2019/04/07/Spring-声明式事务的本质/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/28/Spring-声明式事务属性详解/">Spring 声明式事务属性详解</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-28
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在上文中，我们介绍了如何在 Spring Boot 中使用声明式事务进行事务管理。现在我们来看一下与声明式事务注解相关属性的配置。</p>
-          <div class="read-more">
-            <a href="/2019/03/28/Spring-声明式事务属性详解/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/27/Spring-声明式事务/">Spring 声明式事务</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-27
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在 Spring 中，提供了很多抽象，可以帮助我们在不同的框架中以相同的方式来进行数据操作。其中最重要的一块就是事务抽象。Spring 提供了一致的事务模型，不管是使用 JDBC、Hibernate 还是 myBatis ,都可以使用一样的方式进行事务管理。</p>
-<p>在 Spring Boot 中进行事务管理有两种方式，第一种是编程式事务，第二种是声明式事务。因为声明式事务基于注解，使用方便，现在开发中多采用这种方式。本文介绍如何在 Spring Boot 中使用声明式事务进行事务管理。</p>
-          <div class="read-more">
-            <a href="/2019/03/27/Spring-声明式事务/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/25/Spring-Boot-配置多数据源/">Spring Boot 配置多数据源</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-25
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <h1 id="如何配置多数据源"><a href="#如何配置多数据源" class="headerlink" title="如何配置多数据源"></a>如何配置多数据源</h1><p>在某些场景下，可能会需要在一个应用程序中连接访问多个数据库。常见的场景有：</p>
-<ul>
-<li>系统需要访问完全不同的数据库</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552871939218-ae8a5495-42ed-4521-9c20-4c2cafa8051c.png#align=left&amp;display=inline&amp;height=165&amp;name=image.png&amp;originHeight=181&amp;originWidth=233&amp;size=18331&amp;status=done&amp;width=212" alt="image.png"></p>
-<ul>
-<li>系统需要访问同一个数据库的主库和备库</li>
-</ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552872206509-49d6240f-ad7c-42ef-893b-170f4bf81398.png#align=left&amp;display=inline&amp;height=167&amp;name=image.png&amp;originHeight=184&amp;originWidth=273&amp;size=29237&amp;status=done&amp;width=248" alt="image.png"></p>
-<ul>
-<li>系统需要访问一组做了分库分表的数据库</li>
-</ul>
-<p><a name="641cf522"></a></p>
-          <div class="read-more">
-            <a href="/2019/03/25/Spring-Boot-配置多数据源/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/21/如何使用-JdbcTemplate-操作数据库/">Spring Boot - 使用 JdbcTemplate 操作数据库</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-21
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在上一篇文章中我们介绍了在 Spirng Boot 中如何配置数据源，数据源配置完成后，就可以使用 JDBC 操作数据库了。JDBC 提供了一个操作模板类 JdbcTemplate 用以操作数据库，其中包含下面几个方法：<br>query、 queryForObject、queryForList 用于从数据库中查询数据，update 和 execute 方法都可以用于数据写入，区别是 update 方法一般用于增删改操作 ，因为 update 方法会返回语句操作受影响的行数，便于在程序中判断此次操作成功与否；execute 方法没有返回值，主要用于数据库 ddl 操作。<br><img src="https://cdn.nlark.com/yuque/0/2019/png/291118/1552712552327-e0577b57-757a-42d0-81a6-476f267b2d6d.png#align=left&amp;display=inline&amp;height=234&amp;name=image.png&amp;originHeight=257&amp;originWidth=343&amp;size=14880&amp;status=done&amp;width=312" alt="image.png"><br><a name="641cf522"></a></p>
-          <div class="read-more">
-            <a href="/2019/03/21/如何使用-JdbcTemplate-操作数据库/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/19/如何配置单数据源/">Spring Boot 如何配置单数据源</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-19
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>在日常开发中，免不了和数据存储（数据库）打交道，本文讲解在 Spring Boot 基础下，如何配置单个数据源。</p>
-          <div class="read-more">
-            <a href="/2019/03/19/如何配置单数据源/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/15/Git提交日志规范/">Git提交日志规范</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-15
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>对于版本控制工具来说，尤为重要的就是每次提交版本到代码库的日志撰写。清晰、规范、格式化的提交日志有助于追踪版本修改，查看历史记录等。 Git 不允许提交日志为空，这里推荐使用目前使用最广泛的 angular 规范。</p>
-<p>angular 规范的 commit message 包括 3 个部分 ，header 、body 和 footer 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt; (&lt;scope&gt;) : &lt;subject&gt;</span><br><span class="line">//空一行</span><br><span class="line">&lt;body&gt;</span><br><span class="line">//空一行</span><br><span class="line">&lt;footer&gt;</span><br></pre></td></tr></table></figure>
-          <div class="read-more">
-            <a href="/2019/03/15/Git提交日志规范/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2019/03/13/avue-form表单验证/">avue form表单验证</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-03-13
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>对于 web 开发来说，表单验证是永远跨不过去的坎。一般来说，客户端和服务端都需要进行表单验证。客户端验证是为了防止每次验证都发起网络请求，影响用户使用体验；但是也需要在表单提交时进行服务端验证，因为客户端验证是不可靠的，用户可以在浏览器跳过客户端验证直接提交。</p>
-<p>对于客户端表单验证，通常要通过编写大量的重复代码实现。本文研究 <code>avue</code> 框架如何基于配置进行表单验证。<code>avue</code> 是基于 <code>element-ui</code> 做了一层封装，而 <code>element-ui</code>  的表单验证基于 <code>async-validator</code>  <a href="https://github.com/yiminghe/async-validator" target="_blank" rel="noopener">async-validator 项目地址</a> 。</p>
-          <div class="read-more">
-            <a href="/2019/03/13/avue-form表单验证/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-      
-  <nav class="pagination">
-    
-    
-      <a class="next" href="/page/2/">
-        <span class="next-text">下一页</span>
+      <a class="next" href="/2019/04/09/Spring-Boot-数据存储-JPA集成/">
+        <span class="next-text nav-default">Spring Boot 数据存储 - JPA集成</span>
+        <span class="prev-text nav-mobile">下一篇</span>
         <i class="iconfont icon-right"></i>
       </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
       </main>
@@ -801,6 +418,11 @@
     </div>
 
     
+  
+  
+
+  
+
 
 
     
