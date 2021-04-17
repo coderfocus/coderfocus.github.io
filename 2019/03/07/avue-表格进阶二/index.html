@@ -42,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/2019/03/07/avue-表格进阶二/">
+<link rel="canonical" href="https://coderfocus.github.io/2019/03/07/avue-表格进阶二/">
 
 
 
@@ -269,10 +269,10 @@
 <p><code>[rowspan,colspan]</code>  代表几行几列，例如 [1,2] 表示1行2列，进行了列合并；[2,1] 表示2行1列，进行了行合并； [0,0] 表示0行0列，不显示此行此列。</p>
 <p> 也可以返回一个键名为<code>rowspan</code>和<code>colspan</code>的对象：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    rowspan:<span class="number">1</span>,</span><br><span class="line">    colspan:<span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="合并列"><a href="#合并列" class="headerlink" title="合并列"></a>合并列</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud</span><br><span class="line">  :data=<span class="string">"data1"</span></span><br><span class="line">  :option=<span class="string">"option2"</span></span><br><span class="line">  :span-method=<span class="string">"mergeRow"</span></span><br><span class="line">&gt;&lt;/avue-crud&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="合并列"><a href="#合并列" class="headerlink" title="合并列"></a>合并列</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud</span><br><span class="line">  :data=<span class="string">"data1"</span></span><br><span class="line">  :option=<span class="string">"option2"</span></span><br><span class="line">  :span-method=<span class="string">"mergeRow"</span></span><br><span class="line">&gt;<span class="xml"><span class="tag">&lt;/<span class="name">avue-crud</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">  mergeRow(&#123; row, column, rowIndex, columnIndex &#125;)&#123;</span><br><span class="line">    <span class="keyword">if</span>(rowIndex % <span class="number">2</span> === <span class="number">0</span>)&#123; <span class="comment">//如果为偶数行</span></span><br><span class="line">      <span class="keyword">if</span>(columnIndex === <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">1</span>,<span class="number">2</span>] <span class="comment">//如果为第1列，则跨2列</span></span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(columnIndex === <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="number">0</span>,<span class="number">0</span>] <span class="comment">//如果为第2列，则不显示</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="http://songwenjie.vip/blog/20190307/au23BTPO3j2g.png?imageslim" alt="mark"></p>
-<h4 id="合并行"><a href="#合并行" class="headerlink" title="合并行"></a>合并行</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud</span><br><span class="line">  :data=<span class="string">"data1"</span></span><br><span class="line">  :option=<span class="string">"option2"</span></span><br><span class="line">  :span-method=<span class="string">"mergeCol"</span></span><br><span class="line">&gt;&lt;/avue-crud&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="合并行"><a href="#合并行" class="headerlink" title="合并行"></a>合并行</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;avue-crud</span><br><span class="line">  :data=<span class="string">"data1"</span></span><br><span class="line">  :option=<span class="string">"option2"</span></span><br><span class="line">  :span-method=<span class="string">"mergeCol"</span></span><br><span class="line">&gt;<span class="xml"><span class="tag">&lt;/<span class="name">avue-crud</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">  mergeCol(&#123;row,column,rowIndex,columnIndex&#125;)&#123;</span><br><span class="line">    <span class="keyword">if</span>(columnIndex === <span class="number">2</span>)&#123; <span class="comment">//如果为第3列</span></span><br><span class="line">      <span class="keyword">if</span>(rowIndex % <span class="number">2</span> === <span class="number">0</span>)&#123; <span class="comment">//如果为偶数行，则跨2行</span></span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">          rowspan:<span class="number">2</span>,</span><br><span class="line">          colspan:<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">          rowspan:<span class="number">0</span>,</span><br><span class="line">          colspan:<span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="http://songwenjie.vip/blog/20190307/5aBU9xcCEM4H.png?imageslim" alt="mark"></p>
 
@@ -286,11 +286,11 @@
   <div class="post-copyright">
     <p class="copyright-item">
       <span>原文作者: </span>
-      <a href="https://songwenjie.coding.me">宋文杰</a>
+      <a href="https://coderfocus.github.io">宋文杰</a>
     </p>
     <p class="copyright-item">
       <span>原文链接: </span>
-      <a href="https://songwenjie.coding.me/2019/03/07/avue-表格进阶二/">https://songwenjie.coding.me/2019/03/07/avue-表格进阶二/</a>
+      <a href="https://coderfocus.github.io/2019/03/07/avue-表格进阶二/">https://coderfocus.github.io/2019/03/07/avue-表格进阶二/</a>
     </p>
     <p class="copyright-item">
       <span>许可协议: </span>
@@ -415,7 +415,7 @@
      
       2017 - 
     
-    2020
+    2021
 
     <span class="heart">
       <i class="iconfont icon-heart"></i>

@@ -40,7 +40,7 @@
 
 
 
-<link rel="canonical" href="https://songwenjie.coding.me/page/3/">
+<link rel="canonical" href="https://coderfocus.github.io/page/3/">
 
 
 
@@ -202,6 +202,57 @@
   
   <section id="posts" class="posts">
     
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2019/01/02/换个角度看表连接/">换个角度看表连接</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2019-01-02
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+          
+        
+
+        
+          <h2 id="外连接的基础概念"><a href="#外连接的基础概念" class="headerlink" title="外连接的基础概念"></a>外连接的基础概念</h2><p>标准SQL里定义了外连接的三种类型，如下：</p>
+<ul>
+<li>左外连接「LEFT OUTER JOIN」</li>
+<li>右外连接「RIGHT OUTER JOIN」</li>
+<li>全外连接「FULL OUTER JOIN」</li>
+</ul>
+<p>在这三种中，左外连接和右外连接功能上没有什么区别，我们都比较熟悉，全外连接相对来说使用较少。</p>
+          <div class="read-more">
+            <a href="/2019/01/02/换个角度看表连接/" class="read-more-link">阅读更多</a>
+          </div>
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
       
         
   <article class="post">
@@ -704,55 +755,6 @@
   </article>
 
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/2018/08/20/MySQL——优化ORDER-BY语句/">MySQL——优化ORDER BY语句</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-08-20
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>本篇文章我们将了解ORDER BY语句的优化，在此之前，你需要对索引有基本的了解，不了解的老少爷们可以先看一下我之前写过的索引相关文章。现在让我们开始吧。</p>
-<h2 id="MySQL中的两种排序方式"><a href="#MySQL中的两种排序方式" class="headerlink" title="MySQL中的两种排序方式"></a>MySQL中的两种排序方式</h2><p>1.<strong>通过有序索引顺序扫描直接返回有序数据</strong></p>
-<p>因为索引的结构是B+树，索引中的数据是按照一定顺序进行排列的，所以在排序查询中如果能利用索引，就能避免额外的排序操作。EXPLAIN分析查询时，Extra显示为Using index。</p>
-<p>2.<strong>Filesort排序，对返回的数据进行排序</strong></p>
-<p>所有不是通过索引直接返回排序结果的操作都是Filesort排序，也就是说进行了额外的排序操作。EXPLAIN分析查询时，Extra显示为Using filesort。</p>
-          <div class="read-more">
-            <a href="/2018/08/20/MySQL——优化ORDER-BY语句/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
       
   <nav class="pagination">
     
@@ -842,7 +844,7 @@
      
       2017 - 
     
-    2020
+    2021
 
     <span class="heart">
       <i class="iconfont icon-heart"></i>
