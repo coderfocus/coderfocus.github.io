@@ -208,55 +208,6 @@
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/2018/08/20/MySQL——优化ORDER-BY语句/">MySQL——优化ORDER BY语句</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2018-08-20
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
-      
-        
-        
-          
-        
-
-        
-          <p>本篇文章我们将了解ORDER BY语句的优化，在此之前，你需要对索引有基本的了解，不了解的老少爷们可以先看一下我之前写过的索引相关文章。现在让我们开始吧。</p>
-<h2 id="MySQL中的两种排序方式"><a href="#MySQL中的两种排序方式" class="headerlink" title="MySQL中的两种排序方式"></a>MySQL中的两种排序方式</h2><p>1.<strong>通过有序索引顺序扫描直接返回有序数据</strong></p>
-<p>因为索引的结构是B+树，索引中的数据是按照一定顺序进行排列的，所以在排序查询中如果能利用索引，就能避免额外的排序操作。EXPLAIN分析查询时，Extra显示为Using index。</p>
-<p>2.<strong>Filesort排序，对返回的数据进行排序</strong></p>
-<p>所有不是通过索引直接返回排序结果的操作都是Filesort排序，也就是说进行了额外的排序操作。EXPLAIN分析查询时，Extra显示为Using filesort。</p>
-          <div class="read-more">
-            <a href="/2018/08/20/MySQL——优化ORDER-BY语句/" class="read-more-link">阅读更多</a>
-          </div>
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
           <a class="post-link" href="/2018/08/19/MySQL——索引实现原理/">MySQL——索引实现原理</a>
         
       </h1>
@@ -744,6 +695,63 @@
 <p><img src="http://songwenjie.vip/blog/180727/LBic4eFm8h.png?imageslim" alt="mark"></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>应该尽可能优化流程，减少锁表时间。</p>
 <p>尽可能减少锁表范围，只锁定相关的数据库。</p>
+
+        
+      
+    </div>
+
+    
+
+    
+
+  </article>
+
+      
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/2018/07/26/Docker常用命令/">Docker常用命令</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-07-26
+        </span>
+        
+        
+      </div>
+    </header>
+
+    
+    
+
+
+    <div class="post-content">
+      
+        
+        
+
+        
+          <h1 id="Docker常用命令："><a href="#Docker常用命令：" class="headerlink" title="Docker常用命令："></a>Docker常用命令：</h1><ol>
+<li><p><code>docker pull 镜像名称</code></p>
+<p>拉取某个镜像到本地</p>
+</li>
+<li><p><code>docker images</code></p>
+<p>查看镜像列表</p>
+</li>
+<li><p><code>docker inspect 镜像名称</code></p>
+<p>查看某个镜像详情</p>
+</li>
+<li><p><code>docker rmi 镜像名称</code></p>
+<p>删除某个镜像。对于存在容器的镜像，首先需要删除其对应的容器才能删除该镜像。</p>
+</li>
+<li><p><code>docker inspect --format=&#39;{ {.NetworkSettings.IPAddress} }&#39; 容器名称|容器id</code></p>
+<p>查看容器IP</p>
+</li>
+</ol>
 
         
       
